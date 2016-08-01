@@ -39,6 +39,7 @@ protected:
     QVariant data(const QModelIndex &index, int role) const;
 
 private:
+    qint64 journalStartTime;
     QList<JournalEntry *> events;
 };
 
