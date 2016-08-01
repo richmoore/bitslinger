@@ -1,7 +1,7 @@
 #ifndef JOURNAL_H
 #define JOURNAL_H
 
-#include <QObject>
+#include <QAbstractTableModel>
 #include <QList>
 #include <QColor>
 
@@ -20,7 +20,7 @@ struct JournalEntry
     QString comment;
 };
 
-class Journal : public QObject
+class Journal : public QAbstractTableModel
 {
     Q_OBJECT
 public:
@@ -32,7 +32,13 @@ public slots:
     //### Change this to a direct function call?
     void recordEvent(int id, Connection::EventType type, Connection::Direction dir, Connection::State newState, const QByteArray &content);
 
-public:
+protected:
+    int rowCount(const QModelIndex &parent) const;
+    int columnCount(const QModelIndex &parent) const;
+    QVariant headerData(int section, Qt::Orientation orientation, int role) const;
+    QVariant data(const QModelIndex &index, int role) const;
+
+private:
     QList<JournalEntry *> events;
 };
 

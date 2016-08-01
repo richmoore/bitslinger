@@ -1,3 +1,5 @@
+#include "journal.h"
+
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
@@ -11,4 +13,9 @@ MainWindow::MainWindow(QWidget *parent) :
 MainWindow::~MainWindow()
 {
     delete ui;
+}
+
+void MainWindow::setJournal(Journal *journal)
+{
+    ui->journalView->setModel(journal);
 }

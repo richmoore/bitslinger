@@ -20,36 +20,7 @@
       <property name="orientation">
        <enum>Qt::Vertical</enum>
       </property>
-      <widget class="QTreeWidget" name="treeWidget">
-       <property name="alternatingRowColors">
-        <bool>true</bool>
-       </property>
-       <column>
-        <property name="text">
-         <string>Time</string>
-        </property>
-       </column>
-       <column>
-        <property name="text">
-         <string>Connection</string>
-        </property>
-       </column>
-       <column>
-        <property name="text">
-         <string>Direction</string>
-        </property>
-       </column>
-       <column>
-        <property name="text">
-         <string>Length</string>
-        </property>
-       </column>
-       <column>
-        <property name="text">
-         <string>Details</string>
-        </property>
-       </column>
-      </widget>
+      <widget class="QTreeView" name="journalView"/>
       <widget class="QTabWidget" name="tabWidget">
        <property name="currentIndex">
         <number>0</number>

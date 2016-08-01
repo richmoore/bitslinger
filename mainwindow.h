@@ -7,6 +7,8 @@ namespace Ui {
 class MainWindow;
 }
 
+class Journal;
+
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
@@ -14,6 +16,8 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
+
+    void setJournal(Journal *journal);
 
 private:
     Ui::MainWindow *ui;

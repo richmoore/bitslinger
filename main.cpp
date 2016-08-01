@@ -10,6 +10,9 @@ int main(int argc, char *argv[])
     w.show();
 
     TcpProxy proxy;
+
+    w.setJournal(proxy.journal());
+
     proxy.listen();
 
     return a.exec();

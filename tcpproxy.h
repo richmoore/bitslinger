@@ -3,11 +3,15 @@
 
 #include <QObject>
 
+class Journal;
+
 class TcpProxy : public QObject
 {
     Q_OBJECT
 public:
     explicit TcpProxy(QObject *parent = 0);
+
+    Journal *journal();
 
 signals:
     void connectionReceived();

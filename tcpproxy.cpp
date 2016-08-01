@@ -28,12 +28,20 @@ TcpProxy::TcpProxy(QObject *parent) : QObject(parent)
         d->targetPort = 4433;
 }
 
+Journal *TcpProxy::journal()
+{
+    return d->journal;
+}
+
 void TcpProxy::listen()
 {
     d->server = new QTcpServer(this);
     connect(d->server, SIGNAL(newConnection()), this, SLOT(handleConnection()));
 
-    d->server->listen(QHostAddress::Any, d->listenPort);
+    bool ok = d->server->listen(QHostAddress::Any, d->listenPort);
+    if (!ok) {
+        qDebug() << "Unable to listen";
+    }
 }
 
 void TcpProxy::handleConnection()
