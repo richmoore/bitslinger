@@ -5,7 +5,25 @@
 
 #include "journal.h"
 
+const int COLUMN_TIME = 0;
+const int COLUMN_DIRECTION = 1;
+const int COLUMN_CONNECTION = 2;
+const int COLUMN_TYPE = 3;
+const int COLUMN_LENGTH = 4;
+const int COLUMN_DETAILS = 5;
+const int COLUMN_COMMENT = 6;
+
 const int JOURNAL_COLUMNS = 7;
+
+QString headings[] = {
+    "Time",
+    "<>",
+    "Connection",
+    "Type",
+    "Length",
+    "Details",
+    "Comment"
+};
 
 Journal::Journal(QObject *parent) : QAbstractTableModel(parent)
 {
@@ -47,24 +65,10 @@ QVariant Journal::headerData(int section, Qt::Orientation orientation, int role)
     if (orientation != Qt::Horizontal)
         return QVariant();
 
-    switch(section) {
-    case 0:
-        return QString("Time");
-    case 1:
-        return QString("<>");
-    case 2:
-        return QString("Connection");
-    case 3:
-        return QString("Type");
-    case 4:
-        return QString("Length");
-    case 5:
-        return QString("Details");
-    case 6:
-        return QString("Comment");
-    }
+    if (section >= JOURNAL_COLUMNS)
+        return QVariant();
 
-    return QAbstractTableModel::headerData(section, orientation, role);
+    return headings[section];
 }
 
 QVariant Journal::data(const QModelIndex &index, int role) const
@@ -79,20 +83,20 @@ QVariant Journal::data(const QModelIndex &index, int role) const
 
     if (role == Qt::DisplayRole) {
         switch(index.column()) {
-        case 0:
+        case COLUMN_TIME:
             return entry->timestamp;
-        case 1:
+        case COLUMN_DIRECTION:
             return QString("<>");
-        case 2:
+        case COLUMN_CONNECTION:
             return entry->connectionId;
-        case 3:
+        case COLUMN_TYPE:
             if (entry->type == Connection::DataEvent)
                 return QString("Data");
             else
                 return QString("State");
-        case 4:
+        case COLUMN_LENGTH:
             return entry->content.size();
-        case 5:
+        case COLUMN_DETAILS:
             if (entry->type == Connection::DataEvent)
                 return entry->content.toHex();
             if (entry->type == Connection::StateChangeEvent) {
@@ -107,7 +111,7 @@ QVariant Journal::data(const QModelIndex &index, int role) const
                     return QString("Disconnected");
                 }
             }
-        case 6:
+        case COLUMN_COMMENT:
             return entry->comment;
         }
     }
