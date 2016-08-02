@@ -1,0 +1,14 @@
+<RCC>
+    <qresource prefix="/">
+        <file>icons/arrow_right.svg</file>
+        <file>icons/client2server.svg</file>
+        <file>icons/client2server_connected.svg</file>
+        <file>icons/client2server_disconnected.svg</file>
+        <file>icons/client2server_edited.svg</file>
+        <file>icons/server2client.svg</file>
+        <file>icons/server2client_connected.svg</file>
+        <file>icons/server2client_disconnected.svg</file>
+        <file>icons/server2client_edited.svg</file>
+        <file>icons/arrow_bidi.svg</file>
+    </qresource>
+</RCC>

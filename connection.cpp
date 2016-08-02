@@ -12,8 +12,7 @@ Connection::Connection(int id, QTcpSocket *sock, QObject *parent) : QObject(pare
 
 void Connection::connectToHost(const QString &hostname, int port)
 {
-    state = ConnectingState;
-    emit networkEvent(connectionId, StateChangeEvent, ClientToServerDirection, state, QByteArray());
+    emit connectionEvent(connectionId, ClientConnectionEvent, QByteArray());
 
     server = new QTcpSocket(this);
     server->connectToHost(hostname, port);
@@ -26,8 +25,7 @@ void Connection::connectToHost(const QString &hostname, int port)
 void Connection::connected()
 {
     qDebug() << "Connected to server";
-    state = ConnectedState;
-    emit networkEvent(connectionId, StateChangeEvent, ClientToServerDirection, state, QByteArray());
+    emit connectionEvent(connectionId, ServerConnectionEvent, QByteArray());
 
     connect(client, SIGNAL(readyRead()), this, SLOT(clientData()));
     connect(server, SIGNAL(readyRead()), this, SLOT(serverData()));
@@ -40,16 +38,14 @@ void Connection::connected()
 void Connection::disconnected()
 {
     qDebug() << "Disconnected from server";
-    state = DisconnectedState;
-    emit networkEvent(connectionId, StateChangeEvent, ServerToClientDirection, state, QByteArray());
+    emit connectionEvent(connectionId, ServerDisconnectionEvent, QByteArray());
+    client->close();
 }
 
 void Connection::clientDisconnected()
 {
     qDebug() << "Client has disconnected";
-    state = DisconnectingState;
-    emit networkEvent(connectionId, StateChangeEvent, ClientToServerDirection, state, QByteArray());
-
+    emit connectionEvent(connectionId, ClientDisconnectionEvent, QByteArray());
     server->close();
 }
 
@@ -59,7 +55,7 @@ void Connection::clientData()
         QByteArray data = client->read(qMin(client->bytesAvailable(), MAX_CHUNK_SIZE));
         qDebug() << ">>>" << data.size() << "bytes";
 
-        emit networkEvent(connectionId, DataEvent, ClientToServerDirection, state, data);
+        emit connectionEvent(connectionId, ClientDataEvent, data);
         server->write(data);
     }
 }
@@ -70,7 +66,7 @@ void Connection::serverData()
         QByteArray data = server->read(qMin(server->bytesAvailable(), MAX_CHUNK_SIZE));
         qDebug() << "<<<" << data.size() << "bytes";
 
-        emit networkEvent(connectionId, DataEvent, ServerToClientDirection, state, data);
+        emit connectionEvent(connectionId, ServerDataEvent, data);
         client->write(data);
     }
 }

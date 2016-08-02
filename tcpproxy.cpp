@@ -25,7 +25,7 @@ TcpProxy::TcpProxy(QObject *parent) : QObject(parent)
         d->server = 0;
         d->listenPort = 4433;
         d->targetHost = QString("xmelegance.org");
-        d->targetPort = 4433;
+        d->targetPort = 443;
 }
 
 Journal *TcpProxy::journal()
@@ -52,8 +52,8 @@ void TcpProxy::handleConnection()
 
         Connection *con = new Connection(d->nextId++, sock, this);
 
-        connect(con, SIGNAL(networkEvent(int, Connection::EventType, Connection::Direction, Connection::State, const QByteArray &)),
-                d->journal, SLOT(recordEvent(int, Connection::EventType, Connection::Direction, Connection::State, const QByteArray &)));
+        connect(con, SIGNAL(connectionEvent(int, Connection::EventType, const QByteArray &)),
+                d->journal, SLOT(connectionEvent(int, Connection::EventType, const QByteArray &)));
 
         con->connectToHost(d->targetHost, d->targetPort);
     }

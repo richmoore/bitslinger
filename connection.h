@@ -10,27 +10,18 @@ class Connection : public QObject
     Q_OBJECT
 public:
     enum EventType {
-        StateChangeEvent,
-        DataEvent
-    };
-
-    enum Direction {
-        ClientToServerDirection,
-        ServerToClientDirection,
-        NoDirection
-    };
-
-    enum State {
-        ConnectingState,
-        ConnectedState,
-        DisconnectingState,
-        DisconnectedState
+        ClientConnectionEvent,
+        ServerConnectionEvent,
+        ClientDataEvent,
+        ServerDataEvent,
+        ClientDisconnectionEvent,
+        ServerDisconnectionEvent
     };
 
     explicit Connection(int id, QTcpSocket *sock, QObject *parent = 0);
 
 signals:
-    void networkEvent(int id, Connection::EventType type, Connection::Direction dir, Connection::State newState, const QByteArray &content);
+    void connectionEvent(int id, Connection::EventType type, const QByteArray &content);
 
 public slots:
     void connectToHost(const QString &server, int port);
@@ -45,7 +36,6 @@ private:
     QTcpSocket *server;
     QTcpSocket *client;
     int connectionId;
-    State state;
 };
 
 #endif // CONNECTION_H

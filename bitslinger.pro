@@ -27,3 +27,6 @@ FORMS    += mainwindow.ui
 
 DISTFILES += \
     NOTES.txt
+
+RESOURCES += \
+    bitslinger.qrc

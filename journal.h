@@ -13,8 +13,6 @@ struct JournalEntry
     qint64 timestamp;
     int connectionId;
     Connection::EventType type;
-    Connection::Direction dir;
-    Connection::State newState;
     QByteArray content;
     QColor color;
     QString comment;
@@ -30,11 +28,11 @@ signals:
 
 public slots:
     //### Change this to a direct function call?
-    void recordEvent(int id, Connection::EventType type, Connection::Direction dir, Connection::State newState, const QByteArray &content);
+    void connectionEvent(int id, Connection::EventType type, const QByteArray &content);
 
-protected:
     int rowCount(const QModelIndex &parent) const;
     int columnCount(const QModelIndex &parent) const;
+protected:
     QVariant headerData(int section, Qt::Orientation orientation, int role) const;
     QVariant data(const QModelIndex &index, int role) const;
 
