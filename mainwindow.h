@@ -7,7 +7,10 @@ namespace Ui {
 class MainWindow;
 }
 
+class QModelIndex;
+
 class Journal;
+class JournalEntry;
 
 class MainWindow : public QMainWindow
 {
@@ -19,8 +22,16 @@ public:
 
     void setJournal(Journal *journal);
 
+public slots:
+    void showEntry(JournalEntry *entry);
+
+protected slots:
+    void entryActivated(const QModelIndex &index);
+
+
 private:
     Ui::MainWindow *ui;
+    Journal *journal;
 };
 
 #endif // MAINWINDOW_H

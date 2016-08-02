@@ -17,5 +17,18 @@ MainWindow::~MainWindow()
 
 void MainWindow::setJournal(Journal *journal)
 {
+    this->journal = journal;
     ui->journalView->setModel(journal);
+    connect(ui->journalView, SIGNAL(activated(QModelIndex)),
+            this, SLOT(entryActivated(QModelIndex)));
+}
+
+void MainWindow::entryActivated(const QModelIndex &index)
+{
+    showEntry(journal->entry(index));
+}
+
+void MainWindow::showEntry(JournalEntry *entry)
+{
+    ui->hexEdit->setData(entry->content);
 }

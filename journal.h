@@ -24,6 +24,8 @@ class Journal : public QAbstractTableModel
 public:
     explicit Journal(QObject *parent = 0);
 
+    JournalEntry *entry(const QModelIndex &index) { return events[index.row()]; }
+
 signals:
 
 public slots:
