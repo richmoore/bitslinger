@@ -8,6 +8,8 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    ui->hexView->setReadOnly(true);
+    ui->textView->setReadOnly(true);
 }
 
 MainWindow::~MainWindow()
@@ -30,5 +32,6 @@ void MainWindow::entryActivated(const QModelIndex &index)
 
 void MainWindow::showEntry(JournalEntry *entry)
 {
-    ui->hexEdit->setData(entry->content);
+    ui->hexView->setData(entry->content);
+    ui->textView->setPlainText(QString(entry->content));
 }

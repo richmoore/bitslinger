@@ -30,25 +30,25 @@
       </widget>
       <widget class="QTabWidget" name="tabWidget">
        <property name="currentIndex">
-        <number>0</number>
+        <number>1</number>
        </property>
-       <widget class="QWidget" name="hexView">
+       <widget class="QWidget" name="hexViewTab">
         <attribute name="title">
          <string>Hex View</string>
         </attribute>
         <layout class="QHBoxLayout" name="horizontalLayout_3">
          <item>
-          <widget class="QHexEdit" name="hexEdit" native="true"/>
+          <widget class="QHexEdit" name="hexView" native="true"/>
          </item>
         </layout>
        </widget>
-       <widget class="QWidget" name="textView">
+       <widget class="QWidget" name="textViewTab">
         <attribute name="title">
          <string>Text View</string>
         </attribute>
         <layout class="QHBoxLayout" name="horizontalLayout_2">
          <item>
-          <widget class="QPlainTextEdit" name="plainTextEdit"/>
+          <widget class="QPlainTextEdit" name="textView"/>
          </item>
         </layout>
        </widget>
