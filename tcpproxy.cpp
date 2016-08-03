@@ -40,7 +40,7 @@ void TcpProxy::listen()
 
     bool ok = d->server->listen(QHostAddress::Any, d->listenPort);
     if (!ok) {
-        qDebug() << "Unable to listen";
+        qDebug() << "Unable to listen" << d->server->errorString();
     }
 }
 
