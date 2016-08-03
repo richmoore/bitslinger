@@ -7,54 +7,42 @@
 
 #include "tcpproxy.h"
 
-struct TcpProxyPrivate
+TcpProxy::TcpProxy(const TcpProxyConfig &config, QObject *parent)
+    : QObject(parent)
 {
-    Journal *journal;
-    QString targetHost;
-    int targetPort;
-    int listenPort;
-    QTcpServer *server;
-    int nextId;
-};
-
-TcpProxy::TcpProxy(QObject *parent) : QObject(parent)
-{
-        d = new TcpProxyPrivate;
-        d->journal = new Journal(this);
-        d->nextId = 0;
-        d->server = 0;
-        d->listenPort = 4433;
-        d->targetHost = QString("xmelegance.org");
-        d->targetPort = 443;
+    m_journal = 0;
+    m_nextId = 0;
+    m_config = config;
 }
 
-Journal *TcpProxy::journal()
+void TcpProxy::setJournal(Journal *journal)
 {
-    return d->journal;
+    m_journal = journal;
 }
 
-void TcpProxy::listen()
+bool TcpProxy::listen()
 {
-    d->server = new QTcpServer(this);
-    connect(d->server, SIGNAL(newConnection()), this, SLOT(handleConnection()));
+    m_server = new QTcpServer(this);
+    connect(m_server, SIGNAL(newConnection()), this, SLOT(handleConnection()));
 
-    bool ok = d->server->listen(QHostAddress::Any, d->listenPort);
+    bool ok = m_server->listen(m_config.listenAddress, m_config.listenPort);
     if (!ok) {
-        qDebug() << "Unable to listen" << d->server->errorString();
+        qDebug() << "Unable to listen" << m_server->errorString();
     }
+    return ok;
 }
 
 void TcpProxy::handleConnection()
 {
-    while (d->server->hasPendingConnections()) {
+    while (m_server->hasPendingConnections()) {
         qDebug() << "New connection";
-        QTcpSocket *sock = d->server->nextPendingConnection();
+        QTcpSocket *sock = m_server->nextPendingConnection();
 
-        Connection *con = new Connection(d->nextId++, sock, this);
+        Connection *con = new Connection(m_nextId++, sock, this);
 
         connect(con, SIGNAL(connectionEvent(int, Connection::EventType, const QByteArray &)),
-                d->journal, SLOT(connectionEvent(int, Connection::EventType, const QByteArray &)));
+                m_journal, SLOT(connectionEvent(int, Connection::EventType, const QByteArray &)));
 
-        con->connectToHost(d->targetHost, d->targetPort);
+        con->connectToHost(m_config.targetHost, m_config.targetPort);
     }
 }

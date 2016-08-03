@@ -24,7 +24,7 @@ class Journal : public QAbstractTableModel
 public:
     explicit Journal(QObject *parent = 0);
 
-    JournalEntry *entry(const QModelIndex &index) { return events[index.row()]; }
+    JournalEntry *entry(const QModelIndex &index) { return m_events[index.row()]; }
 
 signals:
 
@@ -39,8 +39,8 @@ protected:
     QVariant data(const QModelIndex &index, int role) const;
 
 private:
-    qint64 journalStartTime;
-    QList<JournalEntry *> events;
+    qint64 m_journalStartTime;
+    QList<JournalEntry *> m_events;
 };
 
 #endif // JOURNAL_H

@@ -33,9 +33,9 @@ public slots:
     void clientData();
     void serverData();
 private:
-    QTcpSocket *server;
-    QTcpSocket *client;
-    int connectionId;
+    QTcpSocket *m_server;
+    QTcpSocket *m_client;
+    int m_connectionId;
 };
 
 #endif // CONNECTION_H

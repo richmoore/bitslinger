@@ -1,7 +1,8 @@
-#include "mainwindow.h"
 #include <QApplication>
+#include <QHostAddress>
 
-#include "tcpproxy.h"
+#include "bitslinger.h"
+#include "mainwindow.h"
 
 int main(int argc, char *argv[])
 {
@@ -9,11 +10,9 @@ int main(int argc, char *argv[])
     MainWindow w;
     w.show();
 
-    TcpProxy proxy;
-
-    w.setJournal(proxy.journal());
-
-    proxy.listen();
+    BitSlinger slinger;
+    w.setJournal(slinger.journal());
+    slinger.addProxy(QHostAddress::LocalHost, 4433, QString("xmelegance.org"), 443);
 
     return a.exec();
 }

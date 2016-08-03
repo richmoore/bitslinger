@@ -32,26 +32,26 @@ const int JOURNAL_COLUMNS = 8;
 
 Journal::Journal(QObject *parent) : QAbstractTableModel(parent)
 {
-    journalStartTime = QDateTime::currentMSecsSinceEpoch();
+    m_journalStartTime = QDateTime::currentMSecsSinceEpoch();
 }
 
 void Journal::connectionEvent(int id, Connection::EventType type, const QByteArray &content)
 {
     JournalEntry *entry = new JournalEntry;
-    entry->timestamp = QDateTime::currentMSecsSinceEpoch() - journalStartTime;
+    entry->timestamp = QDateTime::currentMSecsSinceEpoch() - m_journalStartTime;
     entry->connectionId = id;
     entry->type = type;
     entry->content = content;
 
-    beginInsertRows(QModelIndex(), events.size(), events.size());
-    events.append(entry);
+    beginInsertRows(QModelIndex(), m_events.size(), m_events.size());
+    m_events.append(entry);
     endInsertRows();
 }
 
 int Journal::rowCount(const QModelIndex &parent) const
 {
     Q_UNUSED(parent);
-    return events.size();
+    return m_events.size();
 }
 
 int Journal::columnCount(const QModelIndex &parent) const
@@ -86,10 +86,10 @@ QVariant Journal::data(const QModelIndex &index, int role) const
     if (!index.isValid())
         return QVariant();
 
-    if(index.row() >= events.size() || index.row() < 0)
+    if(index.row() >= m_events.size() || index.row() < 0)
         return QVariant();
 
-    JournalEntry *entry = events[index.row()];
+    JournalEntry *entry = m_events[index.row()];
 
     if (role == Qt::DisplayRole) {
         switch(index.column()) {

@@ -30,8 +30,8 @@ protected slots:
 
 
 private:
-    Ui::MainWindow *ui;
-    Journal *journal;
+    Ui::MainWindow *m_ui;
+    Journal *m_journal;
 };
 
 #endif // MAINWINDOW_H

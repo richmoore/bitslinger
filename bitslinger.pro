@@ -19,7 +19,8 @@ SOURCES += main.cpp\
     journal.cpp \
     qhexedit2/chunks.cpp \
     qhexedit2/commands.cpp \
-    qhexedit2/qhexedit.cpp
+    qhexedit2/qhexedit.cpp \
+    bitslinger.cpp
 
 HEADERS  += mainwindow.h \
     tcpproxy.h \
@@ -27,7 +28,8 @@ HEADERS  += mainwindow.h \
     journal.h \
     qhexedit2/chunks.h \
     qhexedit2/commands.h \
-    qhexedit2/qhexedit.h
+    qhexedit2/qhexedit.h \
+    bitslinger.h
 
 FORMS    += mainwindow.ui \
     mockups/mainview_mockup.ui
