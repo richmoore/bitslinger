@@ -19,15 +19,9 @@ MainWindow::~MainWindow()
 
 void MainWindow::setJournal(Journal *journal)
 {
-    m_journal = journal;
-    m_ui->journalView->setModel(journal);
-    connect(m_ui->journalView, SIGNAL(activated(QModelIndex)),
-            this, SLOT(entryActivated(QModelIndex)));
-}
-
-void MainWindow::entryActivated(const QModelIndex &index)
-{
-    showEntry(m_journal->entry(index));
+    m_ui->journalView->setJournal(journal);
+    connect(m_ui->journalView, SIGNAL(entryActivated(JournalEntry *)),
+            this, SLOT(showEntry(JournalEntry*)));
 }
 
 void MainWindow::showEntry(JournalEntry *entry)

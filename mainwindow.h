@@ -25,13 +25,8 @@ public:
 public slots:
     void showEntry(JournalEntry *entry);
 
-protected slots:
-    void entryActivated(const QModelIndex &index);
-
-
 private:
     Ui::MainWindow *m_ui;
-    Journal *m_journal;
 };
 
 #endif // MAINWINDOW_H
