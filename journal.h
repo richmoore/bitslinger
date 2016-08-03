@@ -29,14 +29,16 @@ public:
     int addConnection(Connection *con);
     void recordEvent(int connectionId, Connection::EventType type, const QByteArray &content);
 
+    QVariant headerData(int section, Qt::Orientation orientation, int role) const;
+    QVariant data(const QModelIndex &index, int role) const;
+
 signals:
 
 public slots:
     int rowCount(const QModelIndex &parent) const;
     int columnCount(const QModelIndex &parent) const;
+
 protected:
-    QVariant headerData(int section, Qt::Orientation orientation, int role) const;
-    QVariant data(const QModelIndex &index, int role) const;
 
 private:
     int m_nextConnectionId;
