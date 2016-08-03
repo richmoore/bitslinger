@@ -37,7 +37,6 @@ private:
     Journal *m_journal;
     TcpProxyConfig m_config;
     QTcpServer *m_server;
-    int m_nextId;
 };
 
 #endif // TCPPROXY_H

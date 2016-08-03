@@ -5,6 +5,8 @@
 
 class QTcpSocket;
 
+class Journal;
+
 class Connection : public QObject
 {
     Q_OBJECT
@@ -18,7 +20,10 @@ public:
         ServerDisconnectionEvent
     };
 
-    explicit Connection(int id, QTcpSocket *sock, QObject *parent = 0);
+    explicit Connection(QTcpSocket *sock, QObject *parent = 0);
+
+    void setId(int id) { m_connectionId = id; }
+    void setJournal(Journal *journal) { m_journal = journal; }
 
 signals:
     void connectionEvent(int id, Connection::EventType type, const QByteArray &content);
@@ -36,6 +41,7 @@ private:
     QTcpSocket *m_server;
     QTcpSocket *m_client;
     int m_connectionId;
+    Journal *m_journal;
 };
 
 #endif // CONNECTION_H

@@ -30,12 +30,19 @@ QString headings[] = {
 
 const int JOURNAL_COLUMNS = 8;
 
-Journal::Journal(QObject *parent) : QAbstractTableModel(parent)
+Journal::Journal(QObject *parent)
+    : QAbstractTableModel(parent),
+      m_nextConnectionId(0),
+      m_journalStartTime(QDateTime::currentMSecsSinceEpoch())
 {
-    m_journalStartTime = QDateTime::currentMSecsSinceEpoch();
 }
 
-void Journal::connectionEvent(int id, Connection::EventType type, const QByteArray &content)
+int Journal::addConnection(Connection *con)
+{
+    return m_nextConnectionId++;
+}
+
+void Journal::recordEvent(int id, Connection::EventType type, const QByteArray &content)
 {
     JournalEntry *entry = new JournalEntry;
     entry->timestamp = QDateTime::currentMSecsSinceEpoch() - m_journalStartTime;

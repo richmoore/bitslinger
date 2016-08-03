@@ -8,11 +8,10 @@
 #include "tcpproxy.h"
 
 TcpProxy::TcpProxy(const TcpProxyConfig &config, QObject *parent)
-    : QObject(parent)
+    : QObject(parent),
+      m_journal(0),
+      m_config(config)
 {
-    m_journal = 0;
-    m_nextId = 0;
-    m_config = config;
 }
 
 void TcpProxy::setJournal(Journal *journal)
@@ -38,10 +37,9 @@ void TcpProxy::handleConnection()
         qDebug() << "New connection";
         QTcpSocket *sock = m_server->nextPendingConnection();
 
-        Connection *con = new Connection(m_nextId++, sock, this);
-
-        connect(con, SIGNAL(connectionEvent(int, Connection::EventType, const QByteArray &)),
-                m_journal, SLOT(connectionEvent(int, Connection::EventType, const QByteArray &)));
+        Connection *con = new Connection(sock, this);
+        con->setJournal(m_journal);
+        con->setId(m_journal->addConnection(con));
 
         con->connectToHost(m_config.targetHost, m_config.targetPort);
     }

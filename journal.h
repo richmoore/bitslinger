@@ -26,12 +26,12 @@ public:
 
     JournalEntry *entry(const QModelIndex &index) { return m_events[index.row()]; }
 
+    int addConnection(Connection *con);
+    void recordEvent(int connectionId, Connection::EventType type, const QByteArray &content);
+
 signals:
 
 public slots:
-    //### Change this to a direct function call?
-    void connectionEvent(int id, Connection::EventType type, const QByteArray &content);
-
     int rowCount(const QModelIndex &parent) const;
     int columnCount(const QModelIndex &parent) const;
 protected:
@@ -39,6 +39,7 @@ protected:
     QVariant data(const QModelIndex &index, int role) const;
 
 private:
+    int m_nextConnectionId;
     qint64 m_journalStartTime;
     QList<JournalEntry *> m_events;
 };

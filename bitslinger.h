@@ -8,6 +8,8 @@ class QHostAddress;
 class TcpProxy;
 class Journal;
 
+typedef QList<TcpProxy *> TcpProxyList;
+
 class BitSlinger : public QObject
 {
     Q_OBJECT
@@ -22,7 +24,7 @@ signals:
 
 public slots:
 private:
-    QList<TcpProxy *> m_proxies;
+    TcpProxyList m_proxies;
     Journal *m_journal;
 };
 
