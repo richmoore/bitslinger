@@ -26,7 +26,6 @@ public:
     void setJournal(Journal *journal) { m_journal = journal; }
 
 signals:
-    void connectionEvent(int id, Connection::EventType type, const QByteArray &content);
 
 public slots:
     void connectToHost(const QString &server, int port);
