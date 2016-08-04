@@ -20,7 +20,7 @@ enum Columns {
 QString headings[] = {
     "Id",
     "Time",
-    "<>",
+    "Direction",
     "Connection",
     "Type",
     "Length",
@@ -72,16 +72,17 @@ QVariant Journal::headerData(int section, Qt::Orientation orientation, int role)
     if (orientation != Qt::Horizontal)
         return QVariant();
 
-    if (role != Qt::DisplayRole && role != Qt::DecorationRole)
+    if (role != Qt::DisplayRole && role != Qt::DecorationRole && role != ContextMenuRole)
         return QVariant();
 
     if (section >= JOURNAL_COLUMNS)
         return QVariant();
 
     if (section == COLUMN_DIRECTION) {
-        if (role == Qt::DecorationRole)
+        if (role == Qt::DecorationRole) {
             return QIcon(":icons/arrow_bidi.svg");
-        else
+        }
+        if (role == Qt::DisplayRole)
             return QVariant();
     }
 

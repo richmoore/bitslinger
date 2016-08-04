@@ -19,6 +19,11 @@ void TcpProxy::setJournal(Journal *journal)
     m_journal = journal;
 }
 
+void TcpProxy::setUpstreamProxy(const QNetworkProxy &upstream)
+{
+    m_upstream = upstream;
+}
+
 bool TcpProxy::listen()
 {
     m_server = new QTcpServer(this);
@@ -38,6 +43,7 @@ void TcpProxy::handleConnection()
         QTcpSocket *sock = m_server->nextPendingConnection();
 
         Connection *con = new Connection(sock, this);
+        con->setUpstreamProxy(m_upstream);
         con->setJournal(m_journal);
         con->setId(m_journal->addConnection(con));
 

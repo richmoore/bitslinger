@@ -2,6 +2,7 @@
 #define CONNECTION_H
 
 #include <QObject>
+#include <QNetworkProxy>
 
 class QTcpSocket;
 
@@ -24,6 +25,7 @@ public:
 
     void setId(int id) { m_connectionId = id; }
     void setJournal(Journal *journal) { m_journal = journal; }
+    void setUpstreamProxy(const QNetworkProxy &upstream);
 
 signals:
 
@@ -41,6 +43,7 @@ private:
     QTcpSocket *m_client;
     int m_connectionId;
     Journal *m_journal;
+    QNetworkProxy m_upstream;
 };
 
 #endif // CONNECTION_H

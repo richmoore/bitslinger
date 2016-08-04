@@ -22,6 +22,10 @@ class Journal : public QAbstractTableModel
 {
     Q_OBJECT
 public:
+    enum CustomRoles {
+        ContextMenuRole = Qt::UserRole
+    };
+
     explicit Journal(QObject *parent = 0);
 
     JournalEntry *entry(const QModelIndex &index) { return m_events[index.row()]; }

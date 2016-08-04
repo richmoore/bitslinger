@@ -3,8 +3,10 @@
 
 #include <QObject>
 #include <QHostAddress>
+#include <QNetworkProxy>
 
 class QTcpServer;
+
 
 class Journal;
 
@@ -23,6 +25,7 @@ public:
     explicit TcpProxy(const TcpProxyConfig &config, QObject *parent = 0);
 
     void setJournal(Journal *journal);
+    void setUpstreamProxy(const QNetworkProxy &upstream);
 
 signals:
     void connectionReceived();
@@ -37,6 +40,7 @@ private:
     Journal *m_journal;
     TcpProxyConfig m_config;
     QTcpServer *m_server;
+    QNetworkProxy m_upstream;
 };
 
 #endif // TCPPROXY_H

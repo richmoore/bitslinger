@@ -15,11 +15,17 @@ Connection::Connection(QTcpSocket *sock, QObject *parent)
 {
 }
 
+void Connection::setUpstreamProxy(const QNetworkProxy &upstream)
+{
+    m_upstream = upstream;
+}
+
 void Connection::connectToHost(const QString &hostname, int port)
 {
     m_journal->recordEvent(m_connectionId, ClientConnectionEvent, QByteArray());
 
     m_server = new QTcpSocket(this);
+    m_server->setProxy(m_upstream);
     m_server->connectToHost(hostname, port);
 
     connect(m_client, SIGNAL(disconnected()), this, SLOT(clientDisconnected()));
