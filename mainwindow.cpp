@@ -1,4 +1,4 @@
-#include "journal.h"
+#include "bitslinger.h"
 
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
@@ -17,9 +17,9 @@ MainWindow::~MainWindow()
     delete m_ui;
 }
 
-void MainWindow::setJournal(Journal *journal)
+void MainWindow::setBitSlinger(BitSlinger *slinger)
 {
-    m_ui->journalView->setJournal(journal);
+    m_ui->journalView->setJournal(slinger->journal());
     connect(m_ui->journalView, SIGNAL(entryActivated(JournalEntry *)),
             this, SLOT(showEntry(JournalEntry*)));
 }

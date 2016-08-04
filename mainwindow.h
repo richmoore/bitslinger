@@ -9,7 +9,7 @@ class MainWindow;
 
 class QModelIndex;
 
-class Journal;
+class BitSlinger;
 class JournalEntry;
 
 class MainWindow : public QMainWindow
@@ -20,7 +20,7 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
 
-    void setJournal(Journal *journal);
+    void setBitSlinger(BitSlinger *slinger);
 
 public slots:
     void showEntry(JournalEntry *entry);

@@ -11,7 +11,7 @@ int main(int argc, char *argv[])
     w.show();
 
     BitSlinger slinger;
-    w.setJournal(slinger.journal());
+    w.setBitSlinger(&slinger);
     slinger.addProxy(QHostAddress::LocalHost, 4433, QString("xmelegance.org"), 443);
 
     return a.exec();
