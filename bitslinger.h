@@ -2,6 +2,7 @@
 #define BITSLINGER_H
 
 #include <QObject>
+#include <QNetworkProxy>
 
 class QHostAddress;
 
@@ -17,6 +18,7 @@ public:
     explicit BitSlinger(QObject *parent = 0);
 
     Journal *journal() const { return m_journal; }
+    void setUpstreamProxy(const QNetworkProxy &upstream);
 
     bool addProxy(const QHostAddress &listenAddress, int listenPort, const QString &server, int serverPort);
 
@@ -26,6 +28,7 @@ public slots:
 private:
     TcpProxyList m_proxies;
     Journal *m_journal;
+    QNetworkProxy m_upstream;
 };
 
 #endif // BITSLINGER_H
