@@ -44,8 +44,7 @@ void TcpProxy::handleConnection()
 
         Connection *con = new Connection(sock, this);
         con->setUpstreamProxy(m_upstream);
-        con->setJournal(m_journal);
-        con->setId(m_journal->addConnection(con));
+        m_journal->addConnection(con);
 
         con->connectToHost(m_config.targetHost, m_config.targetPort);
     }

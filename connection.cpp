@@ -22,7 +22,7 @@ void Connection::setUpstreamProxy(const QNetworkProxy &upstream)
 
 void Connection::connectToHost(const QString &hostname, int port)
 {
-    m_journal->recordEvent(m_connectionId, ClientConnectionEvent, QByteArray());
+    m_journal->recordEvent(this, ClientConnectionEvent, QByteArray());
 
     m_server = new QTcpSocket(this);
     m_server->setProxy(m_upstream);
@@ -36,7 +36,7 @@ void Connection::connectToHost(const QString &hostname, int port)
 void Connection::connected()
 {
     qDebug() << "Connected to server";
-    m_journal->recordEvent(m_connectionId, ServerConnectionEvent, QByteArray());
+    m_journal->recordEvent(this, ServerConnectionEvent, QByteArray());
 
     connect(m_client, SIGNAL(readyRead()), this, SLOT(clientData()));
     connect(m_server, SIGNAL(readyRead()), this, SLOT(serverData()));
@@ -49,14 +49,14 @@ void Connection::connected()
 void Connection::disconnected()
 {
     qDebug() << "Disconnected from server";
-    m_journal->recordEvent(m_connectionId, ServerDisconnectionEvent, QByteArray());
+    m_journal->recordEvent(this, ServerDisconnectionEvent, QByteArray());
     m_client->close();
 }
 
 void Connection::clientDisconnected()
 {
     qDebug() << "Client has disconnected";
-    m_journal->recordEvent(m_connectionId, ClientDisconnectionEvent, QByteArray());
+    m_journal->recordEvent(this, ClientDisconnectionEvent, QByteArray());
     m_server->close();
 }
 
@@ -66,7 +66,7 @@ void Connection::clientData()
         QByteArray data = m_client->read(qMin(m_client->bytesAvailable(), MAX_CHUNK_SIZE));
         qDebug() << ">>>" << data.size() << "bytes";
 
-        m_journal->recordEvent(m_connectionId, ClientDataEvent, data);
+        m_journal->recordEvent(this, ClientDataEvent, data);
         m_server->write(data);
     }
 }
@@ -77,7 +77,7 @@ void Connection::serverData()
         QByteArray data = m_server->read(qMin(m_server->bytesAvailable(), MAX_CHUNK_SIZE));
         qDebug() << "<<<" << data.size() << "bytes";
 
-        m_journal->recordEvent(m_connectionId, ServerDataEvent, data);
+        m_journal->recordEvent(this, ServerDataEvent, data);
         m_client->write(data);
     }
 }

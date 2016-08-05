@@ -7,8 +7,17 @@
 
 #include "connection.h"
 
+struct JournalConnection
+{
+    QHostAddress clientAddress;
+    QHostAddress listenAddress;
+    int listenPort;
+    QHostAddress targetAddress;
+    int targetPort;
+};
+
 //### We need to be able to lookup the host etc. too
-struct JournalEntry
+struct JournalEvent
 {
     qint64 timestamp;
     int connectionId;
@@ -28,10 +37,10 @@ public:
 
     explicit Journal(QObject *parent = 0);
 
-    JournalEntry *entry(const QModelIndex &index) { return m_events[index.row()]; }
+    JournalEvent *entry(const QModelIndex &index) { return m_events[index.row()]; }
 
-    int addConnection(Connection *con);
-    void recordEvent(int connectionId, Connection::EventType type, const QByteArray &content);
+    void addConnection(Connection *con);
+    void recordEvent(Connection *con, Connection::EventType type, const QByteArray &content);
 
     QVariant headerData(int section, Qt::Orientation orientation, int role) const;
     QVariant data(const QModelIndex &index, int role) const;
@@ -47,7 +56,8 @@ protected:
 private:
     int m_nextConnectionId;
     qint64 m_journalStartTime;
-    QList<JournalEntry *> m_events;
+    QList<JournalConnection *> m_connections;
+    QList<JournalEvent *> m_events;
 };
 
 #endif // JOURNAL_H

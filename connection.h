@@ -23,10 +23,13 @@ public:
 
     explicit Connection(QTcpSocket *sock, QObject *parent = 0);
 
+    int id() const { return m_connectionId; }
     void setId(int id) { m_connectionId = id; }
     void setJournal(Journal *journal) { m_journal = journal; }
-    void setUpstreamProxy(const QNetworkProxy &upstream);
 
+    void setUpstreamProxy(const QNetworkProxy &upstream);
+    QTcpSocket *serverSocket() const { return m_server; }
+    QTcpSocket *clientSocket() const { return m_client; }
 signals:
 
 public slots:

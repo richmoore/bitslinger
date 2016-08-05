@@ -14,7 +14,7 @@ public:
     void setJournal(Journal *journal);
 
 signals:
-    void entryActivated(JournalEntry *entry);
+    void entryActivated(JournalEvent *entry);
 
 protected slots:
     void rowActivated(const QModelIndex &index);

@@ -20,11 +20,11 @@ MainWindow::~MainWindow()
 void MainWindow::setBitSlinger(BitSlinger *slinger)
 {
     m_ui->journalView->setJournal(slinger->journal());
-    connect(m_ui->journalView, SIGNAL(entryActivated(JournalEntry *)),
-            this, SLOT(showEntry(JournalEntry*)));
+    connect(m_ui->journalView, SIGNAL(entryActivated(JournalEvent *)),
+            this, SLOT(showEntry(JournalEvent*)));
 }
 
-void MainWindow::showEntry(JournalEntry *entry)
+void MainWindow::showEntry(JournalEvent *entry)
 {
     m_ui->hexView->setData(entry->content);
     m_ui->textView->setPlainText(QString(entry->content));

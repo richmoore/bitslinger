@@ -10,7 +10,7 @@ class MainWindow;
 class QModelIndex;
 
 class BitSlinger;
-class JournalEntry;
+class JournalEvent;
 
 class MainWindow : public QMainWindow
 {
@@ -23,7 +23,7 @@ public:
     void setBitSlinger(BitSlinger *slinger);
 
 public slots:
-    void showEntry(JournalEntry *entry);
+    void showEntry(JournalEvent *entry);
 
 private:
     Ui::MainWindow *m_ui;

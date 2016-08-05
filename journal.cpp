@@ -1,6 +1,7 @@
 #include <QDateTime>
 #include <QDebug>
 #include <QIcon>
+#include <QTcpSocket>
 
 #include "connection.h"
 
@@ -37,16 +38,31 @@ Journal::Journal(QObject *parent)
 {
 }
 
-int Journal::addConnection(Connection *con)
+void Journal::addConnection(Connection *con)
 {
-    return m_nextConnectionId++;
+    con->setJournal(this);
+    con->setId(m_nextConnectionId++);
+
+    // We can't record the server end yet as we haven't established the upstream connection
+    JournalConnection *jcon = new JournalConnection;
+    jcon->clientAddress = con->clientSocket()->peerAddress();
+    jcon->listenAddress = con->clientSocket()->localAddress();
+    jcon->listenPort = con->clientSocket()->localPort();
+
+    m_connections.append(jcon);
 }
 
-void Journal::recordEvent(int id, Connection::EventType type, const QByteArray &content)
+void Journal::recordEvent(Connection *con, Connection::EventType type, const QByteArray &content)
 {
-    JournalEntry *entry = new JournalEntry;
+    if (type == Connection::ServerConnectionEvent) {
+        JournalConnection *jcon = m_connections[con->id()];
+        jcon->targetAddress = con->serverSocket()->peerAddress();
+        jcon->targetPort = con->serverSocket()->peerPort();
+    }
+
+    JournalEvent *entry = new JournalEvent;
     entry->timestamp = QDateTime::currentMSecsSinceEpoch() - m_journalStartTime;
-    entry->connectionId = id;
+    entry->connectionId = con->id();
     entry->type = type;
     entry->content = content;
 
@@ -97,7 +113,7 @@ QVariant Journal::data(const QModelIndex &index, int role) const
     if(index.row() >= m_events.size() || index.row() < 0)
         return QVariant();
 
-    JournalEntry *entry = m_events[index.row()];
+    JournalEvent *entry = m_events[index.row()];
 
     if (role == Qt::DisplayRole) {
         switch(index.column()) {
