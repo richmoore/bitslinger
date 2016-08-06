@@ -1,5 +1,5 @@
-#ifndef TCPPROXY_H
-#define TCPPROXY_H
+#ifndef LISTENER_H
+#define LISTENER_H
 
 #include <QObject>
 #include <QHostAddress>
@@ -10,7 +10,7 @@ class QTcpServer;
 
 class Journal;
 
-struct TcpProxyConfig
+struct ListenerConfig
 {
     QHostAddress listenAddress;
     int listenPort;
@@ -18,11 +18,11 @@ struct TcpProxyConfig
     int targetPort;
 };
 
-class TcpProxy : public QObject
+class Listener : public QObject
 {
     Q_OBJECT
 public:
-    explicit TcpProxy(const TcpProxyConfig &config, QObject *parent = 0);
+    explicit Listener(const ListenerConfig &config, QObject *parent = 0);
 
     void setJournal(Journal *journal);
     void setUpstreamProxy(const QNetworkProxy &upstream);
@@ -38,9 +38,9 @@ private slots:
 
 private:
     Journal *m_journal;
-    TcpProxyConfig m_config;
+    ListenerConfig m_config;
     QTcpServer *m_server;
     QNetworkProxy m_upstream;
 };
 
-#endif // TCPPROXY_H
+#endif // LISTENER_H

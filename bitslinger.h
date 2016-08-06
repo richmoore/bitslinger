@@ -6,10 +6,10 @@
 
 class QHostAddress;
 
-class TcpProxy;
+class Listener;
 class Journal;
 
-typedef QList<TcpProxy *> TcpProxyList;
+typedef QList<Listener *> TcpProxyList;
 
 class BitSlinger : public QObject
 {

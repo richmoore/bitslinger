@@ -1,7 +1,7 @@
 #include <QHostAddress>
 
 #include "journal.h"
-#include "tcpproxy.h"
+#include "listener.h"
 
 #include "bitslinger.h"
 
@@ -17,13 +17,13 @@ void BitSlinger::setUpstreamProxy(const QNetworkProxy &upstream)
 
 bool BitSlinger::addProxy(const QHostAddress &listenAddress, int listenPort, const QString &server, int serverPort)
 {
-    TcpProxyConfig conf;
+    ListenerConfig conf;
     conf.listenAddress = listenAddress;
     conf.listenPort = listenPort;
     conf.targetHost = server;
     conf.targetPort = serverPort;
 
-    TcpProxy *proxy = new TcpProxy(conf, this);
+    Listener *proxy = new Listener(conf, this);
     proxy->setUpstreamProxy(m_upstream);
     proxy->setJournal(m_journal);
     m_proxies.append(proxy);

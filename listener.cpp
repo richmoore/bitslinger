@@ -5,26 +5,26 @@
 #include "connection.h"
 #include "journal.h"
 
-#include "tcpproxy.h"
+#include "listener.h"
 
-TcpProxy::TcpProxy(const TcpProxyConfig &config, QObject *parent)
+Listener::Listener(const ListenerConfig &config, QObject *parent)
     : QObject(parent),
       m_journal(0),
       m_config(config)
 {
 }
 
-void TcpProxy::setJournal(Journal *journal)
+void Listener::setJournal(Journal *journal)
 {
     m_journal = journal;
 }
 
-void TcpProxy::setUpstreamProxy(const QNetworkProxy &upstream)
+void Listener::setUpstreamProxy(const QNetworkProxy &upstream)
 {
     m_upstream = upstream;
 }
 
-bool TcpProxy::listen()
+bool Listener::listen()
 {
     m_server = new QTcpServer(this);
     connect(m_server, SIGNAL(newConnection()), this, SLOT(handleConnection()));
@@ -36,7 +36,7 @@ bool TcpProxy::listen()
     return ok;
 }
 
-void TcpProxy::handleConnection()
+void Listener::handleConnection()
 {
     while (m_server->hasPendingConnections()) {
         qDebug() << "New connection";
