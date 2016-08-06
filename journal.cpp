@@ -183,3 +183,54 @@ QVariant Journal::data(const QModelIndex &index, int role) const
 
     return QVariant();
 }
+
+
+QDataStream &operator<<(QDataStream &stream, const JournalConnection &connection)
+{
+    stream << connection.clientAddress;
+    stream << connection.listenAddress;
+    stream << connection.listenPort;
+    stream << connection.targetAddress;
+    stream << connection.targetPort;
+
+    return stream;
+}
+
+QDataStream &operator>>(QDataStream &stream, JournalConnection &connection)
+{
+    stream >> connection.clientAddress;
+    stream >> connection.listenAddress;
+    stream >> connection.listenPort;
+    stream >> connection.targetAddress;
+    stream >> connection.targetPort;
+
+    return stream;
+}
+
+QDataStream &operator<<(QDataStream &stream, const JournalEvent &event)
+{
+    stream << event.timestamp;
+    stream << event.connectionId;
+    stream << quint16(event.type);
+    stream << qCompress(event.content);
+    stream << event.color;
+    stream << event.comment;
+
+    return stream;
+}
+
+QDataStream &operator>>(QDataStream &stream, JournalEvent &event)
+{
+    stream >> event.timestamp;
+    stream >> event.connectionId;
+    quint16 eventType;
+    stream >> eventType;
+    event.type = Connection::EventType(eventType);
+    QByteArray compressed;
+    stream >> compressed;
+    event.content = qUncompress(compressed);
+    stream >> event.color;
+    stream >> event.comment;
+
+    return stream;
+}

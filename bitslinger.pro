@@ -49,7 +49,8 @@ DISTFILES += \
     icons/client2server_edited.png \
     icons/server2client.png \
     icons/server2client_disconnected.png \
-    icons/server2client_edited.png
+    icons/server2client_edited.png \
+    state_format.txt
 
 RESOURCES += \
     bitslinger.qrc

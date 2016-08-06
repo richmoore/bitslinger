@@ -1,0 +1,28 @@
+BitSlinger State Format
+=======================
+
+Saves:
+ * Journal State
+ * Listener State
+ * UI State
+
+Header
+======
+
+ * Magic        0xB175BABE
+ * Version      0x0001
+ * Flags
+   * HasJournal
+   * HasListeners
+   * HasUI
+
+Journal
+=======
+
+ * Connections[]
+ * Entries[]
+
+Listeners
+=========
+
+ * Listeners[]

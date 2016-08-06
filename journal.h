@@ -4,6 +4,7 @@
 #include <QAbstractTableModel>
 #include <QList>
 #include <QColor>
+#include <QDataStream>
 
 #include "connection.h"
 
@@ -16,7 +17,9 @@ struct JournalConnection
     int targetPort;
 };
 
-//### We need to be able to lookup the host etc. too
+QDataStream &operator<<(QDataStream &stream, const JournalConnection &connection);
+QDataStream &operator>>(QDataStream & in, JournalConnection &connection);
+
 struct JournalEvent
 {
     qint64 timestamp;
@@ -26,6 +29,9 @@ struct JournalEvent
     QColor color;
     QString comment;
 };
+
+QDataStream &operator<<(QDataStream &stream, const JournalEvent &event);
+QDataStream &operator>>(QDataStream & in, JournalEvent &event);
 
 class Journal : public QAbstractTableModel
 {
