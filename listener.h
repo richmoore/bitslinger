@@ -24,6 +24,7 @@ class Listener : public QObject
 public:
     explicit Listener(const ListenerConfig &config, QObject *parent = 0);
 
+    ListenerConfig config() const { return m_config; }
     void setJournal(Journal *journal);
     void setUpstreamProxy(const QNetworkProxy &upstream);
 

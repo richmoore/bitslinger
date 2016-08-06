@@ -99,6 +99,7 @@
    <attribute name="toolBarBreak">
     <bool>false</bool>
    </attribute>
+   <addaction name="action_Listeners"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
   <action name="actionExit">

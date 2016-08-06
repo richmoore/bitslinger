@@ -17,6 +17,7 @@ class BitSlinger : public QObject
 public:
     explicit BitSlinger(QObject *parent = 0);
 
+    TcpProxyList proxies() const { return m_proxies; }
     Journal *journal() const { return m_journal; }
     void setUpstreamProxy(const QNetworkProxy &upstream);
 

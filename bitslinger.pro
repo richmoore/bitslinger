@@ -20,7 +20,8 @@ SOURCES += main.cpp\
     qhexedit2/qhexedit.cpp \
     bitslinger.cpp \
     journalview.cpp \
-    listener.cpp
+    listener.cpp \
+    listenerdialog.cpp
 
 HEADERS  += mainwindow.h \
     connection.h \
@@ -30,10 +31,12 @@ HEADERS  += mainwindow.h \
     qhexedit2/qhexedit.h \
     bitslinger.h \
     journalview.h \
-    listener.h
+    listener.h \
+    listenerdialog.h
 
 FORMS    += mainwindow.ui \
-    mockups/mainview_mockup.ui
+    mockups/mainview_mockup.ui \
+    listenerdialog.ui
 
 DISTFILES += \
     NOTES.txt \

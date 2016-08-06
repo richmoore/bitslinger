@@ -24,9 +24,11 @@ public:
 
 public slots:
     void showEntry(JournalEvent *entry);
+    void showListenerDialog();
 
 private:
     Ui::MainWindow *m_ui;
+    BitSlinger *m_slinger;
 };
 
 #endif // MAINWINDOW_H

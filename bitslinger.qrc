@@ -10,5 +10,7 @@
         <file>icons/server2client_disconnected.svg</file>
         <file>icons/server2client_edited.svg</file>
         <file>icons/arrow_bidi.svg</file>
+        <file>icons/stethoscope.svg</file>
+        <file>icons/soundwave.svg</file>
     </qresource>
 </RCC>
