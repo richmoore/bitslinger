@@ -19,6 +19,13 @@ public:
 
     void setBitSlinger(BitSlinger *slinger);
 
+public slots:
+    void addListener();
+    void editListener();
+    void removeListener();
+
+
+    void refreshList();
 private:
     Ui::ListenerDialog *ui;
     BitSlinger *m_slinger;

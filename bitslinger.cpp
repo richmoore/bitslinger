@@ -15,18 +15,22 @@ void BitSlinger::setUpstreamProxy(const QNetworkProxy &upstream)
     m_upstream = upstream;
 }
 
-bool BitSlinger::addProxy(const QHostAddress &listenAddress, int listenPort, const QString &server, int serverPort)
+void BitSlinger::addListener(const ListenerConfig &config)
 {
-    ListenerConfig conf;
-    conf.listenAddress = listenAddress;
-    conf.listenPort = listenPort;
-    conf.targetHost = server;
-    conf.targetPort = serverPort;
-
-    Listener *proxy = new Listener(conf, this);
+    Listener *proxy = new Listener(config, this);
     proxy->setUpstreamProxy(m_upstream);
     proxy->setJournal(m_journal);
-    m_proxies.append(proxy);
+    m_listeners.append(proxy);
 
-    return proxy->listen();
+    proxy->listen();
+}
+
+void BitSlinger::editListener(int index, const ListenerConfig &config)
+{
+    m_listeners[index]->setConfig(config);
+}
+
+void BitSlinger::removeListener(int index)
+{
+    m_listeners.removeAt(index);
 }

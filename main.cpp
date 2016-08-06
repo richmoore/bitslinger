@@ -12,7 +12,9 @@ int main(int argc, char *argv[])
 
     BitSlinger slinger;
     w.setBitSlinger(&slinger);
-    slinger.addProxy(QHostAddress::LocalHost, 4433, QString("xmelegance.org"), 443);
+
+    //ListenerConfig config;
+    //slinger.addProxy(QHostAddress::LocalHost, 4433, QString("xmelegance.org"), 443);
 
     return a.exec();
 }

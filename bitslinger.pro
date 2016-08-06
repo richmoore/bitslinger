@@ -21,7 +21,8 @@ SOURCES += main.cpp\
     bitslinger.cpp \
     journalview.cpp \
     listener.cpp \
-    listenerdialog.cpp
+    listenerdialog.cpp \
+    listenereditdialog.cpp
 
 HEADERS  += mainwindow.h \
     connection.h \
@@ -32,11 +33,13 @@ HEADERS  += mainwindow.h \
     bitslinger.h \
     journalview.h \
     listener.h \
-    listenerdialog.h
+    listenerdialog.h \
+    listenereditdialog.h
 
 FORMS    += mainwindow.ui \
     mockups/mainview_mockup.ui \
-    listenerdialog.ui
+    listenerdialog.ui \
+    listenereditdialog.ui
 
 DISTFILES += \
     NOTES.txt \

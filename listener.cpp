@@ -10,8 +10,21 @@
 Listener::Listener(const ListenerConfig &config, QObject *parent)
     : QObject(parent),
       m_journal(0),
-      m_config(config)
+      m_config(config),
+      m_server(0)
 {
+}
+
+void Listener::setConfig(const ListenerConfig config)
+{
+    if (m_config == config)
+        return;
+
+    m_config = config;
+    if (m_server) {
+        stopListening();
+        listen();
+    }
 }
 
 void Listener::setJournal(Journal *journal)
@@ -22,6 +35,13 @@ void Listener::setJournal(Journal *journal)
 void Listener::setUpstreamProxy(const QNetworkProxy &upstream)
 {
     m_upstream = upstream;
+}
+
+void Listener::stopListening()
+{
+    m_server->close();
+    m_server->deleteLater();
+    m_server = 0;
 }
 
 bool Listener::listen()

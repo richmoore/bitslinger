@@ -1,0 +1,36 @@
+#ifndef LISTENEREDITDIALOG_H
+#define LISTENEREDITDIALOG_H
+
+#include <QDialog>
+#include <QHostAddress>
+
+namespace Ui {
+class ListenerEditDialog;
+}
+
+class ListenerEditDialog : public QDialog
+{
+    Q_OBJECT
+
+public:
+    explicit ListenerEditDialog(QWidget *parent = 0);
+    ~ListenerEditDialog();
+
+    QHostAddress listenAddress() const;
+    void setListenAddress(const QHostAddress &address);
+
+    int listenPort() const;
+    void setListenPort(int port);
+
+    QString targetHost() const;
+    void setTargetHost(const QString &host);
+
+    int targetPort() const;
+    void setTargetPort(int port);
+
+private:
+    Ui::ListenerEditDialog *ui;
+    QList<QHostAddress> addresses;
+};
+
+#endif // LISTENEREDITDIALOG_H

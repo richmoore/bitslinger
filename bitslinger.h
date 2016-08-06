@@ -4,12 +4,14 @@
 #include <QObject>
 #include <QNetworkProxy>
 
+#include "listener.h"
+
 class QHostAddress;
 
 class Listener;
 class Journal;
 
-typedef QList<Listener *> TcpProxyList;
+typedef QList<Listener *> ListenerList;
 
 class BitSlinger : public QObject
 {
@@ -17,17 +19,19 @@ class BitSlinger : public QObject
 public:
     explicit BitSlinger(QObject *parent = 0);
 
-    TcpProxyList proxies() const { return m_proxies; }
+    ListenerList listeners() const { return m_listeners; }
     Journal *journal() const { return m_journal; }
     void setUpstreamProxy(const QNetworkProxy &upstream);
 
-    bool addProxy(const QHostAddress &listenAddress, int listenPort, const QString &server, int serverPort);
+    void addListener(const ListenerConfig &config);
+    void editListener(int index, const ListenerConfig &config);
+    void removeListener(int index);
 
 signals:
 
 public slots:
 private:
-    TcpProxyList m_proxies;
+    ListenerList m_listeners;
     Journal *m_journal;
     QNetworkProxy m_upstream;
 };
