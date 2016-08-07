@@ -73,8 +73,8 @@ bool BitSlinger::readState(QIODevice *input)
     quint32 flags;
     stream >> flags;
     if (flags != (StateFileHasJournal)) {
-            qDebug() << "Unsupported flags";
-            return false;
+        qDebug() << "Unsupported flags";
+        return false;
     }
 
     stream >> *m_journal;
