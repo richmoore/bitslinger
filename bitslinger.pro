@@ -43,13 +43,6 @@ FORMS    += mainwindow.ui \
 
 DISTFILES += \
     NOTES.txt \
-    icons/client2server.png \
-    icons/client2server_connected.png \
-    icons/client2server_disconnected.png \
-    icons/client2server_edited.png \
-    icons/server2client.png \
-    icons/server2client_disconnected.png \
-    icons/server2client_edited.png \
     state_format.txt
 
 RESOURCES += \
