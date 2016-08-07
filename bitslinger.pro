@@ -11,6 +11,10 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 TARGET = bitslinger
 TEMPLATE = app
 
+contains(QT_CONFIG, openssl-linked) {
+    LIBS += -lcrypto
+}
+
 SOURCES += main.cpp\
         mainwindow.cpp \
     connection.cpp \
@@ -25,7 +29,9 @@ SOURCES += main.cpp\
     listenereditdialog.cpp \
     settingsdialog.cpp \
     settingspage.cpp \
-    settings/proxysettingspage.cpp
+    settings/proxysettingspage.cpp \
+    utils/openssl_symbol_helper.cpp \
+    utils/certificategenerator.cpp
 
 HEADERS  += mainwindow.h \
     connection.h \
@@ -40,7 +46,9 @@ HEADERS  += mainwindow.h \
     listenereditdialog.h \
     settingsdialog.h \
     settingspage.h \
-    settings/proxysettingspage.h
+    settings/proxysettingspage.h \
+    utils/openssl_symbol_helper.h \
+    utils/certificategenerator.h
 
 FORMS    += mainwindow.ui \
     mockups/mainview_mockup.ui \
