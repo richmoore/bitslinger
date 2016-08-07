@@ -22,7 +22,10 @@ SOURCES += main.cpp\
     journalview.cpp \
     listener.cpp \
     listenerdialog.cpp \
-    listenereditdialog.cpp
+    listenereditdialog.cpp \
+    settingsdialog.cpp \
+    settingspage.cpp \
+    settings/proxysettingspage.cpp
 
 HEADERS  += mainwindow.h \
     connection.h \
@@ -34,12 +37,17 @@ HEADERS  += mainwindow.h \
     journalview.h \
     listener.h \
     listenerdialog.h \
-    listenereditdialog.h
+    listenereditdialog.h \
+    settingsdialog.h \
+    settingspage.h \
+    settings/proxysettingspage.h
 
 FORMS    += mainwindow.ui \
     mockups/mainview_mockup.ui \
     listenerdialog.ui \
-    listenereditdialog.ui
+    listenereditdialog.ui \
+    settingsdialog.ui \
+    settings/proxysettingspage.ui
 
 DISTFILES += \
     NOTES.txt \

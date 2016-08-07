@@ -4,6 +4,7 @@
 
 #include "bitslinger.h"
 #include "listenerdialog.h"
+#include "settingsdialog.h"
 
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
@@ -21,6 +22,7 @@ MainWindow::MainWindow(QWidget *parent) :
     m_ui->action_Listeners->setIcon(QIcon(":icons/stethoscope.svg"));
 
     connect(m_ui->action_Listeners, SIGNAL(triggered()), this, SLOT(showListenerDialog()));
+    connect(m_ui->action_Options, SIGNAL(triggered()), this, SLOT(showSettings()));
     connect(m_ui->action_Load_State, SIGNAL(triggered()), this, SLOT(openState()));
     connect(m_ui->action_Save_State, SIGNAL(triggered()), this, SLOT(saveState()));
 
@@ -51,6 +53,12 @@ void MainWindow::showListenerDialog()
     ListenerDialog dlg(this);
     dlg.setWindowIcon(QIcon(":icons/stethoscope.svg"));
     dlg.setBitSlinger(m_slinger);
+    dlg.exec();
+}
+
+void MainWindow::showSettings()
+{
+    SettingsDialog dlg(this);
     dlg.exec();
 }
 
