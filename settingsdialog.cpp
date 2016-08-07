@@ -2,6 +2,7 @@
 #include <QDebug>
 
 #include "settings/proxysettingspage.h"
+#include "settings/sslsettingspage.h"
 
 #include "settingsdialog.h"
 #include "ui_settingsdialog.h"
@@ -16,7 +17,7 @@ SettingsDialog::SettingsDialog(QWidget *parent) :
     ui->pageTitle->setText(pages[0]->windowTitle());
     ui->pageStack->setCurrentIndex(0);
 
-    updateGeometry();
+    pages[0]->show();
 
     connect(ui->treeWidget, SIGNAL(currentItemChanged(QTreeWidgetItem *, QTreeWidgetItem *)),
             this, SLOT(pageChanged()));
@@ -31,6 +32,9 @@ void SettingsDialog::createPages()
 {
     ProxySettingsPage *proxySettings = new ProxySettingsPage();
     addPage(proxySettings);
+
+    SslSettingsPage *sslSettings = new SslSettingsPage();
+    addPage(sslSettings);
 }
 
 void SettingsDialog::addPage(SettingsPage *page)
@@ -41,9 +45,7 @@ void SettingsDialog::addPage(SettingsPage *page)
     QTreeWidgetItem *item = new QTreeWidgetItem(ui->treeWidget);
     item->setText(0, page->windowTitle());
 
-
     ui->pageStack->addWidget(page);
-    page->show();
 }
 
 void SettingsDialog::pageChanged()
@@ -53,5 +55,7 @@ void SettingsDialog::pageChanged()
         return;
     qDebug() << "Changing to page" << index;
     ui->pageTitle->setText(pages[index]->windowTitle());
+    ui->pageStack->currentWidget()->hide();
     ui->pageStack->setCurrentIndex(index);
+    pages[index]->show();
 }
