@@ -18,6 +18,13 @@ class BitSlinger : public QObject
 {
     Q_OBJECT
 public:
+    enum StateFileFlag {
+        StateFileHasJournal = 0x1,
+        StateFileHasListeners = 0x2,
+        StateFileHasUi = 0x4
+    };
+    Q_DECLARE_FLAGS(StateFileFlags, StateFileFlag)
+
     explicit BitSlinger(QObject *parent = 0);
 
     Listener *listenerAt(int index) const { return m_listeners[index]; }
@@ -42,5 +49,7 @@ private:
     Journal *m_journal;
     QNetworkProxy m_upstream;
 };
+
+Q_DECLARE_OPERATORS_FOR_FLAGS(BitSlinger::StateFileFlags)
 
 #endif // BITSLINGER_H

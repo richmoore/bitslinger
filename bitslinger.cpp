@@ -9,12 +9,6 @@
 const quint32 STATE_FILE_MAGIC = 0xB175BABE;
 const quint16 STATE_FILE_VERSION = 0x0001;
 
-enum StateFileFlags {
-    StateFileHasJournal = 0x1,
-    StateFileHasListeners = 0x2,
-    StateFileHasUi = 0x4
-};
-
 BitSlinger::BitSlinger(QObject *parent) : QObject(parent)
 {
     m_journal = new Journal(this);
@@ -49,9 +43,12 @@ bool BitSlinger::writeState(QIODevice *output)
     QDataStream stream(output);
     stream << STATE_FILE_MAGIC;
     stream << STATE_FILE_VERSION;
-    stream << quint32(StateFileHasJournal);
 
-    stream << *m_journal;
+    StateFileFlags flags = StateFileHasJournal;
+    stream << quint32(flags);
+
+    if (flags & StateFileHasJournal)
+        stream << *m_journal;
 
     return stream.status() == QDataStream::Ok;
 }
