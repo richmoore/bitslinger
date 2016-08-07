@@ -20,6 +20,7 @@ class BitSlinger : public QObject
 public:
     explicit BitSlinger(QObject *parent = 0);
 
+    Listener *listenerAt(int index) const { return m_listeners[index]; }
     ListenerList listeners() const { return m_listeners; }
     Journal *journal() const { return m_journal; }
 

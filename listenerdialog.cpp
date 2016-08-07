@@ -69,17 +69,22 @@ void ListenerDialog::editListener()
 {
     ListenerEditDialog dlg(this);
 
+    int index = ui->listenerTree->currentIndex().row();
+    ListenerConfig config = m_slinger->listenerAt(index)->config();
+    dlg.setListenAddress(config.listenAddress);
+    dlg.setListenPort(config.listenPort);
+    dlg.setTargetHost(config.targetHost);
+    dlg.setTargetPort(config.targetPort);
+
     int result = dlg.exec();
     if (result == QDialog::Rejected)
         return;
 
-    ListenerConfig config;
     config.listenAddress = dlg.listenAddress();
     config.listenPort = dlg.listenPort();
     config.targetHost = dlg.targetHost();
     config.targetPort = dlg.targetPort();
 
-    int index = ui->listenerTree->currentIndex().row();
     m_slinger->editListener(index, config);
     refreshList();
 }
