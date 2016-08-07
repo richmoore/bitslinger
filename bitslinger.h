@@ -7,6 +7,7 @@
 #include "listener.h"
 
 class QHostAddress;
+class QIODevice;
 
 class Listener;
 class Journal;
@@ -21,11 +22,16 @@ public:
 
     ListenerList listeners() const { return m_listeners; }
     Journal *journal() const { return m_journal; }
+
+    QNetworkProxy upstreamProxy() const { return m_upstream; }
     void setUpstreamProxy(const QNetworkProxy &upstream);
 
     void addListener(const ListenerConfig &config);
     void editListener(int index, const ListenerConfig &config);
     void removeListener(int index);
+
+    bool writeState(QIODevice *output);
+    bool readState(QIODevice *input);
 
 signals:
 

@@ -70,8 +70,8 @@
     <property name="title">
      <string>&amp;File</string>
     </property>
-    <addaction name="actionLoad_State"/>
-    <addaction name="actionSave_State"/>
+    <addaction name="action_Load_State"/>
+    <addaction name="action_Save_State"/>
     <addaction name="separator"/>
     <addaction name="actionExit"/>
    </widget>
@@ -110,12 +110,12 @@
     <string>Ctrl+Q</string>
    </property>
   </action>
-  <action name="actionLoad_State">
+  <action name="action_Load_State">
    <property name="text">
     <string>Open State...</string>
    </property>
   </action>
-  <action name="actionSave_State">
+  <action name="action_Save_State">
    <property name="text">
     <string>Save State As...</string>
    </property>

@@ -3,11 +3,10 @@
 
 #include <QObject>
 #include <QHostAddress>
-#include <QNetworkProxy>
 
 class QTcpServer;
 
-
+class BitSlinger;
 class Journal;
 
 struct ListenerConfig
@@ -38,7 +37,7 @@ public:
     ListenerConfig config() const { return m_config; }
     void setConfig(const ListenerConfig config);
 
-    void setJournal(Journal *journal);
+    void setBitSlinger(BitSlinger *slinger);
     void setUpstreamProxy(const QNetworkProxy &upstream);
 
 signals:
@@ -55,7 +54,7 @@ private:
     Journal *m_journal;
     ListenerConfig m_config;
     QTcpServer *m_server;
-    QNetworkProxy m_upstream;
+    BitSlinger *m_bitslinger;
 };
 
 #endif // LISTENER_H

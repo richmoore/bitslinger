@@ -1,4 +1,6 @@
 #include <QDebug>
+#include <QFileDialog>
+#include <QFile>
 
 #include "bitslinger.h"
 #include "listenerdialog.h"
@@ -19,6 +21,9 @@ MainWindow::MainWindow(QWidget *parent) :
     m_ui->action_Listeners->setIcon(QIcon(":icons/stethoscope.svg"));
 
     connect(m_ui->action_Listeners, SIGNAL(triggered()), this, SLOT(showListenerDialog()));
+    connect(m_ui->action_Load_State, SIGNAL(triggered()), this, SLOT(openState()));
+    connect(m_ui->action_Save_State, SIGNAL(triggered()), this, SLOT(saveState()));
+
 }
 
 MainWindow::~MainWindow()
@@ -47,4 +52,36 @@ void MainWindow::showListenerDialog()
     dlg.setWindowIcon(QIcon(":icons/stethoscope.svg"));
     dlg.setBitSlinger(m_slinger);
     dlg.exec();
+}
+
+void MainWindow::openState()
+{
+    qDebug() << "openState" << m_slinger;
+    QString filename = QFileDialog::getOpenFileName(this);
+    if (filename.isEmpty())
+        return;;
+
+    QFile f(filename);
+    if (!f.open(QIODevice::ReadOnly)) {
+        qDebug() << "Could not open file" << filename;
+        return;
+    }
+
+    m_slinger->readState(&f);
+}
+
+void MainWindow::saveState()
+{
+    qDebug() << "saveState" << m_slinger;
+    QString filename = QFileDialog::getSaveFileName(this);
+    if (filename.isEmpty())
+        return;;
+
+    QFile f(filename);
+    if (!f.open(QIODevice::WriteOnly)) {
+        qDebug() << "Could not open file" << filename;
+        return;
+    }
+
+    m_slinger->writeState(&f);
 }

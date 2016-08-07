@@ -25,6 +25,8 @@ public:
 public slots:
     void showEntry(JournalEvent *entry);
     void showListenerDialog();
+    void openState();
+    void saveState();
 
 private:
     Ui::MainWindow *m_ui;

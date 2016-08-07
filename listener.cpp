@@ -4,6 +4,7 @@
 
 #include "connection.h"
 #include "journal.h"
+#include "bitslinger.h"
 
 #include "listener.h"
 
@@ -27,14 +28,10 @@ void Listener::setConfig(const ListenerConfig config)
     }
 }
 
-void Listener::setJournal(Journal *journal)
+void Listener::setBitSlinger(BitSlinger *slinger)
 {
-    m_journal = journal;
-}
-
-void Listener::setUpstreamProxy(const QNetworkProxy &upstream)
-{
-    m_upstream = upstream;
+    m_bitslinger = slinger;
+    m_journal = slinger->journal();
 }
 
 void Listener::stopListening()
@@ -63,7 +60,7 @@ void Listener::handleConnection()
         QTcpSocket *sock = m_server->nextPendingConnection();
 
         Connection *con = new Connection(sock, this);
-        con->setUpstreamProxy(m_upstream);
+        con->setUpstreamProxy(m_bitslinger->upstreamProxy());
         m_journal->addConnection(con);
 
         con->connectToHost(m_config.targetHost, m_config.targetPort);

@@ -17,9 +17,6 @@ struct JournalConnection
     int targetPort;
 };
 
-QDataStream &operator<<(QDataStream &stream, const JournalConnection &connection);
-QDataStream &operator>>(QDataStream & in, JournalConnection &connection);
-
 struct JournalEvent
 {
     qint64 timestamp;
@@ -29,9 +26,6 @@ struct JournalEvent
     QColor color;
     QString comment;
 };
-
-QDataStream &operator<<(QDataStream &stream, const JournalEvent &event);
-QDataStream &operator>>(QDataStream & in, JournalEvent &event);
 
 class Journal : public QAbstractTableModel
 {
@@ -64,6 +58,17 @@ private:
     qint64 m_journalStartTime;
     QList<JournalConnection *> m_connections;
     QList<JournalEvent *> m_events;
+
+public:
+    friend QDataStream &operator<<(QDataStream &stream, const Journal &journal);
+    friend QDataStream &operator>>(QDataStream &stream, Journal &journal);
+
 };
+
+QDataStream &operator<<(QDataStream &stream, const JournalConnection *connection);
+QDataStream &operator>>(QDataStream &stream, JournalConnection *&connection);
+
+QDataStream &operator<<(QDataStream &stream, const JournalEvent *event);
+QDataStream &operator>>(QDataStream &stream, JournalEvent *&event);
 
 #endif // JOURNAL_H

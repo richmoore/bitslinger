@@ -185,52 +185,83 @@ QVariant Journal::data(const QModelIndex &index, int role) const
 }
 
 
-QDataStream &operator<<(QDataStream &stream, const JournalConnection &connection)
+QDataStream &operator<<(QDataStream &stream, const JournalConnection *connection)
 {
-    stream << connection.clientAddress;
-    stream << connection.listenAddress;
-    stream << connection.listenPort;
-    stream << connection.targetAddress;
-    stream << connection.targetPort;
+    qDebug() << "writing connection";
+    stream << connection->clientAddress;
+    stream << connection->listenAddress;
+    stream << connection->listenPort;
+    stream << connection->targetAddress;
+    stream << connection->targetPort;
 
     return stream;
 }
 
-QDataStream &operator>>(QDataStream &stream, JournalConnection &connection)
+QDataStream &operator>>(QDataStream &stream, JournalConnection *&connection)
 {
-    stream >> connection.clientAddress;
-    stream >> connection.listenAddress;
-    stream >> connection.listenPort;
-    stream >> connection.targetAddress;
-    stream >> connection.targetPort;
+    qDebug() << "reading connection";
+    connection = new JournalConnection;
+    stream >> connection->clientAddress;
+    stream >> connection->listenAddress;
+    stream >> connection->listenPort;
+    stream >> connection->targetAddress;
+    stream >> connection->targetPort;
 
     return stream;
 }
 
-QDataStream &operator<<(QDataStream &stream, const JournalEvent &event)
+QDataStream &operator<<(QDataStream &stream, const JournalEvent *event)
 {
-    stream << event.timestamp;
-    stream << event.connectionId;
-    stream << quint16(event.type);
-    stream << qCompress(event.content);
-    stream << event.color;
-    stream << event.comment;
+    qDebug() << "writing event";
+    stream << event->timestamp;
+    stream << event->connectionId;
+    stream << quint16(event->type);
+    stream << qCompress(event->content);
+    stream << event->color;
+    stream << event->comment;
 
     return stream;
 }
 
-QDataStream &operator>>(QDataStream &stream, JournalEvent &event)
+QDataStream &operator>>(QDataStream &stream, JournalEvent *&event)
 {
-    stream >> event.timestamp;
-    stream >> event.connectionId;
+    qDebug() << "reading event";
+    event = new JournalEvent;
+    stream >> event->timestamp;
+    stream >> event->connectionId;
     quint16 eventType;
     stream >> eventType;
-    event.type = Connection::EventType(eventType);
+    event->type = Connection::EventType(eventType);
     QByteArray compressed;
     stream >> compressed;
-    event.content = qUncompress(compressed);
-    stream >> event.color;
-    stream >> event.comment;
+    event->content = qUncompress(compressed);
+    stream >> event->color;
+    stream >> event->comment;
+
+    return stream;
+}
+
+QDataStream &operator<<(QDataStream &stream, const Journal &journal)
+{
+    qDebug() << "writing journal";
+    stream << journal.m_nextConnectionId;
+    stream << journal.m_journalStartTime;
+    stream << journal.m_connections;
+    stream << journal.m_events;
+    return stream;
+}
+
+QDataStream &operator>>(QDataStream &stream, Journal &journal)
+{
+    journal.beginResetModel();
+    qDebug() << "reading journal";
+    stream >> journal.m_nextConnectionId;
+    stream >> journal.m_journalStartTime;
+    qDebug() << "reading connections";
+    stream >> journal.m_connections;
+    qDebug() << "reading events";
+    stream >> journal.m_events;
+    journal.endResetModel();
 
     return stream;
 }

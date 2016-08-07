@@ -1,9 +1,19 @@
 #include <QHostAddress>
+#include <QDataStream>
 
 #include "journal.h"
 #include "listener.h"
 
 #include "bitslinger.h"
+
+const quint32 STATE_FILE_MAGIC = 0xB175BABE;
+const quint16 STATE_FILE_VERSION = 0x0001;
+
+enum StateFileFlags {
+    StateFileHasJournal = 0x1,
+    StateFileHasListeners = 0x2,
+    StateFileHasUi = 0x4
+};
 
 BitSlinger::BitSlinger(QObject *parent) : QObject(parent)
 {
@@ -18,8 +28,7 @@ void BitSlinger::setUpstreamProxy(const QNetworkProxy &upstream)
 void BitSlinger::addListener(const ListenerConfig &config)
 {
     Listener *proxy = new Listener(config, this);
-    proxy->setUpstreamProxy(m_upstream);
-    proxy->setJournal(m_journal);
+    proxy->setBitSlinger(this);
     m_listeners.append(proxy);
 
     proxy->listen();
@@ -34,3 +43,52 @@ void BitSlinger::removeListener(int index)
 {
     m_listeners.removeAt(index);
 }
+
+bool BitSlinger::writeState(QIODevice *output)
+{
+    QDataStream stream(output);
+    stream << STATE_FILE_MAGIC;
+    stream << STATE_FILE_VERSION;
+    stream << quint32(StateFileHasJournal);
+
+    stream << *m_journal;
+
+    return stream.status() == QDataStream::Ok;
+}
+
+bool BitSlinger::readState(QIODevice *input)
+{
+    QDataStream stream(input);
+    quint32 magic;
+    stream >> magic;
+    if (magic != STATE_FILE_MAGIC) {
+        qDebug() << "Cannot load state, Bad magic" << magic;
+        return false;
+    }
+
+    quint16 version;
+    stream >> version;
+    if (version != STATE_FILE_VERSION) {
+        qDebug() << "Cannot, load state, unknown version" << version;
+        return false;
+    }
+
+    quint32 flags;
+    stream >> flags;
+    if (flags != (StateFileHasJournal)) {
+            qDebug() << "Unsupported flags";
+            return false;
+    }
+
+    stream >> *m_journal;
+
+    return stream.status() != QDataStream::Ok;
+}
+
+
+
+
+
+
+
+

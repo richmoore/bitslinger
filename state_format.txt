@@ -25,4 +25,4 @@ Journal
 Listeners
 =========
 
- * Listeners[]
+ * ListenerConfig[]
