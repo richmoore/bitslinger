@@ -103,6 +103,9 @@
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
   <action name="actionExit">
+   <property name="icon">
+    <iconset theme="application-exit"/>
+   </property>
    <property name="text">
     <string>&amp;Exit</string>
    </property>
@@ -111,11 +114,17 @@
    </property>
   </action>
   <action name="action_Load_State">
+   <property name="icon">
+    <iconset theme="document-open"/>
+   </property>
    <property name="text">
     <string>Open State...</string>
    </property>
   </action>
   <action name="action_Save_State">
+   <property name="icon">
+    <iconset theme="document-save-as"/>
+   </property>
    <property name="text">
     <string>Save State As...</string>
    </property>
@@ -131,6 +140,9 @@
    </property>
   </action>
   <action name="action_About">
+   <property name="icon">
+    <iconset theme="help-about"/>
+   </property>
    <property name="text">
     <string>&amp;About...</string>
    </property>
