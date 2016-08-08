@@ -29,7 +29,7 @@ void JournalView::showHeaderContextMenu(const QPoint &pos)
 {
     QMenu menu(this);
 
-    for (int i; i < m_journal->columnCount(QModelIndex()); i++) {
+    for (int i=0; i < m_journal->columnCount(QModelIndex()); i++) {
         QAction *action = menu.addAction(m_journal->headerData(i, Qt::Horizontal, Journal::ContextMenuRole).toString());
         action->setData(i);
         action->setCheckable(true);

@@ -63,6 +63,21 @@ QSslCertificate CertificateGenerator::createClone(const QSslCertificate &leaf)
 
 QSslCertificate CertificateGenerator::createCaCertificate() const
 {
+#if 0
+    X509 *x509 = osh_X509_new();
+
+    osh_X509_set_version(x509, 3);
+
+    ASN1_INTEGER *serial = ASN1_INTEGER_new();
+    ASN1_INTEGER_set(serial, 0xb175babe);
+    osh_X509_set_serialNumber(x509, serial);
+
+    X509_NAME *issuer = X509_get_subject_name(x509);
+    X509_NAME_add_entry_by_txt(name, "C",  MBSTRING_UTF8, "UK", -1, -1, 0);
+    X509_NAME_add_entry_by_txt(name, "C",  MBSTRING_UTF8, "UK", -1, -1, 0);
+    X509_NAME_add_entry_by_txt(name, "C",  MBSTRING_UTF8, "UK", -1, -1, 0);
+
+ #endif
     return QSslCertificate();
 }
 

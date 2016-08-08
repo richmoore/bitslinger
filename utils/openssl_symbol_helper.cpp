@@ -134,7 +134,7 @@ bool osh_resolveOpenSslSymbols()
     RESOLVEFUNC(RSA_new)
     RESOLVEFUNC(RSA_free)
     RESOLVEFUNC(i2d_RSAPrivateKey)
-    RESOLVEFUNC(RSA_generate_key_ex
+    RESOLVEFUNC(RSA_generate_key_ex)
 
     symbolsResolved = true;
     delete libcrypto;
