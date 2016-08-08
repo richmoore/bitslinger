@@ -20,6 +20,9 @@ public:
 
     QSslCertificate createClone(const QSslCertificate &leaf);
 
+    QSslCertificate createCaCertificate() const;
+    QSslKey createKey() const;
+
 private:
     QSslCertificate m_caCert;
     QSslKey m_caKey;

@@ -1,12 +1,15 @@
+#include <QDebug>
+
 #include "openssl_symbol_helper.h"
 
 #include "certificategenerator.h"
 
-QByteArray x509_to_pem(X509 *x509);
+QByteArray x509_to_der(X509 *x509);
+QByteArray RSAPrivateKey_to_der(RSA *rsa);
 
 CertificateGenerator::CertificateGenerator()
 {
-
+    osh_resolveOpenSslSymbols();
 }
 
 QSslCertificate CertificateGenerator::createClone(const QSslCertificate &leaf)
@@ -54,11 +57,37 @@ QSslCertificate CertificateGenerator::createClone(const QSslCertificate &leaf)
 
     osh_X509_sign(out, capubkey, osh_EVP_sha256());
 
-    QByteArray pem = x509_to_pem(out);
-    return QSslCertificate(pem);
+    QByteArray der = x509_to_der(out);
+    return QSslCertificate(der, QSsl::Der);
 }
 
-QByteArray x509_to_pem(X509 *x509)
+QSslCertificate CertificateGenerator::createCaCertificate() const
+{
+
+}
+
+QSslKey CertificateGenerator::createKey() const
+{
+    BIGNUM *bne = osh_BN_new();
+    RSA *rsa = osh_RSA_new();
+
+    osh_BN_set_word(bne, RSA_F4);
+    int result = osh_RSA_generate_key_ex( rsa, 2048, bne, NULL);
+    if (!result) {
+        qDebug() << "createKey() failed";
+    }
+
+    QByteArray der = RSAPrivateKey_to_der(rsa);
+    qDebug() << der;
+    QSslKey key(der, QSsl::Rsa, QSsl::Der);
+
+    osh_RSA_free(rsa);
+    osh_BN_free(bne);
+
+    return key;
+}
+
+QByteArray x509_to_der(X509 *x509)
 {
     // Use i2d_X509 to convert the X509 to an array.
     int length = osh_i2d_X509(x509, 0);
@@ -68,6 +97,21 @@ QByteArray x509_to_pem(X509 *x509)
     char **dataP = &data;
     unsigned char **dataPu = (unsigned char **)dataP;
     if (osh_i2d_X509(x509, dataPu) < 0)
+        return QByteArray();
+
+    return array;
+}
+
+QByteArray RSAPrivateKey_to_der(RSA *rsa)
+{
+    // Use i2d_RSA to convert the RSA to an array.
+    int length = osh_i2d_RSAPrivateKey(rsa, 0);
+    QByteArray array;
+    array.resize(length);
+    char *data = array.data();
+    char **dataP = &data;
+    unsigned char **dataPu = (unsigned char **)dataP;
+    if (osh_i2d_RSAPrivateKey(rsa, dataPu) < 0)
         return QByteArray();
 
     return array;

@@ -14,6 +14,9 @@ SettingsDialog::SettingsDialog(QWidget *parent) :
     ui->setupUi(this);
     createPages();
 
+    ui->splitter->setStretchFactor(0, 1);
+    ui->splitter->setStretchFactor(1, 6);
+
     ui->pageTitle->setText(pages[0]->windowTitle());
     ui->pageStack->setCurrentIndex(0);
 

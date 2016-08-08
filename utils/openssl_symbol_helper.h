@@ -6,6 +6,7 @@
 
 #include "openssl/crypto.h"
 #include "openssl/x509.h"
+#include "openssl/rsa.h"
 
 #define DUMMYARG
 
@@ -93,6 +94,7 @@ bool osh_resolveOpenSslSymbols();
 X509 *osh_X509_new();
 void osh_X509_free(X509 *x);
 
+// X509
 int osh_i2d_X509(X509 *a, unsigned char **b);
 
 long osh_X509_get_version(X509 *x);
@@ -126,5 +128,20 @@ int osh_X509_sign(X509 *x, EVP_PKEY *pkey, const EVP_MD *md);
 const EVP_MD *osh_EVP_sha256(void);
 EVP_PKEY *osh_EVP_PKEY_new(void);
 int osh_EVP_PKEY_assign(EVP_PKEY *pkey, int type, void *key);
+
+// BIGNUM
+BIGNUM *osh_BN_new(void);
+void osh_BN_free(BIGNUM *a);
+
+int osh_BN_set_word(BIGNUM *a, BN_ULONG w);
+
+// RSA
+RSA *osh_RSA_new(void);
+void osh_RSA_free(RSA *r);
+
+int osh_i2d_RSAPrivateKey(RSA *rsa, unsigned char **b);
+
+int osh_RSA_generate_key_ex(RSA *rsa, int bits, BIGNUM *e, BN_GENCB *cb);
+
 
 #endif // OPENSSL_SYMBOL_HELPER_H

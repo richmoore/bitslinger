@@ -60,6 +60,20 @@ DEFINEFUNC(const EVP_MD *, EVP_sha256, void, DUMMYARG, return 0, return)
 DEFINEFUNC(EVP_PKEY *, EVP_PKEY_new, void, DUMMYARG, return 0, return)
 DEFINEFUNC3(int, EVP_PKEY_assign, EVP_PKEY *pkey, pkey, int type, type, void *key, key, return 0, return)
 
+// BIGNUM
+DEFINEFUNC(BIGNUM *, BN_new, void, DUMMYARG, return 0, return)
+DEFINEFUNC(void, BN_free, BIGNUM *a, a, return, return)
+
+DEFINEFUNC2(int, BN_set_word, BIGNUM *a, a, BN_ULONG w, w, return 0, return)
+
+// RSA
+DEFINEFUNC(RSA *, RSA_new, void, DUMMYARG, return 0, return)
+DEFINEFUNC(void, RSA_free, RSA *rsa, rsa, return, return)
+
+DEFINEFUNC2(int, i2d_RSAPrivateKey, RSA *rsa, rsa, unsigned char **b, b, return 0, return)
+
+DEFINEFUNC4(int, RSA_generate_key_ex, RSA *rsa, rsa, int bits, bits, BIGNUM *e, e, BN_GENCB *cb, cb, return 0, return)
+
 #if !defined QT_LINKED_OPENSSL
 
 bool osh_resolveOpenSslSymbols()
@@ -111,6 +125,16 @@ bool osh_resolveOpenSslSymbols()
     RESOLVEFUNC(EVP_sha256)
     RESOLVEFUNC(EVP_PKEY_new)
     RESOLVEFUNC(EVP_PKEY_assign)
+
+    RESOLVEFUNC(BN_new)
+    RESOLVEFUNC(BN_free)
+
+    RESOLVEFUNC(BN_set_word)
+
+    RESOLVEFUNC(RSA_new)
+    RESOLVEFUNC(RSA_free)
+    RESOLVEFUNC(i2d_RSAPrivateKey)
+    RESOLVEFUNC(RSA_generate_key_ex
 
     symbolsResolved = true;
     delete libcrypto;
