@@ -38,9 +38,9 @@
 #  define DEFINEFUNC3(ret, func, arg1, a, arg2, b, arg3, c, err, funcret) \
     typedef ret (*_osh_PTR_##func)(arg1, arg2, arg3);            \
     static _osh_PTR_##func _osh_##func = 0;                        \
-    ret q_##func(arg1, arg2, arg3) { \
+    ret osh_##func(arg1, arg2, arg3) { \
         if (Q_UNLIKELY(!_osh_##func)) { \
-            qsslSocketUnresolvedSymbolWarning(#func); \
+            opensslSymbolHelperUnresolvedSymbolWarning(#func); \
             err; \
         } \
         funcret _osh_##func(a, b, c); \
@@ -50,9 +50,9 @@
 #  define DEFINEFUNC4(ret, func, arg1, a, arg2, b, arg3, c, arg4, d, err, funcret) \
     typedef ret (*_osh_PTR_##func)(arg1, arg2, arg3, arg4);               \
     static _osh_PTR_##func _osh_##func = 0;                                 \
-    ret q_##func(arg1, arg2, arg3, arg4) { \
+    ret osh_##func(arg1, arg2, arg3, arg4) { \
          if (Q_UNLIKELY(!_osh_##func)) { \
-             qsslSocketUnresolvedSymbolWarning(#func); \
+             opensslSymbolHelperUnresolvedSymbolWarning(#func); \
              err; \
          } \
          funcret _osh_##func(a, b, c, d); \

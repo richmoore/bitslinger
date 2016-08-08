@@ -11,6 +11,8 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 TARGET = bitslinger
 TEMPLATE = app
 
+#INCLUDEPATH += c:/OpenSSL-Win64/include
+
 contains(QT_CONFIG, openssl-linked) {
     LIBS += -lcrypto
 }

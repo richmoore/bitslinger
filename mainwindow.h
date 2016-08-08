@@ -10,7 +10,7 @@ class MainWindow;
 class QModelIndex;
 
 class BitSlinger;
-class JournalEvent;
+struct JournalEvent;
 
 class MainWindow : public QMainWindow
 {

@@ -55,7 +55,7 @@ void SettingsDialog::pageChanged()
         return;
     qDebug() << "Changing to page" << index;
     ui->pageTitle->setText(pages[index]->windowTitle());
-    ui->pageStack->currentWidget()->hide();
+    //ui->pageStack->currentWidget()->hide();
     ui->pageStack->setCurrentIndex(index);
-    pages[index]->show();
+    //pages[index]->show();
 }
