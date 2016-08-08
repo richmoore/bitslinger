@@ -74,8 +74,10 @@ QSslCertificate CertificateGenerator::createCaCertificate() const
 
     X509_NAME *issuer = X509_get_subject_name(x509);
     X509_NAME_add_entry_by_txt(name, "C",  MBSTRING_UTF8, "UK", -1, -1, 0);
-    X509_NAME_add_entry_by_txt(name, "C",  MBSTRING_UTF8, "UK", -1, -1, 0);
-    X509_NAME_add_entry_by_txt(name, "C",  MBSTRING_UTF8, "UK", -1, -1, 0);
+    X509_NAME_add_entry_by_txt(name, "O",  MBSTRING_UTF8, "Richard J. Moore", -1, -1, 0);
+    X509_NAME_add_entry_by_txt(name, "OU",  MBSTRING_UTF8, "BitSlinger", -1, -1, 0);
+
+    osh_X509_set_issuer_name(issuer);
 
  #endif
     return QSslCertificate();
@@ -93,7 +95,7 @@ QSslKey CertificateGenerator::createKey() const
     }
 
     QByteArray der = RSAPrivateKey_to_der(rsa);
-    qDebug() << der;
+    //qDebug() << der;
     QSslKey key(der, QSsl::Rsa, QSsl::Der);
 
     osh_RSA_free(rsa);

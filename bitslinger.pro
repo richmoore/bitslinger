@@ -12,6 +12,15 @@ TARGET = bitslinger
 TEMPLATE = app
 
 #INCLUDEPATH += c:/OpenSSL-Win64/include
+win32-msvc {
+  contains(QMAKE_HOST.arch, x86):{
+    INCLUDEPATH += c:/OpenSSL-Win32/include
+ } else {
+    INCLUDEPATH += c:/OpenSSL-Win64/include
+  }
+}
+
+gcc|clang:QMAKE_CXXFLAGS += -Wall -Wextra
 
 contains(QT_CONFIG, openssl-linked) {
     LIBS += -lcrypto
