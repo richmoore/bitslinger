@@ -63,7 +63,7 @@ QSslCertificate CertificateGenerator::createClone(const QSslCertificate &leaf)
 
 QSslCertificate CertificateGenerator::createCaCertificate() const
 {
-
+    return QSslCertificate();
 }
 
 QSslKey CertificateGenerator::createKey() const
