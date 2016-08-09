@@ -12,6 +12,8 @@ SslSettingsPage::SslSettingsPage(QWidget *parent) :
     CertificateGenerator gen;
     QSslKey key = gen.createKey();
     ui->cakeyEdit->setText(key.toPem());
+    QSslCertificate ca = gen.createCaCertificate(key);
+    ui->cacertEdit->setText(ca.toPem());
 }
 
 SslSettingsPage::~SslSettingsPage()

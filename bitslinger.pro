@@ -23,8 +23,14 @@ win32-msvc {
 gcc|clang:QMAKE_CXXFLAGS += -Wall -Wextra
 
 contains(QT_CONFIG, openssl-linked) {
-    LIBS += -lcrypto
+    win32-msvc {
+        LIBS += -leay32
+    }
+    else {
+        LIBS += -lcrypto
+    }
 }
+
 
 SOURCES += main.cpp\
         mainwindow.cpp \

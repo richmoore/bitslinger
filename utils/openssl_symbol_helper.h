@@ -5,8 +5,9 @@
 #include <qglobal.h>
 
 #include "openssl/crypto.h"
-#include "openssl/x509.h"
 #include "openssl/rsa.h"
+#include "openssl/x509.h"
+#include "openssl/x509v3.h"
 
 #define DUMMYARG
 
@@ -59,6 +60,17 @@
          funcret _osh_##func(a, b, c, d); \
     }
 
+// ret func(arg1, arg2, arg3, arg4, arg6, arg7)
+#  define DEFINEFUNC7(ret, func, arg1, a, arg2, b, arg3, c, arg4, d, arg5, e, arg6, f, arg7, g, err, funcret) \
+    typedef ret (*_osh_PTR_##func)(arg1, arg2, arg3, arg4, arg5, arg6, arg7);   \
+    static _osh_PTR_##func _q_##func = 0;                                       \
+    ret osh_##func(arg1, arg2, arg3, arg4, arg5, arg6, arg7) { \
+        if (Q_UNLIKELY(!_q_##func)) { \
+            opensslSymbolHelperUnresolvedSymbolWarning(#func); \
+            err; \
+        } \
+        funcret _osh_##func(a, b, c, d, e, f, g); \
+    }
 
 #else
 
@@ -76,6 +88,10 @@
 // ret func(arg1, arg2, arg3, arg4)
 #  define DEFINEFUNC4(ret, func, arg1, a, arg2, b, arg3, c, arg4, d, err, funcret) \
     ret osh_##func(arg1, arg2, arg3, arg4) { funcret func(a, b, c, d); }
+
+// ret func(arg1, arg2, arg3, arg4, arg6, arg7)
+#  define DEFINEFUNC7(ret, func, arg1, a, arg2, b, arg3, c, arg4, d, arg5, e, arg6, f, arg7, g, err, funcret) \
+    ret osh_##func(arg1, arg2, arg3, arg4, arg5, arg6, arg7) { funcret func(a, b, c, d, e, f, g); }
 
 #endif // !defined QT_LINKED_OPENSSL
 
@@ -124,6 +140,12 @@ int osh_X509_add_ext(X509 *x, X509_EXTENSION *ex, int loc);
 
 int osh_X509_sign(X509 *x, EVP_PKEY *pkey, const EVP_MD *md);
 
+ASN1_TIME *osh_X509_gmtime_adj(ASN1_TIME *s, long adj);
+
+int osh_X509_NAME_add_entry_by_txt(X509_NAME *name, const char *field, int type,
+                               const unsigned char *bytes, int len, int loc,
+                               int set);
+
 // EVP
 const EVP_MD *osh_EVP_sha256(void);
 EVP_PKEY *osh_EVP_PKEY_new(void);
@@ -142,6 +164,14 @@ void osh_RSA_free(RSA *r);
 int osh_i2d_RSAPrivateKey(RSA *rsa, unsigned char **b);
 
 int osh_RSA_generate_key_ex(RSA *rsa, int bits, BIGNUM *e, BN_GENCB *cb);
+
+// ASN1
+ASN1_INTEGER *osh_ASN1_INTEGER_new(void);
+int osh_ASN1_INTEGER_set(ASN1_INTEGER *a, long v);
+
+// Extensions
+BASIC_CONSTRAINTS *osh_BASIC_CONSTRAINTS_new(void);
+X509_EXTENSION *osh_X509V3_EXT_i2d(int ext_nid, int crit, void *ext_struc);
 
 
 #endif // OPENSSL_SYMBOL_HELPER_H
