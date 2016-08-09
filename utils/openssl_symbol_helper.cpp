@@ -29,7 +29,7 @@ DEFINEFUNC(void, X509_free, X509 *x, x, return, return)
 
 DEFINEFUNC2(int, i2d_X509, X509 *a, a, unsigned char **b, b, return -1, return)
 
-DEFINEFUNC(long, X509_get_version, X509 *x, x, return -1, return)
+//DEFINEFUNC(long, X509_get_version, X509 *x, x, return -1, return)
 DEFINEFUNC2(int, X509_set_version, X509 *x, x, long version, version, return 0, return)
 
 DEFINEFUNC(ASN1_INTEGER *, X509_get_serialNumber, X509 *x, x, return 0, return)
@@ -90,6 +90,7 @@ DEFINEFUNC4(int, RSA_generate_key_ex, RSA *rsa, rsa, int bits, bits, BIGNUM *e, 
 
 // ASN1
 DEFINEFUNC(ASN1_INTEGER *, ASN1_INTEGER_new, void, DUMMYARG, return 0, return)
+DEFINEFUNC(long, ASN1_INTEGER_get, ASN1_INTEGER *a, a, return 0, return)
 DEFINEFUNC2(int, ASN1_INTEGER_set, ASN1_INTEGER *a, a, long v, v, return 0, return)
 
 // Extensions
@@ -112,15 +113,19 @@ bool osh_resolveOpenSslSymbols()
 
     // Force openssl to be loaded by Qt
     bool supported = QSslSocket::supportsSsl();
-    if (!supported)
+    if (!supported) {
+        qDebug() << QSslSocket::sslLibraryBuildVersionString();
+        qDebug() << "No ssl support";
         return false;
+    }
 
-#ifdef QT_OS_WIN
+#ifdef Q_OS_WIN
     QLibrary *libcrypto = new QLibrary("libeay32");
 #else
     QLibrary *libcrypto = new QLibrary("libcrypto");
 #endif
     if (!libcrypto->load()) {
+        qDebug() << "Failed to load lib crypto" << libcrypto->errorString();
         delete libcrypto;
         return false;
     }
@@ -129,7 +134,7 @@ bool osh_resolveOpenSslSymbols()
     RESOLVEFUNC(X509_free)
     RESOLVEFUNC(i2d_X509)
 
-    RESOLVEFUNC(X509_get_version)
+    //RESOLVEFUNC(X509_get_version)
     RESOLVEFUNC(X509_set_version)
     RESOLVEFUNC(X509_get_serialNumber)
     RESOLVEFUNC(X509_set_serialNumber)
@@ -168,6 +173,7 @@ bool osh_resolveOpenSslSymbols()
     RESOLVEFUNC(RSA_generate_key_ex)
 
     RESOLVEFUNC(ASN1_INTEGER_new)
+    RESOLVEFUNC(ASN1_INTEGER_get)
     RESOLVEFUNC(ASN1_INTEGER_set)
     RESOLVEFUNC(BASIC_CONSTRAINTS_new)
     RESOLVEFUNC(X509V3_EXT_i2d)

@@ -63,9 +63,9 @@
 // ret func(arg1, arg2, arg3, arg4, arg6, arg7)
 #  define DEFINEFUNC7(ret, func, arg1, a, arg2, b, arg3, c, arg4, d, arg5, e, arg6, f, arg7, g, err, funcret) \
     typedef ret (*_osh_PTR_##func)(arg1, arg2, arg3, arg4, arg5, arg6, arg7);   \
-    static _osh_PTR_##func _q_##func = 0;                                       \
+    static _osh_PTR_##func _osh_##func = 0;                                       \
     ret osh_##func(arg1, arg2, arg3, arg4, arg5, arg6, arg7) { \
-        if (Q_UNLIKELY(!_q_##func)) { \
+        if (Q_UNLIKELY(!_osh_##func)) { \
             opensslSymbolHelperUnresolvedSymbolWarning(#func); \
             err; \
         } \
@@ -104,6 +104,7 @@ bool osh_resolveOpenSslSymbols();
 
 // X509
 
+# define         osh_X509_get_version(x) osh_ASN1_INTEGER_get((x)->cert_info->version)
 # define         osh_X509_get_notBefore(x) ((x)->cert_info->validity->notBefore)
 # define         osh_X509_get_notAfter(x) ((x)->cert_info->validity->notAfter)
 
@@ -113,7 +114,7 @@ void osh_X509_free(X509 *x);
 // X509
 int osh_i2d_X509(X509 *a, unsigned char **b);
 
-long osh_X509_get_version(X509 *x);
+//long osh_X509_get_version(X509 *x);
 int osh_X509_set_version(X509 *x, long version);
 
 int osh_X509_set_serialNumber(X509 *x, ASN1_INTEGER *serial);
@@ -167,6 +168,7 @@ int osh_RSA_generate_key_ex(RSA *rsa, int bits, BIGNUM *e, BN_GENCB *cb);
 
 // ASN1
 ASN1_INTEGER *osh_ASN1_INTEGER_new(void);
+long osh_ASN1_INTEGER_get(ASN1_INTEGER *a);
 int osh_ASN1_INTEGER_set(ASN1_INTEGER *a, long v);
 
 // Extensions
