@@ -40,6 +40,8 @@ void ProxySettingsPage::load()
 
 void ProxySettingsPage::save()
 {
+    qDebug() << "Saving proxy settings";
+
     QSettings settings;
     settings.beginGroup(QLL("Proxy"));
 

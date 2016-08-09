@@ -27,6 +27,7 @@ bool SettingsPage::aboutToClose()
         case QMessageBox::Cancel:
             return false;
         case QMessageBox::Discard:
+            load();
             return true;
         case QMessageBox::Save:
             save();
