@@ -150,7 +150,7 @@ bool osh_resolveOpenSslSymbols()
     RESOLVEFUNC(X509_sign)
 
     RESOLVEFUNC(X509_gmtime_adj)
-    RESSOLVFUNC(X509_NAME_add_entry_by_txt)
+    RESOLVEFUNC(X509_NAME_add_entry_by_txt)
 
     RESOLVEFUNC(EVP_sha256)
     RESOLVEFUNC(EVP_PKEY_new)
