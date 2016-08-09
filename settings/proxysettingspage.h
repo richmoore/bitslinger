@@ -15,6 +15,11 @@ public:
     explicit ProxySettingsPage(QWidget *parent = 0);
     ~ProxySettingsPage();
 
+public slots:
+    void load();
+    void save();
+    void defaults();
+
 private:
     Ui::ProxySettingsPage *ui;
 };

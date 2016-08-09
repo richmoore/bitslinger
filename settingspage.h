@@ -9,14 +9,25 @@ class SettingsPage : public QWidget
 public:
     explicit SettingsPage(QWidget *parent = 0);
 
+    // Returns true if it is okay to close
+    bool aboutToClose();
+
 signals:
+    void modifiedChanged(bool);
 
 public slots:
-    void load();
-    void save();
-    void reset();
-    void defaults();
+    void aboutToShow();
 
+    void setModified();
+    void clearModified();
+
+    virtual void load();
+    virtual void save();
+    virtual void reset();
+    virtual void defaults();
+
+private:
+    bool m_modified;
 };
 
 #endif // SETTINGSPAGE_H

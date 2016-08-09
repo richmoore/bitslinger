@@ -56,9 +56,16 @@ void SettingsDialog::pageChanged()
     int index = ui->treeWidget->currentIndex().row();
     if (index < 0)
         return;
+
+    int prev = ui->pageStack->currentIndex();
+    if (!pages[prev]->aboutToClose()) {
+        QTreeWidgetItem *item = ui->treeWidget->topLevelItem(prev);
+        item->setSelected(true);
+        qDebug() << "attempting to select" << item->text(0);
+        return;
+    }
+
     qDebug() << "Changing to page" << index;
     ui->pageTitle->setText(pages[index]->windowTitle());
-    //ui->pageStack->currentWidget()->hide();
     ui->pageStack->setCurrentIndex(index);
-    //pages[index]->show();
 }
