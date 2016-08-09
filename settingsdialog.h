@@ -22,6 +22,10 @@ public:
 public slots:
     void pageChanged();
 
+    void apply();
+    void defaults();
+    void reset();
+
 protected:
     void createPages();
 private:

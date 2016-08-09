@@ -1,5 +1,6 @@
 #include <QTreeWidgetItem>
 #include <QDebug>
+#include <QPushButton>
 
 #include "settings/proxysettingspage.h"
 #include "settings/sslcasettingspage.h"
@@ -24,6 +25,13 @@ SettingsDialog::SettingsDialog(QWidget *parent) :
 
     connect(ui->treeWidget, SIGNAL(currentItemChanged(QTreeWidgetItem *, QTreeWidgetItem *)),
             this, SLOT(pageChanged()));
+
+    connect(ui->buttonBox->button(QDialogButtonBox::Apply), SIGNAL(clicked()),
+            this, SLOT(apply()));
+    connect(ui->buttonBox->button(QDialogButtonBox::Reset), SIGNAL(clicked()),
+            this, SLOT(reset()));
+    connect(ui->buttonBox->button(QDialogButtonBox::RestoreDefaults), SIGNAL(clicked()),
+            this, SLOT(defaults()));
 }
 
 SettingsDialog::~SettingsDialog()
@@ -69,4 +77,19 @@ void SettingsDialog::pageChanged()
     pages[index]->aboutToShow();
     ui->pageTitle->setText(pages[index]->windowTitle());
     ui->pageStack->setCurrentIndex(index);
+}
+
+void SettingsDialog::apply()
+{
+    static_cast<SettingsPage *>(ui->pageStack->currentWidget())->save();
+}
+
+void SettingsDialog::defaults()
+{
+    static_cast<SettingsPage *>(ui->pageStack->currentWidget())->defaults();
+}
+
+void SettingsDialog::reset()
+{
+    static_cast<SettingsPage *>(ui->pageStack->currentWidget())->reset();
 }
