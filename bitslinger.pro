@@ -49,7 +49,7 @@ SOURCES += main.cpp\
     settings/proxysettingspage.cpp \
     utils/openssl_symbol_helper.cpp \
     utils/certificategenerator.cpp \
-    settings/sslsettingspage.cpp
+    settings/sslcasettingspage.cpp
 
 HEADERS  += mainwindow.h \
     connection.h \
@@ -67,7 +67,7 @@ HEADERS  += mainwindow.h \
     settings/proxysettingspage.h \
     utils/openssl_symbol_helper.h \
     utils/certificategenerator.h \
-    settings/sslsettingspage.h
+    settings/sslcasettingspage.h
 
 FORMS    += mainwindow.ui \
     mockups/mainview_mockup.ui \
@@ -75,7 +75,7 @@ FORMS    += mainwindow.ui \
     listenereditdialog.ui \
     settingsdialog.ui \
     settings/proxysettingspage.ui \
-    settings/sslsettingspage.ui
+    settings/sslcasettingspage.ui
 
 DISTFILES += \
     NOTES.txt \

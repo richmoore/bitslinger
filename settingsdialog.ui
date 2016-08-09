@@ -55,6 +55,9 @@
          <property name="text">
           <string>Settings</string>
          </property>
+         <property name="indent">
+          <number>3</number>
+         </property>
         </widget>
        </item>
        <item>

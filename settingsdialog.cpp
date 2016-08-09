@@ -2,7 +2,7 @@
 #include <QDebug>
 
 #include "settings/proxysettingspage.h"
-#include "settings/sslsettingspage.h"
+#include "settings/sslcasettingspage.h"
 
 #include "settingsdialog.h"
 #include "ui_settingsdialog.h"
@@ -36,8 +36,8 @@ void SettingsDialog::createPages()
     ProxySettingsPage *proxySettings = new ProxySettingsPage();
     addPage(proxySettings);
 
-    SslSettingsPage *sslSettings = new SslSettingsPage();
-    addPage(sslSettings);
+    SslCaSettingsPage *sslCaSettings = new SslCaSettingsPage();
+    addPage(sslCaSettings);
 }
 
 void SettingsDialog::addPage(SettingsPage *page)
@@ -66,6 +66,7 @@ void SettingsDialog::pageChanged()
     }
 
     qDebug() << "Changing to page" << index;
+    pages[index]->aboutToShow();
     ui->pageTitle->setText(pages[index]->windowTitle());
     ui->pageStack->setCurrentIndex(index);
 }
