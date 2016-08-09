@@ -112,7 +112,8 @@ bool osh_resolveOpenSslSymbols()
 
     // Force openssl to be loaded by Qt
     bool supported = QSslSocket::supportsSsl();
-    Q_UNUSED(supported);
+    if (!supported)
+        return false;
 
 #ifdef QT_OS_WIN
     QLibrary *libcrypto = new QLibrary("libeay32");
