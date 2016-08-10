@@ -52,7 +52,7 @@ void Journal::addConnection(Connection *con)
     m_connections.append(jcon);
 }
 
-void Journal::recordEvent(Connection *con, Connection::EventType type, const QByteArray &content)
+void Journal::recordEvent(Connection *con, Connection::EventType type, const QByteArray &content, const QString &comment)
 {
     if (type == Connection::ServerConnectionEvent) {
         JournalConnection *jcon = m_connections[con->id()];
@@ -65,6 +65,7 @@ void Journal::recordEvent(Connection *con, Connection::EventType type, const QBy
     entry->connectionId = con->id();
     entry->type = type;
     entry->content = content;
+    entry->comment = comment; //### Comment should only be used for user data!!!
 
     beginInsertRows(QModelIndex(), m_events.size(), m_events.size());
     m_events.append(entry);

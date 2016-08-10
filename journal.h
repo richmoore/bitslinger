@@ -40,7 +40,7 @@ public:
     JournalEvent *entry(const QModelIndex &index) { return m_events[index.row()]; }
 
     void addConnection(Connection *con);
-    void recordEvent(Connection *con, Connection::EventType type, const QByteArray &content);
+    void recordEvent(Connection *con, Connection::EventType type, const QByteArray &content, const QString &comment=QString());
 
     QVariant headerData(int section, Qt::Orientation orientation, int role) const;
     QVariant data(const QModelIndex &index, int role) const;

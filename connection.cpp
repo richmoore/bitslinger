@@ -60,13 +60,26 @@ void Connection::clientDisconnected()
     m_server->close();
 }
 
+QString matchClientHello(const QByteArray &data)
+{
+    if (data[0] == 0x16 && data[1] == 0x03
+        && data[5] == 0x01 && data[9] == 0x03) {
+        QString comment("Client hello, record version 3.%1, handshake version 3.%2");
+        comment = comment.arg(int(data[2])).arg(int(data[10]));
+        return comment;
+    }
+    return QString();
+}
+
 void Connection::clientData()
 {
     while (m_client->bytesAvailable()) {
         QByteArray data = m_client->read(qMin(m_client->bytesAvailable(), MAX_CHUNK_SIZE));
         qDebug() << ">>>" << data.size() << "bytes";
 
-        m_journal->recordEvent(this, ClientDataEvent, data);
+        QString comment = matchClientHello(data);
+
+        m_journal->recordEvent(this, ClientDataEvent, data, comment);
         m_server->write(data);
     }
 }
