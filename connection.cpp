@@ -74,10 +74,12 @@ QString matchClientHello(const QByteArray &data)
 void Connection::clientData()
 {
     while (m_client->bytesAvailable()) {
+        QByteArray peeked = m_client->peek(qMin(m_client->bytesAvailable(), MAX_CHUNK_SIZE));
+        QString comment = matchClientHello(peeked);
+
         QByteArray data = m_client->read(qMin(m_client->bytesAvailable(), MAX_CHUNK_SIZE));
         qDebug() << ">>>" << data.size() << "bytes";
 
-        QString comment = matchClientHello(data);
 
         m_journal->recordEvent(this, ClientDataEvent, data, comment);
         m_server->write(data);
