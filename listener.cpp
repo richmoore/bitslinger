@@ -30,7 +30,7 @@ void Listener::setConfig(const ListenerConfig config)
 
 void Listener::setBitSlinger(BitSlinger *slinger)
 {
-    m_bitslinger = slinger;
+    m_slinger = slinger;
     m_journal = slinger->journal();
 }
 
@@ -60,7 +60,7 @@ void Listener::handleConnection()
         QSslSocket *sock = m_server->nextPendingConnection();
 
         Connection *con = new Connection(sock, this);
-        con->setBitSlinger(m_bitslinger);
+        con->setBitSlinger(m_slinger);
         m_journal->addConnection(con);
 
         con->connectToHost(m_config.targetHost, m_config.targetPort);
