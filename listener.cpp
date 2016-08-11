@@ -1,10 +1,10 @@
-#include <QTcpServer>
-#include <QTcpSocket>
+#include <QSslSocket>
 #include <QDebug>
 
 #include "connection.h"
 #include "journal.h"
 #include "bitslinger.h"
+#include "utils/tcpserver.h"
 
 #include "listener.h"
 
@@ -43,7 +43,7 @@ void Listener::stopListening()
 
 bool Listener::listen()
 {
-    m_server = new QTcpServer(this);
+    m_server = new TcpServer(this);
     connect(m_server, SIGNAL(newConnection()), this, SLOT(handleConnection()));
 
     bool ok = m_server->listen(m_config.listenAddress, m_config.listenPort);
@@ -57,7 +57,7 @@ void Listener::handleConnection()
 {
     while (m_server->hasPendingConnections()) {
         qDebug() << "New connection";
-        QTcpSocket *sock = m_server->nextPendingConnection();
+        QSslSocket *sock = m_server->nextPendingConnection();
 
         Connection *con = new Connection(sock, this);
         con->setUpstreamProxy(m_bitslinger->upstreamProxy());

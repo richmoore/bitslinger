@@ -4,7 +4,7 @@
 #include <QObject>
 #include <QNetworkProxy>
 
-class QTcpSocket;
+class QSslSocket;
 
 class Journal;
 
@@ -21,15 +21,15 @@ public:
         ServerDisconnectionEvent
     };
 
-    explicit Connection(QTcpSocket *sock, QObject *parent = 0);
+    explicit Connection(QSslSocket *sock, QObject *parent = 0);
 
     int id() const { return m_connectionId; }
     void setId(int id) { m_connectionId = id; }
     void setJournal(Journal *journal) { m_journal = journal; }
 
     void setUpstreamProxy(const QNetworkProxy &upstream);
-    QTcpSocket *serverSocket() const { return m_server; }
-    QTcpSocket *clientSocket() const { return m_client; }
+    QSslSocket *serverSocket() const { return m_server; }
+    QSslSocket *clientSocket() const { return m_client; }
 signals:
 
 public slots:
@@ -42,8 +42,8 @@ public slots:
     void clientData();
     void serverData();
 private:
-    QTcpSocket *m_server;
-    QTcpSocket *m_client;
+    QSslSocket *m_server;
+    QSslSocket *m_client;
     int m_connectionId;
     Journal *m_journal;
     QNetworkProxy m_upstream;

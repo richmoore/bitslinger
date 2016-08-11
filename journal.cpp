@@ -1,7 +1,7 @@
 #include <QDateTime>
 #include <QDebug>
 #include <QIcon>
-#include <QTcpSocket>
+#include <QSslSocket>
 
 #include "connection.h"
 

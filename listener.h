@@ -4,7 +4,7 @@
 #include <QObject>
 #include <QHostAddress>
 
-class QTcpServer;
+class TcpServer;
 
 class BitSlinger;
 class Journal;
@@ -53,7 +53,7 @@ private slots:
 private:
     Journal *m_journal;
     ListenerConfig m_config;
-    QTcpServer *m_server;
+    TcpServer *m_server;
     BitSlinger *m_bitslinger;
 };
 

@@ -1,4 +1,4 @@
-#include <QTcpSocket>
+#include <QSslSocket>
 
 #include "journal.h"
 
@@ -6,7 +6,7 @@
 
 const qint64 MAX_CHUNK_SIZE = 32*1024; // 32K
 
-Connection::Connection(QTcpSocket *sock, QObject *parent)
+Connection::Connection(QSslSocket *sock, QObject *parent)
     : QObject(parent),
       m_server(0),
       m_client(sock),
@@ -24,7 +24,7 @@ void Connection::connectToHost(const QString &hostname, int port)
 {
     m_journal->recordEvent(this, ClientConnectionEvent, QByteArray());
 
-    m_server = new QTcpSocket(this);
+    m_server = new QSslSocket(this);
     m_server->setProxy(m_upstream);
     m_server->connectToHost(hostname, port);
 
