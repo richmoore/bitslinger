@@ -39,7 +39,6 @@ public:
 
     BitSlinger *bitSlinger() const { return m_slinger; }
     void setBitSlinger(BitSlinger *slinger);
-    void setUpstreamProxy(const QNetworkProxy &upstream);
 
 signals:
     void connectionReceived();
