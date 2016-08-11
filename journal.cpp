@@ -129,20 +129,28 @@ QVariant Journal::data(const QModelIndex &index, int role) const
         case COLUMN_TYPE:
             switch(entry->type) {
             case Connection::ClientConnectionEvent:
-                return QString("Client Connection");
+                return tr("Client Connection");
             case Connection::ServerConnectionEvent:
-                return QString("Server Connection");
+                return tr("Server Connection");
             case Connection::ClientDataEvent:
-                return QString("Client Data");
+                return tr("Client Data");
             case Connection::ServerDataEvent:
-                return QString("Server Data");
+                return tr("Server Data");
             case Connection::ClientDisconnectionEvent:
-                return QString("Client Disconnection");
+                return tr("Client Disconnection");
             case Connection::ServerDisconnectionEvent:
-                return QString("Server Disconnection");
+                return tr("Server Disconnection");
+            case Connection::ClientNoteEvent:
+                return tr("Client Note");
+            case Connection::ServerNoteEvent:
+                return tr("Server Note");
+            case Connection::ClientSwitchedToSslEvent:
+                return tr("Client Switch to SSL");
+            case Connection::ServerSwitchedToSslEvent:
+                return tr("Server switched to SSL");
             default:
                 qDebug() << "Unknown entry type" << entry->type;
-                return QString("Unknown");
+                return tr("Unknown");
             }
         case COLUMN_LENGTH:
             return entry->content.size();
@@ -160,8 +168,12 @@ QVariant Journal::data(const QModelIndex &index, int role) const
         if (index.column() == COLUMN_DIRECTION) {
             switch (entry->type) {
             case Connection::ClientDataEvent:
+            case Connection::ClientNoteEvent: // TODO: new icon
+            case Connection::ClientSwitchedToSslEvent: // TODO: new icon
                 return QIcon(":icons/client2server.svg");
             case Connection::ServerDataEvent:
+            case Connection::ServerNoteEvent: // TODO: new icon
+            case Connection::ServerSwitchedToSslEvent: // TODO: new icon
                 return QIcon(":icons/server2client.svg");
             case Connection::ClientConnectionEvent:
                 return QIcon(":icons/client2server_connected.svg");
@@ -173,7 +185,7 @@ QVariant Journal::data(const QModelIndex &index, int role) const
                 return QIcon(":icons/server2client_disconnected.svg");
             default:
                 qDebug() << "Unknown direction" << entry->type;
-                return QString("Unknown");
+                return tr("Unknown");
             }
         }
     }

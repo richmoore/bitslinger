@@ -9,6 +9,8 @@ class CertificateGenerator
 public:
     CertificateGenerator();
 
+    void load();
+
     QSslCertificate caCertificate() const { return m_caCert; }
     void setCaCertificate(const QSslCertificate &caCert) { m_caCert = caCert; }
 

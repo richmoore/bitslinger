@@ -5,6 +5,7 @@
 #include <QList>
 #include <QColor>
 #include <QDataStream>
+#include <QHostAddress>
 
 #include "connection.h"
 

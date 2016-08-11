@@ -1,6 +1,10 @@
 #include <QSslSocket>
+#include <QSslKey>
+#include <QSslCertificate>
 
+#include "bitslinger.h"
 #include "journal.h"
+#include "utils/certificategenerator.h"
 
 #include "connection.h"
 
@@ -8,16 +12,14 @@ const qint64 MAX_CHUNK_SIZE = 32*1024; // 32K
 
 Connection::Connection(QSslSocket *sock, QObject *parent)
     : QObject(parent),
+      m_slinger(0),
+      m_serverSslMode(AutoSslMode),
       m_server(0),
+      m_clientSslMode(AutoSslMode),
       m_client(sock),
       m_connectionId(-1),
       m_journal(0)
 {
-}
-
-void Connection::setUpstreamProxy(const QNetworkProxy &upstream)
-{
-    m_upstream = upstream;
 }
 
 void Connection::connectToHost(const QString &hostname, int port)
@@ -25,7 +27,7 @@ void Connection::connectToHost(const QString &hostname, int port)
     m_journal->recordEvent(this, ClientConnectionEvent, QByteArray());
 
     m_server = new QSslSocket(this);
-    m_server->setProxy(m_upstream);
+    m_server->setProxy(m_slinger->upstreamProxy());
     m_server->connectToHost(hostname, port);
 
     connect(m_client, SIGNAL(disconnected()), this, SLOT(clientDisconnected()));
@@ -60,28 +62,47 @@ void Connection::clientDisconnected()
     m_server->close();
 }
 
-QString matchClientHello(const QByteArray &data)
+int Connection::findSslClientHello(const QByteArray &data)
 {
+    //### This should really search the whole message for one
     if (data[0] == 0x16 && data[1] == 0x03
         && data[5] == 0x01 && data[9] == 0x03) {
-        QString comment("Client hello, record version 3.%1, handshake version 3.%2");
-        comment = comment.arg(int(data[2])).arg(int(data[10]));
-        return comment;
+        qDebug() << QString("Client hello, record version 3.%1, handshake version 3.%2").arg(int(data[2])).arg(int(data[10]));
+        return 0;
     }
-    return QString();
+    return -1;
 }
 
 void Connection::clientData()
 {
     while (m_client->bytesAvailable()) {
+        // Detect SSL client hello
         QByteArray peeked = m_client->peek(qMin(m_client->bytesAvailable(), MAX_CHUNK_SIZE));
-        QString comment = matchClientHello(peeked);
+
+        int index = findSslClientHello(peeked);
+        // If we found one
+        if (index >= 0) {
+            qDebug() << "SSL client hello detected";
+
+            m_journal->recordEvent(this, ClientSwitchedToSslEvent, QByteArray());
+            if (m_clientSslMode == AutoSslMode) {
+                m_server->flush();
+
+                // TODO: we should log these event though we're going to ignore them
+                connect(m_server, SIGNAL(sslErrors(QList<QSslError>)), m_server, SLOT(ignoreSslErrors()));
+                connect(m_server, SIGNAL(encrypted()), this, SLOT(serverEncrypted()));
+                m_server->startClientEncryption();
+                qDebug() << "Swtiching to ssl for server connection";
+
+                return; // Force exit without processing the data
+            }
+        }
 
         QByteArray data = m_client->read(qMin(m_client->bytesAvailable(), MAX_CHUNK_SIZE));
         qDebug() << ">>>" << data.size() << "bytes";
 
 
-        m_journal->recordEvent(this, ClientDataEvent, data, comment);
+        m_journal->recordEvent(this, ClientDataEvent, data);
         m_server->write(data);
     }
 }
@@ -95,4 +116,18 @@ void Connection::serverData()
         m_journal->recordEvent(this, ServerDataEvent, data);
         m_client->write(data);
     }
+}
+
+void Connection::serverEncrypted()
+{
+    m_journal->recordEvent(this, ServerSwitchedToSslEvent, QByteArray());
+
+    qDebug() << "Server connection is now encrypted, responding to client";
+    CertificateGenerator *gen = m_slinger->certificateGenerator();
+    QSslCertificate leaf = gen->createClone(m_server->peerCertificate());
+    qDebug() << leaf.toText();
+
+    m_client->setPrivateKey(gen->leafKey());
+    m_client->setLocalCertificate(leaf);
+    m_client->startServerEncryption();
 }

@@ -2,10 +2,10 @@
 #define CONNECTION_H
 
 #include <QObject>
-#include <QNetworkProxy>
 
 class QSslSocket;
 
+class BitSlinger;
 class Journal;
 
 class Connection : public QObject
@@ -18,16 +18,27 @@ public:
         ClientDataEvent,
         ServerDataEvent,
         ClientDisconnectionEvent,
-        ServerDisconnectionEvent
+        ServerDisconnectionEvent,
+        ClientNoteEvent,
+        ServerNoteEvent,
+        ClientSwitchedToSslEvent,
+        ServerSwitchedToSslEvent
+    };
+
+    enum SslMode {
+        AutoSslMode,
+        NoSslMode
     };
 
     explicit Connection(QSslSocket *sock, QObject *parent = 0);
+
+    BitSlinger *bitSlinger() const { return m_slinger; }
+    void setBitSlinger(BitSlinger *slinger) { m_slinger = slinger; }
 
     int id() const { return m_connectionId; }
     void setId(int id) { m_connectionId = id; }
     void setJournal(Journal *journal) { m_journal = journal; }
 
-    void setUpstreamProxy(const QNetworkProxy &upstream);
     QSslSocket *serverSocket() const { return m_server; }
     QSslSocket *clientSocket() const { return m_client; }
 signals:
@@ -41,12 +52,20 @@ public slots:
 
     void clientData();
     void serverData();
+
+    void serverEncrypted();
+
 private:
+    int findSslClientHello(const QByteArray &data);
+
+private:
+    BitSlinger *m_slinger;
+    SslMode m_serverSslMode;
     QSslSocket *m_server;
+    SslMode m_clientSslMode;
     QSslSocket *m_client;
     int m_connectionId;
     Journal *m_journal;
-    QNetworkProxy m_upstream;
 };
 
 #endif // CONNECTION_H

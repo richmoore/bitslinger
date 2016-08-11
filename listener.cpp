@@ -60,7 +60,7 @@ void Listener::handleConnection()
         QSslSocket *sock = m_server->nextPendingConnection();
 
         Connection *con = new Connection(sock, this);
-        con->setUpstreamProxy(m_bitslinger->upstreamProxy());
+        con->setBitSlinger(m_bitslinger);
         m_journal->addConnection(con);
 
         con->connectToHost(m_config.targetHost, m_config.targetPort);

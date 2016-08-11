@@ -37,6 +37,7 @@ public:
     ListenerConfig config() const { return m_config; }
     void setConfig(const ListenerConfig config);
 
+    BitSlinger *bitSlinger() const { return m_bitslinger; }
     void setBitSlinger(BitSlinger *slinger);
     void setUpstreamProxy(const QNetworkProxy &upstream);
 

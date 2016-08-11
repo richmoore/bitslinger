@@ -5,6 +5,7 @@
 #include <QNetworkProxy>
 
 #include "listener.h"
+#include "utils/certificategenerator.h"
 
 class QHostAddress;
 class QIODevice;
@@ -27,6 +28,8 @@ public:
 
     explicit BitSlinger(QObject *parent = 0);
 
+    CertificateGenerator *certificateGenerator() { return &m_certGenerator; }
+
     Listener *listenerAt(int index) const { return m_listeners[index]; }
     ListenerList listeners() const { return m_listeners; }
     Journal *journal() const { return m_journal; }
@@ -48,6 +51,7 @@ private:
     ListenerList m_listeners;
     Journal *m_journal;
     QNetworkProxy m_upstream;
+    CertificateGenerator m_certGenerator;
 };
 
 Q_DECLARE_OPERATORS_FOR_FLAGS(BitSlinger::StateFileFlags)
