@@ -4,6 +4,8 @@
 #include <QAbstractScrollArea>
 #include <QPen>
 #include <QBrush>
+#include <QBuffer>
+#include <QTimer>
 
 #include "chunks.h"
 #include "commands.h"

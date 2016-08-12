@@ -1,5 +1,9 @@
-#include "chunks.h"
 #include <limits.h>
+
+#include <QBuffer>
+#include <QIODevice>
+
+#include "chunks.h"
 
 #define NORMAL 0
 #define HIGHLIGHTED 1

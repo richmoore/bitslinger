@@ -17,7 +17,10 @@
  *
  */
 
-#include <QtCore>
+#include <QByteArray>
+#include <QList>
+
+class QIODevice;
 
 struct Chunk
 {
@@ -32,6 +35,7 @@ public:
     // Constructors and file settings
     Chunks();
     Chunks(QIODevice &ioDevice);
+
     bool setIODevice(QIODevice &ioDevice);
 
     // Getting data out of Chunks
