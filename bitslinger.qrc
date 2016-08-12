@@ -12,5 +12,7 @@
         <file>icons/arrow_bidi.svg</file>
         <file>icons/stethoscope.svg</file>
         <file>icons/soundwave.svg</file>
+        <file>icons/lock.svg</file>
+        <file>icons/repost.svg</file>
     </qresource>
 </RCC>

@@ -52,9 +52,9 @@ void Journal::addConnection(Connection *con)
     m_connections.append(jcon);
 }
 
-void Journal::recordEvent(Connection *con, Connection::EventType type, const QByteArray &content, const QString &comment)
+void Journal::recordEvent(Connection *con, Journal::EventType type, const QByteArray &content, const QString &comment)
 {
-    if (type == Connection::ServerConnectionEvent) {
+    if (type == ServerConnectionEvent) {
         JournalConnection *jcon = m_connections[con->id()];
         jcon->targetAddress = con->serverSocket()->peerAddress();
         jcon->targetPort = con->serverSocket()->peerPort();
@@ -128,25 +128,25 @@ QVariant Journal::data(const QModelIndex &index, int role) const
             return entry->connectionId;
         case COLUMN_TYPE:
             switch(entry->type) {
-            case Connection::ClientConnectionEvent:
+            case ClientConnectionEvent:
                 return tr("Client Connection");
-            case Connection::ServerConnectionEvent:
+            case ServerConnectionEvent:
                 return tr("Server Connection");
-            case Connection::ClientDataEvent:
+            case ClientDataEvent:
                 return tr("Client Data");
-            case Connection::ServerDataEvent:
+            case ServerDataEvent:
                 return tr("Server Data");
-            case Connection::ClientDisconnectionEvent:
+            case ClientDisconnectionEvent:
                 return tr("Client Disconnection");
-            case Connection::ServerDisconnectionEvent:
+            case ServerDisconnectionEvent:
                 return tr("Server Disconnection");
-            case Connection::ClientNoteEvent:
+            case ClientNoteEvent:
                 return tr("Client Note");
-            case Connection::ServerNoteEvent:
+            case ServerNoteEvent:
                 return tr("Server Note");
-            case Connection::ClientSwitchedToSslEvent:
+            case ClientSwitchedToSslEvent:
                 return tr("Client Switch to SSL");
-            case Connection::ServerSwitchedToSslEvent:
+            case ServerSwitchedToSslEvent:
                 return tr("Server switched to SSL");
             default:
                 qDebug() << "Unknown entry type" << entry->type;
@@ -155,7 +155,7 @@ QVariant Journal::data(const QModelIndex &index, int role) const
         case COLUMN_LENGTH:
             return entry->content.size();
         case COLUMN_DETAILS:
-            if (entry->type == Connection::ClientDataEvent || entry->type == Connection::ServerDataEvent)
+            if (entry->type == ClientDataEvent || entry->type == ServerDataEvent)
                 return entry->content.toHex();
         case COLUMN_COMMENT:
             return entry->comment;
@@ -167,21 +167,23 @@ QVariant Journal::data(const QModelIndex &index, int role) const
     else if (role == Qt::DecorationRole) {
         if (index.column() == COLUMN_DIRECTION) {
             switch (entry->type) {
-            case Connection::ClientDataEvent:
-            case Connection::ClientNoteEvent: // TODO: new icon
-            case Connection::ClientSwitchedToSslEvent: // TODO: new icon
+            case ClientDataEvent:
+            case ClientNoteEvent: // TODO: new icon
                 return QIcon(":icons/client2server.svg");
-            case Connection::ServerDataEvent:
-            case Connection::ServerNoteEvent: // TODO: new icon
-            case Connection::ServerSwitchedToSslEvent: // TODO: new icon
+            case ClientSwitchedToSslEvent:
+                return QIcon(":icons/lock.svg");
+            case ServerDataEvent:
+            case ServerNoteEvent: // TODO: new icon
                 return QIcon(":icons/server2client.svg");
-            case Connection::ClientConnectionEvent:
+            case ServerSwitchedToSslEvent:
+                return QIcon(":icons/lock.svg");
+            case ClientConnectionEvent:
                 return QIcon(":icons/client2server_connected.svg");
-            case Connection::ServerConnectionEvent:
+            case ServerConnectionEvent:
                 return QIcon(":icons/server2client_connected.svg");
-            case Connection::ClientDisconnectionEvent:
+            case ClientDisconnectionEvent:
                 return QIcon(":icons/client2server_disconnected.svg");
-            case Connection::ServerDisconnectionEvent:
+            case ServerDisconnectionEvent:
                 return QIcon(":icons/server2client_disconnected.svg");
             default:
                 qDebug() << "Unknown direction" << entry->type;
@@ -244,7 +246,7 @@ QDataStream &operator>>(QDataStream &stream, JournalEvent *&event)
     stream >> event->connectionId;
     quint16 eventType;
     stream >> eventType;
-    event->type = Connection::EventType(eventType);
+    event->type = Journal::EventType(eventType);
     QByteArray compressed;
     stream >> compressed;
     event->content = qUncompress(compressed);

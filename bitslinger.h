@@ -44,6 +44,8 @@ public:
     bool writeState(QIODevice *output);
     bool readState(QIODevice *input);
 
+    void loadCaConfig();
+
 signals:
 
 public slots:

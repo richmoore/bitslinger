@@ -1,5 +1,4 @@
 #include <QDebug>
-#include <QSettings>
 
 #include <openssl/ssl.h>
 #include <openssl/err.h>
@@ -13,32 +12,9 @@
 QByteArray x509_to_der(X509 *x509);
 QByteArray RSAPrivateKey_to_der(RSA *rsa);
 
-#define QLL QLatin1Literal
-
 CertificateGenerator::CertificateGenerator()
 {
     osh_resolveOpenSslSymbols();
-}
-
-void CertificateGenerator::load()
-{
-    QSettings settings;
-    settings.beginGroup(QLL("SSL Certificate Authority"));
-
-    if (settings.contains(QLL("CAKey")) && settings.contains(QLL("CACert"))) {
-        qDebug() << "Using existing CA";
-
-        m_caKey = QSslKey(settings.value("CAKey").toByteArray(), QSsl::Rsa, QSsl::Pem);
-        m_caCert = QSslCertificate(settings.value("CACert").toByteArray(), QSsl::Pem);
-    }
-    else {
-        qDebug() << "Making new CA";
-
-        m_caKey = createKey();
-        m_caCert = createCaCertificate(m_caKey);
-    }
-
-    m_leafKey = createKey();
 }
 
 QSslCertificate CertificateGenerator::createClone(const QSslCertificate &leaf)

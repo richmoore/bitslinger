@@ -1,5 +1,9 @@
 #include <QHostAddress>
 #include <QDataStream>
+#include <QDebug>
+#include <QSslCertificate>
+#include <QSslKey>
+#include <QSettings>
 
 #include "journal.h"
 #include "listener.h"
@@ -9,10 +13,13 @@
 const quint32 STATE_FILE_MAGIC = 0xB175BABE;
 const quint16 STATE_FILE_VERSION = 0x0001;
 
+#define QLL QLatin1Literal
+
 BitSlinger::BitSlinger(QObject *parent) : QObject(parent)
 {
     m_journal = new Journal(this);
-    m_certGenerator.load();
+
+    loadCaConfig();
 }
 
 void BitSlinger::setUpstreamProxy(const QNetworkProxy &upstream)
@@ -81,6 +88,38 @@ bool BitSlinger::readState(QIODevice *input)
     stream >> *m_journal;
 
     return stream.status() != QDataStream::Ok;
+}
+
+void BitSlinger::loadCaConfig()
+{
+    QSettings settings;
+    settings.beginGroup(QLL("SSL Certificate Authority"));
+
+    QSslKey caKey;
+    QSslCertificate caCert;
+
+    if (settings.contains(QLL("CAKey")) && settings.contains(QLL("CACert"))) {
+        qDebug() << "Using existing CA";
+
+        caKey = QSslKey(settings.value("CAKey").toByteArray(), QSsl::Rsa, QSsl::Pem);
+        caCert = QSslCertificate(settings.value("CACert").toByteArray(), QSsl::Pem);
+    }
+    else {
+        qDebug() << "Making new CA";
+
+        caKey = m_certGenerator.createKey();
+        caCert = m_certGenerator.createCaCertificate(caKey);
+    }
+
+    m_certGenerator.setCaKey(caKey);
+    m_certGenerator.setCaCertificate(caCert);
+
+    // Save the generated CA
+    settings.setValue(QLL("CAKey"), caKey.toPem());
+    settings.setValue(QLL("CACert"), caCert.toPem());
+
+    QSslKey leafKey = m_certGenerator.createKey();
+    m_certGenerator.setLeafKey(leafKey);
 }
 
 

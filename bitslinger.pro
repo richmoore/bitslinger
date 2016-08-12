@@ -12,11 +12,11 @@ TARGET = bitslinger
 TEMPLATE = app
 
 #INCLUDEPATH += c:/OpenSSL-Win64/include
-win32-msvc {
-  contains(QMAKE_HOST.arch, x86):{
-    INCLUDEPATH += c:/OpenSSL-Win32/include
- } else {
+win32: {
+  contains(QMAKE_HOST.arch, x86_64):{
     INCLUDEPATH += c:/OpenSSL-Win64/include
+ } else {
+    INCLUDEPATH += c:/OpenSSL-Win32/include
   }
 }
 

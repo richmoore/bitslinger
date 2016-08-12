@@ -12,19 +12,6 @@ class Connection : public QObject
 {
     Q_OBJECT
 public:
-    enum EventType {
-        ClientConnectionEvent,
-        ServerConnectionEvent,
-        ClientDataEvent,
-        ServerDataEvent,
-        ClientDisconnectionEvent,
-        ServerDisconnectionEvent,
-        ClientNoteEvent,
-        ServerNoteEvent,
-        ClientSwitchedToSslEvent,
-        ServerSwitchedToSslEvent
-    };
-
     enum SslMode {
         AutoSslMode,
         NoSslMode

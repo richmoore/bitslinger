@@ -2,3 +2,10 @@ Arrows
 By Brian Oppenlander, US
 
 https://thenounproject.com/search/?q=arrows&i=14396
+
+
+
+New icons:
+
+lock    SSL
+repost  Repeatery thing
