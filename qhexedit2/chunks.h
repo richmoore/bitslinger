@@ -21,6 +21,7 @@
 #include <QList>
 
 class QIODevice;
+class QBuffer;
 
 struct Chunk
 {
@@ -35,6 +36,8 @@ public:
     // Constructors and file settings
     Chunks();
     Chunks(QIODevice &ioDevice);
+
+    ~Chunks();
 
     bool setIODevice(QIODevice &ioDevice);
 
@@ -64,6 +67,7 @@ public:
 private:
     int getChunkIndex(qint64 absPos);
 
+    QBuffer * _buf; // Fallback buffer
     QIODevice * _ioDevice;
     qint64 _pos;
     qint64 _size;

@@ -16,13 +16,18 @@
 
 Chunks::Chunks()
 {
-    QBuffer *buf = new QBuffer();
-    setIODevice(*buf);
+    _buf = new QBuffer();
+    setIODevice(*_buf);
 }
 
 Chunks::Chunks(QIODevice &ioDevice)
 {
     setIODevice(ioDevice);
+}
+
+Chunks::~Chunks()
+{
+    delete _buf;
 }
 
 bool Chunks::setIODevice(QIODevice &ioDevice)
@@ -36,8 +41,9 @@ bool Chunks::setIODevice(QIODevice &ioDevice)
     }
     else                                        // Fallback is an empty buffer
     {
-        QBuffer *buf = new QBuffer();
-        _ioDevice = buf;
+        delete _buf;
+        QBuffer *_buf = new QBuffer();
+        _ioDevice = _buf;
         _size = 0;
     }
     _chunks.clear();
