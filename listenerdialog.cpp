@@ -62,6 +62,7 @@ void ListenerDialog::addListener()
     config.targetPort = dlg.targetPort();
 
     m_slinger->addListener(config);
+    m_slinger->saveListenerConfig();
     refreshList();
 }
 
@@ -86,6 +87,7 @@ void ListenerDialog::editListener()
     config.targetPort = dlg.targetPort();
 
     m_slinger->editListener(index, config);
+    m_slinger->saveListenerConfig();
     refreshList();
 }
 
@@ -93,5 +95,6 @@ void ListenerDialog::removeListener()
 {
     int index = ui->listenerTree->currentIndex().row();
     m_slinger->removeListener(index);
+    m_slinger->saveListenerConfig();
     refreshList();
 }

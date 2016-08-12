@@ -43,6 +43,7 @@ void BitSlinger::editListener(int index, const ListenerConfig &config)
 
 void BitSlinger::removeListener(int index)
 {
+    m_listeners[index]->deleteLater();
     m_listeners.removeAt(index);
 }
 
@@ -120,6 +121,47 @@ void BitSlinger::loadCaConfig()
 
     QSslKey leafKey = m_certGenerator.createKey();
     m_certGenerator.setLeafKey(leafKey);
+}
+
+void BitSlinger::saveListenerConfig()
+{
+    QSettings settings;
+    settings.beginGroup(QLL("Listener Configuration"));
+
+    settings.beginWriteArray(QLL("Listeners"));
+    for(int i=0; i < m_listeners.size(); i++) {
+        settings.setArrayIndex(i);
+
+        ListenerConfig config = m_listeners[i]->config();
+        settings.setValue(QLL("ListenAddress"), config.listenAddress.toString());
+        settings.setValue(QLL("ListenPort"), config.listenPort);
+        settings.setValue(QLL("TargetHost"), config.targetHost);
+        settings.setValue(QLL("TargetPort"), config.targetPort);
+    }
+    settings.endArray();
+}
+
+void BitSlinger::loadListenerConfig()
+{
+    // Remove any existing listeners
+    while(m_listeners.size())
+        removeListener(0);
+
+    QSettings settings;
+    settings.beginGroup(QLL("Listener Configuration"));
+
+    int count = settings.beginReadArray(QLL("Listeners"));
+    for(int i=0; i < count; i++) {
+        settings.setArrayIndex(i);
+        ListenerConfig config;
+        config.listenAddress = QHostAddress(settings.value(QLL("ListenAddress")).toString());
+        config.listenPort = settings.value(QLL("ListenPort")).toInt();
+        config.targetHost = settings.value(QLL("TargetHost")).toString();
+        config.targetPort = settings.value(QLL("TargetPort")).toInt();
+
+        addListener(config);
+    }
+    settings.endArray();
 }
 
 

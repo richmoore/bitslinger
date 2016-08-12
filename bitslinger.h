@@ -46,6 +46,9 @@ public:
 
     void loadCaConfig();
 
+    void saveListenerConfig();
+    void loadListenerConfig();
+
 signals:
 
 public slots:
