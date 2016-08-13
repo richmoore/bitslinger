@@ -106,6 +106,14 @@ QVariant Journal::headerData(int section, Qt::Orientation orientation, int role)
     return headings[section];
 }
 
+Qt::ItemFlags Journal::flags(const QModelIndex &index) const
+{
+    if (index.column() == COLUMN_COMMENT)
+        return Qt::ItemIsSelectable | Qt::ItemIsEnabled | Qt::ItemNeverHasChildren | Qt::ItemIsEditable;
+
+    return Qt::ItemIsSelectable | Qt::ItemIsEnabled | Qt::ItemNeverHasChildren;
+}
+
 QVariant Journal::data(const QModelIndex &index, int role) const
 {
     if (!index.isValid())
@@ -157,6 +165,7 @@ QVariant Journal::data(const QModelIndex &index, int role) const
         case COLUMN_DETAILS:
             if (entry->type == ClientDataEvent || entry->type == ServerDataEvent)
                 return entry->content.toHex();
+            break;
         case COLUMN_COMMENT:
             return entry->comment;
         default:
@@ -191,12 +200,42 @@ QVariant Journal::data(const QModelIndex &index, int role) const
             }
         }
     }
+    else if (role == Qt::EditRole) {
+        if (index.column() == COLUMN_COMMENT)
+            return entry->comment;
+    }
     else if (role == Qt::BackgroundColorRole) {
         if (entry->color.isValid())
             return entry->color;
     }
 
     return QVariant();
+}
+
+bool Journal::setData(const QModelIndex &index, const QVariant &value, int role)
+{
+    qDebug() << "setData called" << value;
+    if (!index.isValid())
+        return false;
+
+    if(index.row() >= m_events.size() || index.row() < 0)
+        return false;
+
+    JournalEvent *entry = m_events[index.row()];
+
+    if (role != Qt::EditRole)
+        return false;
+
+    if (index.column() == COLUMN_COMMENT) {
+        entry->comment = value.toString();
+
+        QVector<int> roles;
+        roles << role;
+        emit dataChanged(index, index, roles);
+        return true;
+    }
+
+    return false;
 }
 
 
