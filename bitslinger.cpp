@@ -121,6 +121,32 @@ void BitSlinger::loadCaConfig()
     m_certGenerator.setLeafKey(leafKey);
 }
 
+void BitSlinger::loadProxyConfig()
+{
+    QSettings settings;
+    settings.beginGroup(QLL("Proxy"));
+
+    int type = settings.value(QLL("ProxyType"), 0).toInt();
+    QString host = settings.value(QLL("ProxyHost")).toString();
+    int port = settings.value(QLL("ProxyPort"), 8080).toInt();
+    QString user = settings.value(QLL("ProxyUser")).toString();
+    QString pass = settings.value(QLL("ProxyPassword")).toString();
+
+    QNetworkProxy::ProxyType proxyType;
+    if (type == 0)
+        proxyType = QNetworkProxy::NoProxy;
+    else if (type == 1)
+        proxyType = QNetworkProxy::HttpProxy;
+    else if (type == 2)
+        proxyType = QNetworkProxy::Socks5Proxy;
+    else {
+        qWarning() << "Unknown proxy type" << type;
+    }
+
+    QNetworkProxy proxy(proxyType, host, port, user, pass);
+    m_upstream = proxy;
+}
+
 void BitSlinger::saveListenerConfig()
 {
     QSettings settings;

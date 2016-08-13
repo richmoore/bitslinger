@@ -45,6 +45,7 @@ public:
     bool readState(QIODevice *input);
 
     void loadCaConfig();
+    void loadProxyConfig();
 
     void saveListenerConfig();
     void loadListenerConfig();
