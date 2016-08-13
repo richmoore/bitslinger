@@ -53,6 +53,7 @@ void ProxySettingsPage::save()
     settings.setValue(QLL("ProxyPassword"), ui->passwordEdit->text());
 
     clearModified();
+    emit saved();
 }
 
 void ProxySettingsPage::defaults()

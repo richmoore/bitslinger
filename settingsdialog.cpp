@@ -2,15 +2,18 @@
 #include <QDebug>
 #include <QPushButton>
 
+#include "bitslinger.h"
+
 #include "settings/proxysettingspage.h"
 #include "settings/sslcasettingspage.h"
 
 #include "settingsdialog.h"
 #include "ui_settingsdialog.h"
 
-SettingsDialog::SettingsDialog(QWidget *parent) :
+SettingsDialog::SettingsDialog(BitSlinger *slinger, QWidget *parent) :
     QDialog(parent),
-    ui(new Ui::SettingsDialog)
+    ui(new Ui::SettingsDialog),
+    m_slinger(slinger)
 {
     ui->setupUi(this);
     createPages();
@@ -21,11 +24,14 @@ SettingsDialog::SettingsDialog(QWidget *parent) :
     ui->pageTitle->setText(pages[0]->windowTitle());
     ui->pageStack->setCurrentIndex(0);
 
-    pages[0]->show();
+    pages[0]->aboutToShow();
+    ui->pageStack->setCurrentIndex(0);
 
     connect(ui->treeWidget, SIGNAL(currentItemChanged(QTreeWidgetItem *, QTreeWidgetItem *)),
             this, SLOT(pageChanged()));
 
+    connect(ui->buttonBox->button(QDialogButtonBox::Ok), SIGNAL(clicked()),
+            this, SLOT(apply()));
     connect(ui->buttonBox->button(QDialogButtonBox::Apply), SIGNAL(clicked()),
             this, SLOT(apply()));
     connect(ui->buttonBox->button(QDialogButtonBox::Reset), SIGNAL(clicked()),
@@ -42,9 +48,11 @@ SettingsDialog::~SettingsDialog()
 void SettingsDialog::createPages()
 {
     ProxySettingsPage *proxySettings = new ProxySettingsPage();
+    connect(proxySettings, SIGNAL(saved()), m_slinger, SLOT(loadProxyConfig()));
     addPage(proxySettings);
 
     SslCaSettingsPage *sslCaSettings = new SslCaSettingsPage();
+    connect(sslCaSettings, SIGNAL(saved()), m_slinger, SLOT(loadCaConfig()));
     addPage(sslCaSettings);
 }
 

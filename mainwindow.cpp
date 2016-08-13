@@ -58,7 +58,7 @@ void MainWindow::showListenerDialog()
 
 void MainWindow::showSettings()
 {
-    SettingsDialog dlg(this);
+    SettingsDialog dlg(m_slinger ,this);
     dlg.exec();
 }
 

@@ -24,9 +24,12 @@ Connection::Connection(QSslSocket *sock, QObject *parent)
 
 void Connection::connectToHost(const QString &hostname, int port)
 {
+    qDebug() << Q_FUNC_INFO;
+
     m_journal->recordEvent(this, Journal::ClientConnectionEvent, QByteArray());
 
     m_server = new QSslSocket(this);
+    qDebug() << "Connecting via" << m_slinger->upstreamProxy();
     m_server->setProxy(m_slinger->upstreamProxy());
     m_server->connectToHost(hostname, port);
 

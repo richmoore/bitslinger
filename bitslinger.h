@@ -44,15 +44,15 @@ public:
     bool writeState(QIODevice *output);
     bool readState(QIODevice *input);
 
+signals:
+
+public slots:
     void loadCaConfig();
     void loadProxyConfig();
 
     void saveListenerConfig();
     void loadListenerConfig();
 
-signals:
-
-public slots:
 private:
     ListenerList m_listeners;
     Journal *m_journal;

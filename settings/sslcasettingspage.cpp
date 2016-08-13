@@ -78,6 +78,7 @@ void SslCaSettingsPage::save()
     settings.setValue(QLL("CACert"), certPem);
 
     clearModified();
+    emit saved();
 }
 
 void SslCaSettingsPage::defaults()

@@ -15,6 +15,8 @@ public:
 signals:
     void modifiedChanged(bool);
 
+    void saved();
+
 public slots:
     void aboutToShow();
 

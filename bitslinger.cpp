@@ -22,6 +22,7 @@ BitSlinger::BitSlinger(QObject *parent) : QObject(parent)
 
 void BitSlinger::setUpstreamProxy(const QNetworkProxy &upstream)
 {
+    qDebug() << "setting upstream to" << upstream;
     m_upstream = upstream;
 }
 
@@ -123,6 +124,8 @@ void BitSlinger::loadCaConfig()
 
 void BitSlinger::loadProxyConfig()
 {
+    qDebug() << Q_FUNC_INFO;
+
     QSettings settings;
     settings.beginGroup(QLL("Proxy"));
 
@@ -144,6 +147,7 @@ void BitSlinger::loadProxyConfig()
     }
 
     QNetworkProxy proxy(proxyType, host, port, user, pass);
+    qDebug() << proxy;
     m_upstream = proxy;
 }
 
