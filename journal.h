@@ -77,13 +77,23 @@ struct JournalConnection
 
 struct JournalEvent
 {
+    enum JournalEventFlag {
+        JournalEventWasEdited = 0x1
+    };
+    Q_DECLARE_FLAGS(JournalEventFlags, JournalEventFlag)
+
     qint64 timestamp;
     int connectionId;
     Journal::EventType type;
+    JournalEventFlags flags;
     QByteArray content;
+    QByteArray editedContent;
+    QByteArray extraData;
     QColor color;
     QString comment;
 };
+
+Q_DECLARE_OPERATORS_FOR_FLAGS(JournalEvent::JournalEventFlags)
 
 QDataStream &operator<<(QDataStream &stream, const JournalConnection *connection);
 QDataStream &operator>>(QDataStream &stream, JournalConnection *&connection);

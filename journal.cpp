@@ -286,7 +286,10 @@ QDataStream &operator<<(QDataStream &stream, const JournalEvent *event)
     stream << event->timestamp;
     stream << event->connectionId;
     stream << quint16(event->type);
-    stream << qCompress(event->content);
+    stream << event->flags;
+    stream << event->content;
+    stream << event->editedContent;
+    stream << event->extraData;
     stream << event->color;
     stream << event->comment;
 
@@ -302,9 +305,12 @@ QDataStream &operator>>(QDataStream &stream, JournalEvent *&event)
     quint16 eventType;
     stream >> eventType;
     event->type = Journal::EventType(eventType);
-    QByteArray compressed;
-    stream >> compressed;
-    event->content = qUncompress(compressed);
+    quint32 flags;
+    stream >> flags;
+    event->flags = JournalEvent::JournalEventFlags(flags);
+    stream >> event->content;
+    stream >> event->editedContent;
+    stream >> event->extraData;
     stream >> event->color;
     stream >> event->comment;
 
