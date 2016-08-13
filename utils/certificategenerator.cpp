@@ -75,6 +75,7 @@ QSslCertificate CertificateGenerator::createCaCertificate(const QSslKey &caKey) 
     ASN1_INTEGER *serial = osh_ASN1_INTEGER_new();
     osh_ASN1_INTEGER_set(serial, 0xb175babe);
     osh_X509_set_serialNumber(x509, serial);
+    osh_ASN1_INTEGER_free(serial);
 
     osh_X509_gmtime_adj(osh_X509_get_notBefore(x509), 0);
     osh_X509_gmtime_adj(osh_X509_get_notAfter(x509), 31536000L);
@@ -94,6 +95,8 @@ QSslCertificate CertificateGenerator::createCaCertificate(const QSslKey &caKey) 
     X509_EXTENSION *ext = osh_X509V3_EXT_i2d(NID_basic_constraints, 1, (void *)(basic));
     osh_X509_add_ext(x509, ext, 0);
 
+    osh_BASIC_CONSTRAINTS_free(basic);
+
     RSA *rsa = (RSA *)(caKey.handle());
     EVP_PKEY *pubkey = osh_EVP_PKEY_new();
     osh_EVP_PKEY_assign(pubkey, EVP_PKEY_RSA, (void *)(rsa));
@@ -102,6 +105,8 @@ QSslCertificate CertificateGenerator::createCaCertificate(const QSslKey &caKey) 
     osh_X509_sign(x509, pubkey, osh_EVP_sha256());
 
     QByteArray der = x509_to_der(x509);
+    osh_X509_free(x509);
+
     return QSslCertificate(der, QSsl::Der);
 }
 

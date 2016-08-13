@@ -149,7 +149,9 @@ int osh_X509_NAME_add_entry_by_txt(X509_NAME *name, const char *field, int type,
 
 // EVP
 const EVP_MD *osh_EVP_sha256(void);
+
 EVP_PKEY *osh_EVP_PKEY_new(void);
+void osh_EVP_PKEY_free(EVP_PKEY *pkey);
 int osh_EVP_PKEY_assign(EVP_PKEY *pkey, int type, void *key);
 
 // BIGNUM
@@ -168,11 +170,13 @@ int osh_RSA_generate_key_ex(RSA *rsa, int bits, BIGNUM *e, BN_GENCB *cb);
 
 // ASN1
 ASN1_INTEGER *osh_ASN1_INTEGER_new(void);
+void osh_ASN1_INTEGER_free(ASN1_INTEGER *a);
 long osh_ASN1_INTEGER_get(ASN1_INTEGER *a);
 int osh_ASN1_INTEGER_set(ASN1_INTEGER *a, long v);
 
 // Extensions
 BASIC_CONSTRAINTS *osh_BASIC_CONSTRAINTS_new(void);
+void osh_BASIC_CONSTRAINTS_free(BASIC_CONSTRAINTS *a);
 X509_EXTENSION *osh_X509V3_EXT_i2d(int ext_nid, int crit, void *ext_struc);
 
 

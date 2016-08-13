@@ -72,6 +72,7 @@ DEFINEFUNC7(int, X509_NAME_add_entry_by_txt,
 // EVP
 DEFINEFUNC(const EVP_MD *, EVP_sha256, void, DUMMYARG, return 0, return)
 DEFINEFUNC(EVP_PKEY *, EVP_PKEY_new, void, DUMMYARG, return 0, return)
+DEFINEFUNC(void, EVP_PKEY_free, EVP_PKEY *pkey, pkey, return, return)
 DEFINEFUNC3(int, EVP_PKEY_assign, EVP_PKEY *pkey, pkey, int type, type, void *key, key, return 0, return)
 
 // BIGNUM
@@ -90,11 +91,15 @@ DEFINEFUNC4(int, RSA_generate_key_ex, RSA *rsa, rsa, int bits, bits, BIGNUM *e, 
 
 // ASN1
 DEFINEFUNC(ASN1_INTEGER *, ASN1_INTEGER_new, void, DUMMYARG, return 0, return)
+DEFINEFUNC(void, ASN1_INTEGER_free, ASN1_INTEGER *a, a, return, return)
+
 DEFINEFUNC(long, ASN1_INTEGER_get, ASN1_INTEGER *a, a, return 0, return)
 DEFINEFUNC2(int, ASN1_INTEGER_set, ASN1_INTEGER *a, a, long v, v, return 0, return)
 
 // Extensions
 DEFINEFUNC(BASIC_CONSTRAINTS *, BASIC_CONSTRAINTS_new, void, DUMMYARG, return 0, return)
+DEFINEFUNC(void, BASIC_CONSTRAINTS_free, BASIC_CONSTRAINTS *a, a, return, return)
+
 DEFINEFUNC3(X509_EXTENSION *, X509V3_EXT_i2d, int ext_nid, ext_nid, int crit, crit, void *ext_struc, ext_struc, return 0, return)
 
 
@@ -160,6 +165,7 @@ bool osh_resolveOpenSslSymbols()
 
     RESOLVEFUNC(EVP_sha256)
     RESOLVEFUNC(EVP_PKEY_new)
+    RESOLVEFUNC(EVP_PKEY_free)
     RESOLVEFUNC(EVP_PKEY_assign)
 
     RESOLVEFUNC(BN_new)
@@ -173,9 +179,12 @@ bool osh_resolveOpenSslSymbols()
     RESOLVEFUNC(RSA_generate_key_ex)
 
     RESOLVEFUNC(ASN1_INTEGER_new)
+    RESOLVEFUNC(ASN1_INTEGER_free)
     RESOLVEFUNC(ASN1_INTEGER_get)
     RESOLVEFUNC(ASN1_INTEGER_set)
+
     RESOLVEFUNC(BASIC_CONSTRAINTS_new)
+    RESOLVEFUNC(BASIC_CONSTRAINTS_free)
     RESOLVEFUNC(X509V3_EXT_i2d)
 
     symbolsResolved = true;
