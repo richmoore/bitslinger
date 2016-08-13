@@ -165,6 +165,22 @@ QVariant Journal::data(const QModelIndex &index, int role) const
         case COLUMN_DETAILS:
             if (entry->type == ClientDataEvent || entry->type == ServerDataEvent)
                 return entry->content.toHex();
+            else if (entry->type == ClientConnectionEvent) {
+                return tr("Connection from %1").arg(m_connections[entry->connectionId]->clientAddress.toString());
+            }
+            else if (entry->type == ServerConnectionEvent) {
+                return tr("Connected to %1:%2")
+                        .arg(m_connections[entry->connectionId]->targetAddress.toString())
+                        .arg(m_connections[entry->connectionId]->targetPort);
+            }
+            else if (entry->type == ClientDisconnectionEvent) {
+                return tr("Disconnection from %1").arg(m_connections[entry->connectionId]->clientAddress.toString());
+            }
+            else if (entry->type == ServerDisconnectionEvent) {
+                return tr("Disconnected from %1:%2")
+                        .arg(m_connections[entry->connectionId]->targetAddress.toString())
+                        .arg(m_connections[entry->connectionId]->targetPort);
+            }
             break;
         case COLUMN_COMMENT:
             return entry->comment;
