@@ -19,6 +19,7 @@ signals:
 protected slots:
     void rowActivated(const QModelIndex &index);
 
+    void showItemContextMenu(const QPoint &pos);
     void showHeaderContextMenu(const QPoint &pos);
 private:
     Journal *m_journal;
