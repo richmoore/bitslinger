@@ -17,6 +17,8 @@ int main(int argc, char *argv[])
 
     BitSlinger slinger;
     w.setBitSlinger(&slinger);
+
+    slinger.loadCaConfig();
     slinger.loadListenerConfig();
 
     return app.exec();

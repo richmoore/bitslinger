@@ -18,8 +18,6 @@ const quint16 STATE_FILE_VERSION = 0x0001;
 BitSlinger::BitSlinger(QObject *parent) : QObject(parent)
 {
     m_journal = new Journal(this);
-
-    loadCaConfig();
 }
 
 void BitSlinger::setUpstreamProxy(const QNetworkProxy &upstream)

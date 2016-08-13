@@ -4,6 +4,7 @@
 #include <QDialog>
 
 class SettingsPage;
+class BitSlinger;
 
 namespace Ui {
 class SettingsDialog;
@@ -16,6 +17,9 @@ class SettingsDialog : public QDialog
 public:
     explicit SettingsDialog(QWidget *parent = 0);
     ~SettingsDialog();
+
+    void setBitSlinger(BitSlinger *slinger) { m_slinger = slinger; }
+    BitSlinger *bitSlinger() const { return m_slinger; }
 
     void addPage(SettingsPage *page);
 
@@ -31,6 +35,7 @@ protected:
 private:
     Ui::SettingsDialog *ui;
     QList<SettingsPage *> pages;
+    BitSlinger *m_slinger;
 };
 
 #endif // SETTINGSDIALOG_H
