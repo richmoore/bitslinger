@@ -24,14 +24,21 @@ Strip Client    Client connection plain text, server connection SSL
 Strip Server    Client connection SSL, server connection plain text
 None            Always treat the connections as raw bytes
 
-
-Client  Server  Effect
-
-Auto    Auto    MITM plain text, transparently switching to MITM SSL when the client starts talking SSL
-Never   Always  SSL strip - server connection is encrypted, client is plain text
-Never   Auto    TCP pass thru
+** Strip server mode is dodgy at the moment - we don't have a server cert to clone, so we need to add some logic
+to make one based on something else.
 
 
-Jounral Features
+Journal Features
 - Find
 - Filter
+
+
+Ideas
+=====
+
+* Add latency to the messages
+
+* Export connection to a text file. Ideally in a form that can be replayed
+
+* Send a connection to the repeater
+

@@ -7,7 +7,7 @@ HostnameLineEdit::HostnameLineEdit(QWidget *parent)
     : QLineEdit(parent),
       m_lookupId(-1)
 {
-    connect(this, SIGNAL(textEdited(QString)), SLOT(lookupHost()));
+    connect(this, SIGNAL(textChanged(QString)), SLOT(lookupHost()));
 }
 
 void HostnameLineEdit::lookupHost()
