@@ -4,13 +4,13 @@
 #include <QObject>
 #include <QNetworkProxy>
 
-#include "listener.h"
 #include "utils/certificategenerator.h"
 
 class QHostAddress;
 class QIODevice;
 
 class Listener;
+struct ListenerConfig;
 class Journal;
 
 typedef QList<Listener *> ListenerList;

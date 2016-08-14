@@ -11,16 +11,26 @@ class Journal;
 
 struct ListenerConfig
 {
+    enum SslMode {
+        AutoSslMode,
+        NeverSslMode,
+        AlwaysSslMode
+    };
+
     QHostAddress listenAddress;
     int listenPort;
     QString targetHost;
     int targetPort;
+    SslMode clientSslMode;
+    SslMode serverSslMode;
 
     bool operator==(const ListenerConfig &other) const {
         return listenAddress == other.listenAddress
                 && listenPort == other.listenPort
                 && targetHost == other.targetHost
-                && targetPort == other.targetPort;
+                && targetPort == other.targetPort
+                && clientSslMode == other.clientSslMode
+                && serverSslMode == other.serverSslMode;
     }
 
     bool operator!=(const ListenerConfig &other) const {

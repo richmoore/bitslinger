@@ -4,6 +4,8 @@
 #include <QDialog>
 #include <QHostAddress>
 
+#include "listener.h"
+
 namespace Ui {
 class ListenerEditDialog;
 }
@@ -15,6 +17,12 @@ class ListenerEditDialog : public QDialog
 public:
     explicit ListenerEditDialog(QWidget *parent = 0);
     ~ListenerEditDialog();
+
+    ListenerConfig::SslMode clientSslMode() const;
+    void setClientSslMode(ListenerConfig::SslMode mode);
+
+    ListenerConfig::SslMode serverSslMode() const;
+    void setServerSslMode(ListenerConfig::SslMode mode);
 
     QHostAddress listenAddress() const;
     void setListenAddress(const QHostAddress &address);

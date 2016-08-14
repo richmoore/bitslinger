@@ -3,6 +3,8 @@
 
 #include <QObject>
 
+#include "listener.h"
+
 class QSslSocket;
 
 class BitSlinger;
@@ -12,12 +14,10 @@ class Connection : public QObject
 {
     Q_OBJECT
 public:
-    enum SslMode {
-        AutoSslMode,
-        NoSslMode
-    };
-
     explicit Connection(QSslSocket *sock, QObject *parent = 0);
+
+    void setServerSslMode(ListenerConfig::SslMode mode) { m_serverSslMode = mode; }
+    void setClientSslMode(ListenerConfig::SslMode mode) { m_clientSslMode = mode; }
 
     BitSlinger *bitSlinger() const { return m_slinger; }
     void setBitSlinger(BitSlinger *slinger) { m_slinger = slinger; }
@@ -47,9 +47,9 @@ private:
 
 private:
     BitSlinger *m_slinger;
-    SslMode m_serverSslMode;
+    ListenerConfig::SslMode m_serverSslMode;
     QSslSocket *m_server;
-    SslMode m_clientSslMode;
+    ListenerConfig::SslMode m_clientSslMode;
     QSslSocket *m_client;
     int m_connectionId;
     Journal *m_journal;

@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>300</width>
-    <height>236</height>
+    <width>406</width>
+    <height>285</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -71,35 +71,46 @@
    <item row="4" column="0">
     <widget class="QLabel" name="label_5">
      <property name="text">
-      <string>SSL Mode:</string>
+      <string>Client SSL Mode:</string>
      </property>
     </widget>
    </item>
    <item row="4" column="1">
-    <widget class="QComboBox" name="comboBox">
+    <widget class="QComboBox" name="clientModeCombo">
      <item>
       <property name="text">
-       <string>Pass Through</string>
+       <string>Auto</string>
       </property>
      </item>
      <item>
       <property name="text">
-       <string>Man In the Middle</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>Encrypt Server Connection</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>Encrypt Client Connection</string>
+       <string>Never</string>
       </property>
      </item>
     </widget>
    </item>
-   <item row="5" column="0" colspan="2">
+   <item row="5" column="0">
+    <widget class="QLabel" name="label_6">
+     <property name="text">
+      <string>Server SSL Mode:</string>
+     </property>
+    </widget>
+   </item>
+   <item row="5" column="1">
+    <widget class="QComboBox" name="serverModeCombo">
+     <item>
+      <property name="text">
+       <string>Auto</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Always</string>
+      </property>
+     </item>
+    </widget>
+   </item>
+   <item row="6" column="0" colspan="2">
     <widget class="QDialogButtonBox" name="buttonBox">
      <property name="orientation">
       <enum>Qt::Horizontal</enum>

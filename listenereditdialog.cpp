@@ -9,11 +9,11 @@ ListenerEditDialog::ListenerEditDialog(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    ui->listenAddressCombo->addItem("Local Host (IPv4)");
-    ui->listenAddressCombo->addItem("Local Host (IPv6)");
-    ui->listenAddressCombo->addItem("Any (IPv4)");
-    ui->listenAddressCombo->addItem("Any (IPv6)");
-    ui->listenAddressCombo->addItem("Any (IPv4 and IPv6)");
+    ui->listenAddressCombo->addItem(tr("Local Host (IPv4)"));
+    ui->listenAddressCombo->addItem(tr("Local Host (IPv6)"));
+    ui->listenAddressCombo->addItem(tr("Any (IPv4)"));
+    ui->listenAddressCombo->addItem(tr("Any (IPv6)"));
+    ui->listenAddressCombo->addItem(tr("Any (IPv4 and IPv6)"));
 
     addresses << QHostAddress::LocalHost
               << QHostAddress::LocalHostIPv6
@@ -33,6 +33,40 @@ ListenerEditDialog::ListenerEditDialog(QWidget *parent) :
 ListenerEditDialog::~ListenerEditDialog()
 {
     delete ui;
+}
+
+ListenerConfig::SslMode ListenerEditDialog::clientSslMode() const
+{
+    int index = ui->clientModeCombo->currentIndex();
+    if (index == 0)
+        return ListenerConfig::AutoSslMode;
+    else
+        return ListenerConfig::NeverSslMode;
+}
+
+void ListenerEditDialog::setClientSslMode(ListenerConfig::SslMode mode)
+{
+    if (mode == ListenerConfig::AutoSslMode)
+        ui->clientModeCombo->setCurrentIndex(0);
+    else
+        ui->clientModeCombo->setCurrentIndex(1);
+}
+
+ListenerConfig::SslMode ListenerEditDialog::serverSslMode() const
+{
+    int index = ui->serverModeCombo->currentIndex();
+    if (index == 0)
+        return ListenerConfig::AutoSslMode;
+    else
+        return ListenerConfig::AlwaysSslMode;
+}
+
+void ListenerEditDialog::setServerSslMode(ListenerConfig::SslMode mode)
+{
+    if (mode == ListenerConfig::AutoSslMode)
+        ui->serverModeCombo->setCurrentIndex(0);
+    else
+        ui->serverModeCombo->setCurrentIndex(1);
 }
 
 QHostAddress ListenerEditDialog::listenAddress() const

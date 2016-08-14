@@ -33,6 +33,7 @@ void JournalView::rowActivated(const QModelIndex &index)
 void JournalView::showItemContextMenu(const QPoint &pos)
 {
     QModelIndex index = indexAt(pos);
+    Q_UNUSED(index);
 
     QMenu menu(this);
     menu.addAction("Test");

@@ -13,9 +13,9 @@ const qint64 MAX_CHUNK_SIZE = 32*1024; // 32K
 Connection::Connection(QSslSocket *sock, QObject *parent)
     : QObject(parent),
       m_slinger(0),
-      m_serverSslMode(AutoSslMode),
+      m_serverSslMode(ListenerConfig::AutoSslMode),
       m_server(0),
-      m_clientSslMode(AutoSslMode),
+      m_clientSslMode(ListenerConfig::AutoSslMode),
       m_client(sock),
       m_connectionId(-1),
       m_journal(0)
@@ -88,7 +88,7 @@ void Connection::clientData()
             qDebug() << "SSL client hello detected";
 
             m_journal->recordEvent(this, Journal::ClientSwitchedToSslEvent, QByteArray());
-            if (m_clientSslMode == AutoSslMode) {
+            if (m_clientSslMode == ListenerConfig::AutoSslMode) {
                 m_server->flush();
 
                 // TODO: we should log these event though we're going to ignore them
