@@ -54,7 +54,7 @@
     </widget>
    </item>
    <item row="1" column="1">
-    <widget class="QLineEdit" name="hostEdit"/>
+    <widget class="HostnameLineEdit" name="hostEdit"/>
    </item>
    <item row="2" column="0">
     <widget class="QLabel" name="label_3">
@@ -108,6 +108,13 @@
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>HostnameLineEdit</class>
+   <extends>QLineEdit</extends>
+   <header>utils/hostnamelineedit.h</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>

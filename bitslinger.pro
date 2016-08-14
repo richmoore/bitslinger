@@ -50,7 +50,8 @@ SOURCES += main.cpp\
     utils/openssl_symbol_helper.cpp \
     utils/certificategenerator.cpp \
     utils/tcpserver.cpp \
-    settings/sslcasettingspage.cpp
+    settings/sslcasettingspage.cpp \
+    utils/hostnamelineedit.cpp
 
 HEADERS  += mainwindow.h \
     connection.h \
@@ -69,7 +70,8 @@ HEADERS  += mainwindow.h \
     utils/openssl_symbol_helper.h \
     utils/certificategenerator.h \
     utils/tcpserver.h \
-    settings/sslcasettingspage.h
+    settings/sslcasettingspage.h \
+    utils/hostnamelineedit.h
 
 FORMS    += mainwindow.ui \
     mockups/mainview_mockup.ui \

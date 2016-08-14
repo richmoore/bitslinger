@@ -9,3 +9,15 @@ New icons:
 
 lock    SSL
 repost  Repeatery thing
+
+
+Finish existing features
+- ssl modes
+- review config handling
+- review cert generation
+
+
+
+Jounral Features
+- Find
+- Filter
