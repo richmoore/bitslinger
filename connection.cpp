@@ -13,10 +13,9 @@ const qint64 MAX_CHUNK_SIZE = 32*1024; // 32K
 Connection::Connection(QSslSocket *sock, QObject *parent)
     : QObject(parent),
       m_slinger(0),
-      m_serverSslMode(ListenerConfig::AutoSslMode),
       m_server(0),
-      m_clientSslMode(ListenerConfig::AutoSslMode),
       m_client(sock),
+      m_sslMode(ListenerConfig::SslAutoMode),
       m_connectionId(-1),
       m_journal(0)
 {
@@ -31,11 +30,18 @@ void Connection::connectToHost(const QString &hostname, int port)
     m_server = new QSslSocket(this);
     qDebug() << "Connecting via" << m_slinger->upstreamProxy();
     m_server->setProxy(m_slinger->upstreamProxy());
-    m_server->connectToHost(hostname, port);
+
+    if (m_sslMode == ListenerConfig::SslStripClientMode)
+        m_server->connectToHostEncrypted(hostname, port);
+    else
+        m_server->connectToHost(hostname, port);
 
     connect(m_client, SIGNAL(disconnected()), this, SLOT(clientDisconnected()));
     connect(m_server, SIGNAL(connected()), this, SLOT(connected()));
     connect(m_server, SIGNAL(disconnected()), this, SLOT(disconnected()));
+    connect(m_server, SIGNAL(encrypted()), this, SLOT(serverEncrypted()));
+    // TODO: we should log these event though we're going to ignore them
+    connect(m_server, SIGNAL(sslErrors(QList<QSslError>)), m_server, SLOT(ignoreSslErrors()));
 }
 
 void Connection::connected()
@@ -88,16 +94,18 @@ void Connection::clientData()
             qDebug() << "SSL client hello detected";
 
             m_journal->recordEvent(this, Journal::ClientSwitchedToSslEvent, QByteArray());
-            if (m_clientSslMode == ListenerConfig::AutoSslMode) {
-                m_server->flush();
 
-                // TODO: we should log these event though we're going to ignore them
-                connect(m_server, SIGNAL(sslErrors(QList<QSslError>)), m_server, SLOT(ignoreSslErrors()));
-                connect(m_server, SIGNAL(encrypted()), this, SLOT(serverEncrypted()));
-                m_server->startClientEncryption();
-                qDebug() << "Swtiching to ssl for server connection";
+            if ((m_sslMode != ListenerConfig::DumbMode) && (m_sslMode != ListenerConfig::SslStripServerMode)) {
+                if (!m_server->isEncrypted()) {
+                    m_server->flush();
+                    m_server->startClientEncryption();
+                    qDebug() << "Swtiching to ssl for server connection";
 
-                return; // Force exit without processing the data
+                    return; // Force exit without processing the data
+                }
+                else {
+                    encryptClientConnection();
+                }
             }
         }
 
@@ -124,8 +132,13 @@ void Connection::serverData()
 void Connection::serverEncrypted()
 {
     m_journal->recordEvent(this, Journal::ServerSwitchedToSslEvent, QByteArray());
-
     qDebug() << "Server connection is now encrypted, responding to client";
+
+    encryptClientConnection();
+}
+
+void Connection::encryptClientConnection()
+{
     CertificateGenerator *gen = m_slinger->certificateGenerator();
     QSslCertificate leaf = gen->createClone(m_server->peerCertificate());
     qDebug() << leaf.toText();

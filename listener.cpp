@@ -60,8 +60,7 @@ void Listener::handleConnection()
         QSslSocket *sock = m_server->nextPendingConnection();
 
         Connection *con = new Connection(sock, this);
-        con->setClientSslMode(m_config.clientSslMode);
-        con->setServerSslMode(m_config.serverSslMode);
+        con->setSslMode(m_config.sslMode);
         con->setBitSlinger(m_slinger);
         m_journal->addConnection(con);
 

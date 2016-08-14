@@ -60,8 +60,7 @@ void ListenerDialog::addListener()
     config.listenPort = dlg.listenPort();
     config.targetHost = dlg.targetHost();
     config.targetPort = dlg.targetPort();
-    config.clientSslMode = dlg.clientSslMode();
-    config.serverSslMode = dlg.serverSslMode();
+    config.sslMode = dlg.sslMode();
 
     m_slinger->addListener(config);
     m_slinger->saveListenerConfig();
@@ -78,8 +77,7 @@ void ListenerDialog::editListener()
     dlg.setListenPort(config.listenPort);
     dlg.setTargetHost(config.targetHost);
     dlg.setTargetPort(config.targetPort);
-    dlg.setClientSslMode(config.clientSslMode);
-    dlg.setServerSslMode(config.serverSslMode);
+    dlg.setSslMode(config.sslMode);
 
     int result = dlg.exec();
     if (result == QDialog::Rejected)
@@ -89,8 +87,7 @@ void ListenerDialog::editListener()
     config.listenPort = dlg.listenPort();
     config.targetHost = dlg.targetHost();
     config.targetPort = dlg.targetPort();
-    config.clientSslMode = dlg.clientSslMode();
-    config.serverSslMode = dlg.serverSslMode();
+    config.sslMode = dlg.sslMode();
 
     m_slinger->editListener(index, config);
     m_slinger->saveListenerConfig();

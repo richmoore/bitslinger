@@ -16,8 +16,7 @@ class Connection : public QObject
 public:
     explicit Connection(QSslSocket *sock, QObject *parent = 0);
 
-    void setServerSslMode(ListenerConfig::SslMode mode) { m_serverSslMode = mode; }
-    void setClientSslMode(ListenerConfig::SslMode mode) { m_clientSslMode = mode; }
+    void setSslMode(ListenerConfig::SslMode mode) { m_sslMode = mode; }
 
     BitSlinger *bitSlinger() const { return m_slinger; }
     void setBitSlinger(BitSlinger *slinger) { m_slinger = slinger; }
@@ -42,15 +41,17 @@ public slots:
 
     void serverEncrypted();
 
+protected slots:
+    void encryptClientConnection();
+
 private:
     int findSslClientHello(const QByteArray &data);
 
 private:
     BitSlinger *m_slinger;
-    ListenerConfig::SslMode m_serverSslMode;
     QSslSocket *m_server;
-    ListenerConfig::SslMode m_clientSslMode;
     QSslSocket *m_client;
+    ListenerConfig::SslMode m_sslMode;
     int m_connectionId;
     Journal *m_journal;
 };

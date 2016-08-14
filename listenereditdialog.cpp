@@ -35,38 +35,15 @@ ListenerEditDialog::~ListenerEditDialog()
     delete ui;
 }
 
-ListenerConfig::SslMode ListenerEditDialog::clientSslMode() const
+void ListenerEditDialog::setSslMode(ListenerConfig::SslMode mode)
 {
-    int index = ui->clientModeCombo->currentIndex();
-    if (index == 0)
-        return ListenerConfig::AutoSslMode;
-    else
-        return ListenerConfig::NeverSslMode;
+    ui->sslModeCombo->setCurrentIndex(int(mode));
 }
 
-void ListenerEditDialog::setClientSslMode(ListenerConfig::SslMode mode)
+ListenerConfig::SslMode ListenerEditDialog::sslMode() const
 {
-    if (mode == ListenerConfig::AutoSslMode)
-        ui->clientModeCombo->setCurrentIndex(0);
-    else
-        ui->clientModeCombo->setCurrentIndex(1);
-}
-
-ListenerConfig::SslMode ListenerEditDialog::serverSslMode() const
-{
-    int index = ui->serverModeCombo->currentIndex();
-    if (index == 0)
-        return ListenerConfig::AutoSslMode;
-    else
-        return ListenerConfig::AlwaysSslMode;
-}
-
-void ListenerEditDialog::setServerSslMode(ListenerConfig::SslMode mode)
-{
-    if (mode == ListenerConfig::AutoSslMode)
-        ui->serverModeCombo->setCurrentIndex(0);
-    else
-        ui->serverModeCombo->setCurrentIndex(1);
+    int index = ui->sslModeCombo->currentIndex();
+    return ListenerConfig::SslMode(index);
 }
 
 QHostAddress ListenerEditDialog::listenAddress() const

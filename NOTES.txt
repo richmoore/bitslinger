@@ -16,6 +16,20 @@ Finish existing features
 - review config handling
 - review cert generation
 
+SSL Mode
+========
+
+Auto            MITM plain text, transparently switching to MITM SSL when the client starts talking SSL
+Strip Client    Client connection plain text, server connection SSL
+Strip Server    Client connection SSL, server connection plain text
+None            Always treat the connections as raw bytes
+
+
+Client  Server  Effect
+
+Auto    Auto    MITM plain text, transparently switching to MITM SSL when the client starts talking SSL
+Never   Always  SSL strip - server connection is encrypted, client is plain text
+Never   Auto    TCP pass thru
 
 
 Jounral Features

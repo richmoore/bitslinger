@@ -18,11 +18,8 @@ public:
     explicit ListenerEditDialog(QWidget *parent = 0);
     ~ListenerEditDialog();
 
-    ListenerConfig::SslMode clientSslMode() const;
-    void setClientSslMode(ListenerConfig::SslMode mode);
-
-    ListenerConfig::SslMode serverSslMode() const;
-    void setServerSslMode(ListenerConfig::SslMode mode);
+    ListenerConfig::SslMode sslMode() const;
+    void setSslMode(ListenerConfig::SslMode mode);
 
     QHostAddress listenAddress() const;
     void setListenAddress(const QHostAddress &address);
