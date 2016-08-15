@@ -1,6 +1,7 @@
 #include <QDebug>
 #include <QFileDialog>
 #include <QFile>
+#include <QSettings>
 
 #include "bitslinger.h"
 #include "listenerdialog.h"
@@ -9,6 +10,8 @@
 
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+
+#define QLL QLatin1Literal
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -21,22 +24,25 @@ MainWindow::MainWindow(QWidget *parent) :
 
     setWindowIcon(QIcon(":icons/soundwave.svg"));
 
-    RecentFilesMenu *recent = new RecentFilesMenu(this);
-    connect(this, SIGNAL(fileOpened(QString)), recent, SLOT(addRecentFile(QString)));
-    connect(this, SIGNAL(fileSaved(QString)), recent, SLOT(addRecentFile(QString)));
+    m_recent = new RecentFilesMenu(this);
+    connect(this, SIGNAL(fileOpened(QString)), m_recent, SLOT(addRecentFile(QString)));
+    connect(this, SIGNAL(fileSaved(QString)), m_recent, SLOT(addRecentFile(QString)));
+    connect(m_recent, SIGNAL(recentFileTriggered(QString)), this, SLOT(openState(QString)));
 
-    recent->setTitle(tr("Open Recent"));
-    m_ui->menuBitslinger->insertMenu(m_ui->action_Save_State, recent);
+    m_recent->setTitle(tr("Open Recent"));
+    m_ui->menuBitslinger->insertMenu(m_ui->action_Save_State, m_recent);
 
     connect(m_ui->action_Listeners, SIGNAL(triggered()), this, SLOT(showListenerDialog()));
     connect(m_ui->action_Options, SIGNAL(triggered()), this, SLOT(showSettings()));
     connect(m_ui->action_Load_State, SIGNAL(triggered()), this, SLOT(openState()));
     connect(m_ui->action_Save_State, SIGNAL(triggered()), this, SLOT(saveState()));
 
+    loadGuiSettings();
 }
 
 MainWindow::~MainWindow()
 {
+    saveGuiSettings();
     delete m_ui;
 }
 
@@ -46,6 +52,24 @@ void MainWindow::setBitSlinger(BitSlinger *slinger)
     m_ui->journalView->setJournal(slinger->journal());
     connect(m_ui->journalView, SIGNAL(entryActivated(JournalEvent *)),
             this, SLOT(showEntry(JournalEvent*)));
+}
+
+void MainWindow::loadGuiSettings()
+{
+    QSettings settings;
+    settings.beginGroup(QLL("GUI"));
+
+    m_recent->restoreState(settings.value(QLL("RecentFiles")).toByteArray());
+    m_ui->journalView->header()->restoreState(settings.value(QLL("JournalView")).toByteArray());
+}
+
+void MainWindow::saveGuiSettings()
+{
+    QSettings settings;
+    settings.beginGroup(QLL("GUI"));
+
+    settings.setValue(QLL("RecentFiles"), m_recent->saveState());
+    settings.setValue(QLL("JournalView"), m_ui->journalView->header()->saveState());
 }
 
 void MainWindow::showEntry(JournalEvent *entry)

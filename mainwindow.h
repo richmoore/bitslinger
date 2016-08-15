@@ -11,6 +11,7 @@ class QModelIndex;
 
 class BitSlinger;
 struct JournalEvent;
+class RecentFilesMenu;
 
 class MainWindow : public QMainWindow
 {
@@ -21,6 +22,9 @@ public:
     ~MainWindow();
 
     void setBitSlinger(BitSlinger *slinger);
+
+    void loadGuiSettings();
+    void saveGuiSettings();
 
 signals:
     void fileOpened(const QString &filename);
@@ -41,6 +45,7 @@ protected slots:
 private:
     Ui::MainWindow *m_ui;
     BitSlinger *m_slinger;
+    RecentFilesMenu *m_recent;
 };
 
 #endif // MAINWINDOW_H
