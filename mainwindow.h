@@ -24,8 +24,10 @@ public:
 
 public slots:
     void showEntry(JournalEvent *entry);
+
     void showListenerDialog();
     void showSettings();
+
     void openState();
     void saveState();
 

@@ -100,6 +100,8 @@
     <bool>false</bool>
    </attribute>
    <addaction name="action_Listeners"/>
+   <addaction name="action_Intercept_Client"/>
+   <addaction name="action_Intercept_Server"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
   <action name="actionExit">
@@ -133,13 +135,18 @@
    </property>
   </action>
   <action name="action_Listeners">
+   <property name="icon">
+    <iconset resource="bitslinger.qrc">
+     <normaloff>:/icons/stethoscope.svg</normaloff>:/icons/stethoscope.svg</iconset>
+   </property>
    <property name="text">
     <string>&amp;Listeners...</string>
    </property>
   </action>
   <action name="action_Options">
    <property name="icon">
-    <iconset theme="configure"/>
+    <iconset theme="configure">
+     <normaloff>.</normaloff>.</iconset>
    </property>
    <property name="text">
     <string>&amp;Options...</string>
@@ -152,6 +159,30 @@
    </property>
    <property name="text">
     <string>&amp;About...</string>
+   </property>
+  </action>
+  <action name="action_Intercept_Client">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="bitslinger.qrc">
+     <normaloff>:/icons/intercept_client.svg</normaloff>:/icons/intercept_client.svg</iconset>
+   </property>
+   <property name="text">
+    <string>Intercept Client</string>
+   </property>
+  </action>
+  <action name="action_Intercept_Server">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="bitslinger.qrc">
+     <normaloff>:/icons/intercept_server.svg</normaloff>:/icons/intercept_server.svg</iconset>
+   </property>
+   <property name="text">
+    <string>Intercept Server</string>
    </property>
   </action>
  </widget>
@@ -169,7 +200,9 @@
    <header>journalview.h</header>
   </customwidget>
  </customwidgets>
- <resources/>
+ <resources>
+  <include location="bitslinger.qrc"/>
+ </resources>
  <connections>
   <connection>
    <sender>actionExit</sender>

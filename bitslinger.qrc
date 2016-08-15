@@ -14,5 +14,7 @@
         <file>icons/soundwave.svg</file>
         <file>icons/lock.svg</file>
         <file>icons/repost.svg</file>
+        <file>icons/intercept_client.svg</file>
+        <file>icons/intercept_server.svg</file>
     </qresource>
 </RCC>

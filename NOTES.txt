@@ -36,6 +36,10 @@ Journal Features
 Ideas
 =====
 
+* Export message
+
+* Decode client hello
+
 * Add latency to the messages
 
 * Export connection to a text file. Ideally in a form that can be replayed

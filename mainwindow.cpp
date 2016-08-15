@@ -19,7 +19,6 @@ MainWindow::MainWindow(QWidget *parent) :
     m_ui->textView->setReadOnly(true);
 
     setWindowIcon(QIcon(":icons/soundwave.svg"));
-    m_ui->action_Listeners->setIcon(QIcon(":icons/stethoscope.svg"));
 
     connect(m_ui->action_Listeners, SIGNAL(triggered()), this, SLOT(showListenerDialog()));
     connect(m_ui->action_Options, SIGNAL(triggered()), this, SLOT(showSettings()));

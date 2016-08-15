@@ -4,6 +4,7 @@
 #include <QSslSocket>
 
 #include "connection.h"
+#include "utils/colorutils.h"
 
 #include "journal.h"
 
@@ -66,6 +67,9 @@ void Journal::recordEvent(Connection *con, Journal::EventType type, const QByteA
     entry->type = type;
     entry->content = content;
     entry->comment = comment; //### Comment should only be used for user data!!!
+
+    //### Hack
+    //entry->color = ColorUtils::autoBackgroundColor(0, con->id());
 
     beginInsertRows(QModelIndex(), m_events.size(), m_events.size());
     m_events.append(entry);

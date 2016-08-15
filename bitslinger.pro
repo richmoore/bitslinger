@@ -51,7 +51,8 @@ SOURCES += main.cpp\
     utils/certificategenerator.cpp \
     utils/tcpserver.cpp \
     settings/sslcasettingspage.cpp \
-    utils/hostnamelineedit.cpp
+    utils/hostnamelineedit.cpp \
+    utils/colorutils.cpp
 
 HEADERS  += mainwindow.h \
     connection.h \
@@ -71,7 +72,8 @@ HEADERS  += mainwindow.h \
     utils/certificategenerator.h \
     utils/tcpserver.h \
     settings/sslcasettingspage.h \
-    utils/hostnamelineedit.h
+    utils/hostnamelineedit.h \
+    utils/colorutils.h
 
 FORMS    += mainwindow.ui \
     mockups/mainview_mockup.ui \
