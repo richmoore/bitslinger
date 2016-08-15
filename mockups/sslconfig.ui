@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Form</class>
+ <widget class="QWidget" name="Form">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>621</width>
+    <height>381</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <layout class="QGridLayout" name="gridLayout">
+   <item row="0" column="0">
+    <widget class="QLabel" name="label">
+     <property name="text">
+      <string>SSL/&amp;TLS &amp;Version:</string>
+     </property>
+     <property name="buddy">
+      <cstring>protocolCombo</cstring>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="1">
+    <widget class="QComboBox" name="protocolCombo">
+     <item>
+      <property name="text">
+       <string>Secure Protocols</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>SSL 3</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>TLS 1.0 or Later</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>TLS 1.1 or Later</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>TLS 1.2 or Later</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>TLS 1.0</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>TLS 1.1</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>TLS 1.2</string>
+      </property>
+     </item>
+    </widget>
+   </item>
+   <item row="0" column="2">
+    <spacer name="horizontalSpacer">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>362</width>
+       <height>20</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+   <item row="1" column="0">
+    <widget class="QLabel" name="label_2">
+     <property name="text">
+      <string>&amp;Ciphers:</string>
+     </property>
+     <property name="buddy">
+      <cstring>cipherTree</cstring>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="0" colspan="3">
+    <widget class="QTreeWidget" name="cipherTree">
+     <column>
+      <property name="text">
+       <string>Name</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>Bits</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>Encryption</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>Key Exchange</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>Authentication</string>
+      </property>
+     </column>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
