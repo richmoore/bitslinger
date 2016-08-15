@@ -5,6 +5,7 @@
 #include "bitslinger.h"
 #include "listenerdialog.h"
 #include "settingsdialog.h"
+#include "utils/recentfilesmenu.h"
 
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
@@ -19,6 +20,13 @@ MainWindow::MainWindow(QWidget *parent) :
     m_ui->textView->setReadOnly(true);
 
     setWindowIcon(QIcon(":icons/soundwave.svg"));
+
+    RecentFilesMenu *recent = new RecentFilesMenu(this);
+    connect(this, SIGNAL(fileOpened(QString)), recent, SLOT(addRecentFile(QString)));
+    connect(this, SIGNAL(fileSaved(QString)), recent, SLOT(addRecentFile(QString)));
+
+    recent->setTitle(tr("Open Recent"));
+    m_ui->menuBitslinger->insertMenu(m_ui->action_Save_State, recent);
 
     connect(m_ui->action_Listeners, SIGNAL(triggered()), this, SLOT(showListenerDialog()));
     connect(m_ui->action_Options, SIGNAL(triggered()), this, SLOT(showSettings()));
@@ -68,13 +76,19 @@ void MainWindow::openState()
     if (filename.isEmpty())
         return;;
 
+    openState(filename);
+}
+
+bool MainWindow::openState(const QString &filename)
+{
     QFile f(filename);
     if (!f.open(QIODevice::ReadOnly)) {
         qDebug() << "Could not open file" << filename;
-        return;
+        return false;
     }
 
-    m_slinger->readState(&f);
+    emit fileOpened(filename);
+    return m_slinger->readState(&f);
 }
 
 void MainWindow::saveState()
@@ -84,11 +98,17 @@ void MainWindow::saveState()
     if (filename.isEmpty())
         return;;
 
+    saveState(filename);
+}
+
+bool MainWindow::saveState(const QString &filename)
+{
     QFile f(filename);
     if (!f.open(QIODevice::WriteOnly)) {
         qDebug() << "Could not open file" << filename;
-        return;
+        return false;
     }
 
-    m_slinger->writeState(&f);
+    emit fileSaved(filename);
+    return m_slinger->writeState(&f);
 }

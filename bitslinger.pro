@@ -52,7 +52,8 @@ SOURCES += main.cpp\
     utils/tcpserver.cpp \
     settings/sslcasettingspage.cpp \
     utils/hostnamelineedit.cpp \
-    utils/colorutils.cpp
+    utils/colorutils.cpp \
+    utils/recentfilesmenu.cpp
 
 HEADERS  += mainwindow.h \
     connection.h \
@@ -73,7 +74,8 @@ HEADERS  += mainwindow.h \
     utils/tcpserver.h \
     settings/sslcasettingspage.h \
     utils/hostnamelineedit.h \
-    utils/colorutils.h
+    utils/colorutils.h \
+    utils/recentfilesmenu.h
 
 FORMS    += mainwindow.ui \
     mockups/mainview_mockup.ui \
