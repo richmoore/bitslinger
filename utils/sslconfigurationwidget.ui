@@ -17,7 +17,7 @@
    <item row="0" column="0">
     <widget class="QLabel" name="label">
      <property name="text">
-      <string>SSL/TLS &amp;Version:</string>
+      <string>Proto&amp;col Setting:</string>
      </property>
      <property name="buddy">
       <cstring>protocolCombo</cstring>
@@ -75,7 +75,7 @@
      </property>
      <property name="sizeHint" stdset="0">
       <size>
-       <width>351</width>
+       <width>350</width>
        <height>20</height>
       </size>
      </property>

@@ -7,7 +7,6 @@
 #include "utils/certificategenerator.h"
 
 #include "utils/sslconfigurationwidget.h"
-#include <QSslConfiguration>
 
 #include "connection.h"
 
@@ -137,9 +136,16 @@ void Connection::serverEncrypted()
     m_journal->recordEvent(this, Journal::ServerSwitchedToSslEvent, QByteArray());
     qDebug() << "Server connection is now encrypted, responding to client";
 
+#if 0
     SslConfigurationWidget *w = new SslConfigurationWidget();
     w->setConfiguration(m_server->sslConfiguration());
     w->show();
+
+    SslConfigurationWidget *w2 = new SslConfigurationWidget();
+    w2->setReadOnly(true);
+    w2->setConfiguration(m_server->sslConfiguration());
+    w2->show();
+#endif
 
     encryptClientConnection();
 }

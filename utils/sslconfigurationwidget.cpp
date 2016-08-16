@@ -8,9 +8,15 @@
 
 SslConfigurationWidget::SslConfigurationWidget(QWidget *parent) :
     QWidget(parent),
-    ui(new Ui::SslConfigurationWidget)
+    ui(new Ui::SslConfigurationWidget),
+    m_readonly(false)
 {
     ui->setupUi(this);
+
+    ui->cipherTree->setDragEnabled(true);
+    ui->cipherTree->setDragDropMode(QAbstractItemView::InternalMove);
+    ui->cipherTree->viewport()->setAcceptDrops(true);
+    ui->cipherTree->setDropIndicatorShown(true);
 }
 
 SslConfigurationWidget::~SslConfigurationWidget()
@@ -18,9 +24,34 @@ SslConfigurationWidget::~SslConfigurationWidget()
     delete ui;
 }
 
+void SslConfigurationWidget::setReadOnly(bool readonly)
+{
+    if (m_readonly == readonly)
+        return;
+
+     m_readonly = readonly;
+
+     //### Switch to a label in read-only mode
+     ui->protocolCombo->setEnabled(!m_readonly);
+
+     ui->cipherTree->setDragEnabled(!m_readonly);
+     ui->cipherTree->setDragDropMode(m_readonly ? QAbstractItemView::NoDragDrop : QAbstractItemView::InternalMove);
+     ui->cipherTree->viewport()->setAcceptDrops(!m_readonly);
+     ui->cipherTree->setDropIndicatorShown(!m_readonly);
+
+     reloadConfiguration();
+}
+
 void SslConfigurationWidget::setConfiguration(const QSslConfiguration &config)
 {
-    switch(config.protocol()) {
+    m_config = config;
+    ui->cipherTree->clear();
+    reloadConfiguration();
+}
+
+void SslConfigurationWidget::reloadConfiguration()
+{
+    switch(m_config.protocol()) {
     case QSsl::SecureProtocols:
         ui->protocolCombo->setCurrentIndex(0);
         break;
@@ -49,26 +80,26 @@ void SslConfigurationWidget::setConfiguration(const QSslConfiguration &config)
     case QSsl::SslV2:
     case QSsl::TlsV1SslV3:
     case QSsl::AnyProtocol:
-        qWarning() << "Bad protocol" << config.protocol();
+        qWarning() << "Bad protocol" << m_config.protocol();
         break;
     }
 
-    ui->cipherTree->setDragEnabled(true);
-    ui->cipherTree->setDragDropMode(QAbstractItemView::InternalMove);
-    ui->cipherTree->viewport()->setAcceptDrops(true);
-    ui->cipherTree->setDropIndicatorShown(true);
-
-    QList<QSslCipher> enabledCiphers = config.ciphers();
+    QList<QSslCipher> enabledCiphers = m_config.ciphers();
     foreach(const QSslCipher &cipher, enabledCiphers) {
         QTreeWidgetItem *item = new QTreeWidgetItem(ui->cipherTree);
         item->setFlags(Qt::ItemIsSelectable | Qt::ItemIsUserCheckable | Qt::ItemIsEnabled | Qt::ItemIsDragEnabled);
-        item->setCheckState(0, Qt::Checked);
+        if (!m_readonly)
+            item->setCheckState(0, Qt::Checked);
         item->setText(0, cipher.name());
         item->setText(1, QString::number(cipher.usedBits()));
         item->setText(2, cipher.encryptionMethod());
         item->setText(3, cipher.keyExchangeMethod());
         item->setText(4, cipher.authenticationMethod());
     }
+
+    // Only load disabled ciphers if we're read-write
+    if (m_readonly)
+        return;
 
     QList<QSslCipher> supportedCiphers = QSslSocket::supportedCiphers();
     foreach(const QSslCipher &cipher, supportedCiphers) {
