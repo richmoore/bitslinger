@@ -53,7 +53,8 @@ SOURCES += main.cpp\
     settings/sslcasettingspage.cpp \
     utils/hostnamelineedit.cpp \
     utils/colorutils.cpp \
-    utils/recentfilesmenu.cpp
+    utils/recentfilesmenu.cpp \
+    utils/sslconfigurationwidget.cpp
 
 HEADERS  += mainwindow.h \
     connection.h \
@@ -75,7 +76,8 @@ HEADERS  += mainwindow.h \
     settings/sslcasettingspage.h \
     utils/hostnamelineedit.h \
     utils/colorutils.h \
-    utils/recentfilesmenu.h
+    utils/recentfilesmenu.h \
+    utils/sslconfigurationwidget.h
 
 FORMS    += mainwindow.ui \
     mockups/mainview_mockup.ui \
@@ -83,7 +85,8 @@ FORMS    += mainwindow.ui \
     listenereditdialog.ui \
     settingsdialog.ui \
     settings/proxysettingspage.ui \
-    settings/sslcasettingspage.ui
+    settings/sslcasettingspage.ui \
+    utils/sslconfigurationwidget.ui
 
 DISTFILES += \
     NOTES.txt \

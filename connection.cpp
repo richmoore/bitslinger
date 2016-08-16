@@ -6,6 +6,9 @@
 #include "journal.h"
 #include "utils/certificategenerator.h"
 
+#include "utils/sslconfigurationwidget.h"
+#include <QSslConfiguration>
+
 #include "connection.h"
 
 const qint64 MAX_CHUNK_SIZE = 32*1024; // 32K
@@ -133,6 +136,10 @@ void Connection::serverEncrypted()
 {
     m_journal->recordEvent(this, Journal::ServerSwitchedToSslEvent, QByteArray());
     qDebug() << "Server connection is now encrypted, responding to client";
+
+    SslConfigurationWidget *w = new SslConfigurationWidget();
+    w->setConfiguration(m_server->sslConfiguration());
+    w->show();
 
     encryptClientConnection();
 }

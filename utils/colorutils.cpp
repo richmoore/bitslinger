@@ -7,6 +7,7 @@
 
 QColor ColorUtils::autoBackgroundColor(QWidget *container, int index)
 {
+    Q_UNUSED(container);
 //    QPalette pal = container->palette();
 //    QColor base = pal.color(QPalette::Base);
     QColor base(0xaa, 0xee, 0xcc);
