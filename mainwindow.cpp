@@ -36,8 +36,6 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(m_ui->action_Options, SIGNAL(triggered()), this, SLOT(showSettings()));
     connect(m_ui->action_Load_State, SIGNAL(triggered()), this, SLOT(openState()));
     connect(m_ui->action_Save_State, SIGNAL(triggered()), this, SLOT(saveState()));
-
-    loadGuiSettings();
 }
 
 MainWindow::~MainWindow()

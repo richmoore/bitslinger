@@ -21,5 +21,7 @@ int main(int argc, char *argv[])
     slinger.loadCaConfig();
     slinger.loadListenerConfig();
 
+    w.loadGuiSettings();
+
     return app.exec();
 }
