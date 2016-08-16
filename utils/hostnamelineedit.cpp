@@ -15,7 +15,7 @@ void HostnameLineEdit::lookupHost()
     if (m_lookupId >= 0)
         QHostInfo::abortHostLookup(m_lookupId);
 
-    QHostInfo::lookupHost(text(), this, SLOT(lookupComplete(QHostInfo)));
+    m_lookupId = QHostInfo::lookupHost(text(), this, SLOT(lookupComplete(QHostInfo)));
 }
 
 void HostnameLineEdit::setStatusGood(bool yes)
@@ -33,6 +33,7 @@ void HostnameLineEdit::setStatusGood(bool yes)
 
 void HostnameLineEdit::lookupComplete(const QHostInfo &info)
 {
+    m_lookupId = -1;
     if (info.error() != QHostInfo::NoError)
         setStatusGood(false);
     else
