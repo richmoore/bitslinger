@@ -8,6 +8,9 @@
 #include "journal.h"
 #include "listener.h"
 
+#include "proxytool/proxytool.h"
+#include "repeatertool/repeatertool.h"
+
 #include "bitslinger.h"
 
 const quint32 STATE_FILE_MAGIC = 0xB175BABE;
@@ -18,6 +21,15 @@ const quint16 STATE_FILE_VERSION = 0x0002;
 BitSlinger::BitSlinger(QObject *parent) : QObject(parent)
 {
     m_journal = new Journal(this);
+
+    ProxyTool *proxy = new ProxyTool(this);
+    proxy->setBitSlinder(this);
+    m_tools.append(proxy);
+
+    RepeaterTool *repeater = new RepeaterTool(this);
+    repeater->setBitSlinder(this);
+    m_tools.append(repeater);
+
 }
 
 void BitSlinger::setUpstreamProxy(const QNetworkProxy &upstream)

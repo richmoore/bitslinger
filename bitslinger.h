@@ -12,8 +12,10 @@ class QIODevice;
 class Listener;
 struct ListenerConfig;
 class Journal;
+class AbstractTool;
 
 typedef QList<Listener *> ListenerList;
+typedef QList<AbstractTool *> AbstractToolList;
 
 class BitSlinger : public QObject
 {
@@ -44,6 +46,8 @@ public:
     bool writeState(QIODevice *output);
     bool readState(QIODevice *input);
 
+    const AbstractToolList tools() const { return m_tools; }
+
 signals:
 
 public slots:
@@ -58,6 +62,7 @@ private:
     Journal *m_journal;
     QNetworkProxy m_upstream;
     CertificateGenerator m_certGenerator;
+    AbstractToolList m_tools;
 };
 
 Q_DECLARE_OPERATORS_FOR_FLAGS(BitSlinger::StateFileFlags)

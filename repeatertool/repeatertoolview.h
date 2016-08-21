@@ -7,7 +7,7 @@ namespace Ui {
 class RepeaterToolView;
 }
 
-class BitSlinger;
+class Journal;
 
 class RepeaterToolView : public QWidget
 {
@@ -21,7 +21,7 @@ public:
     bool restoreState(const QByteArray &state);
 
 public slots:
-    void setBitSlinger(BitSlinger *slinger);
+    void setJournal(Journal *journal);
 
 private:
     Ui::RepeaterToolView *ui;

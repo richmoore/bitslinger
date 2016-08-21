@@ -45,7 +45,6 @@ private:
     Ui::MainWindow *m_ui;
     BitSlinger *m_slinger;
     RecentFilesMenu *m_recent;
-    QList<AbstractTool *> m_tools;
 };
 
 #endif // MAINWINDOW_H

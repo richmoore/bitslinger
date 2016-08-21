@@ -26,7 +26,7 @@ bool RepeaterToolView::restoreState(const QByteArray &state)
     return true;
 }
 
-void RepeaterToolView::setBitSlinger(BitSlinger *slinger)
+void RepeaterToolView::setJournal(Journal *journal)
 {
-    ui->journalView->setJournal(slinger->journal());
+    ui->journalView->setJournal(journal);
 }

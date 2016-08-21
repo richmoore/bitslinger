@@ -1,3 +1,5 @@
+#include "journal.h"
+
 #include "repeatertoolview.h"
 #include "repeatertool.h"
 
@@ -10,7 +12,8 @@ RepeaterTool::RepeaterTool(QObject *parent)
     m_view = new RepeaterToolView;
     setWidget(m_view);
 
-    connect(this, SIGNAL(bitSlingerChanged(BitSlinger*)), m_view, SLOT(setBitSlinger(BitSlinger*)));
+    m_journal = new Journal(this);
+    m_view->setJournal(m_journal);
 }
 
 QByteArray RepeaterTool::saveState()

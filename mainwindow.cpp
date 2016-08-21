@@ -6,10 +6,9 @@
 #include "bitslinger.h"
 #include "listenerdialog.h"
 #include "settingsdialog.h"
-#include "utils/recentfilesmenu.h"
+#include "abstracttool.h"
 
-#include "proxytool/proxytool.h"
-#include "repeatertool/repeatertool.h"
+#include "utils/recentfilesmenu.h"
 
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
@@ -38,9 +37,6 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(m_ui->action_Options, SIGNAL(triggered()), this, SLOT(showSettings()));
     connect(m_ui->action_Load_State, SIGNAL(triggered()), this, SLOT(openState()));
     connect(m_ui->action_Save_State, SIGNAL(triggered()), this, SLOT(saveState()));
-
-    addTool(new ProxyTool(this));
-    addTool(new RepeaterTool(this));
 }
 
 MainWindow::~MainWindow()
@@ -51,15 +47,14 @@ MainWindow::~MainWindow()
 
 void MainWindow::addTool(AbstractTool *tool)
 {
-    m_tools.append(tool);
     m_ui->toolsTab->addTab(tool->widget(), tool->icon(), tool->name());
 }
 
 void MainWindow::setBitSlinger(BitSlinger *slinger)
 {
     m_slinger = slinger;
-    foreach(AbstractTool *tool, m_tools) {
-        tool->setBitSlinder(m_slinger);
+    foreach(AbstractTool *tool, slinger->tools()) {
+        addTool(tool);
     }
 }
 
@@ -70,7 +65,7 @@ void MainWindow::loadGuiSettings()
 
     m_recent->restoreState(settings.value(QLL("RecentFiles")).toByteArray());
 
-    foreach(AbstractTool *tool, m_tools) {
+    foreach(AbstractTool *tool, m_slinger->tools()) {
         tool->restoreState(settings.value(tool->name()).toByteArray());
     }
 }
@@ -82,7 +77,7 @@ void MainWindow::saveGuiSettings()
 
     settings.setValue(QLL("RecentFiles"), m_recent->saveState());
 
-    foreach(AbstractTool *tool, m_tools) {
+    foreach(AbstractTool *tool, m_slinger->tools()) {
         settings.setValue(tool->name(), tool->saveState());
     }
 }
