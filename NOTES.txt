@@ -1,3 +1,15 @@
+Source Layout
+=============
+
+/               Core code
+qhexedit2/      QHexEdit2
+settings/       Implementations of the various settings pages
+utils/          Standalone utility classes with no bitslinger dependency
+proxytool/      Proxy Tool
+repeatertool/   Reapeater Tool
+
+
+
 Arrows
 By Brian Oppenlander, US
 
@@ -9,40 +21,3 @@ New icons:
 
 lock    SSL
 repost  Repeatery thing
-
-
-Finish existing features
-- ssl modes
-- review config handling
-- review cert generation
-
-SSL Mode
-========
-
-Auto            MITM plain text, transparently switching to MITM SSL when the client starts talking SSL
-Strip Client    Client connection plain text, server connection SSL
-Strip Server    Client connection SSL, server connection plain text
-None            Always treat the connections as raw bytes
-
-** Strip server mode is dodgy at the moment - we don't have a server cert to clone, so we need to add some logic
-to make one based on something else.
-
-
-Journal Features
-- Find
-- Filter
-
-
-Ideas
-=====
-
-* Export message
-
-* Decode client hello
-
-* Add latency to the messages
-
-* Export connection to a text file. Ideally in a form that can be replayed
-
-* Send a connection to the repeater
-

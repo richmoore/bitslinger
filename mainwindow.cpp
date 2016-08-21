@@ -9,6 +9,7 @@
 #include "utils/recentfilesmenu.h"
 
 #include "proxytool/proxytool.h"
+#include "repeatertool/repeatertool.h"
 
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
@@ -21,6 +22,7 @@ MainWindow::MainWindow(QWidget *parent) :
     m_slinger(0)
 {
     m_ui->setupUi(this);
+    m_ui->statusBar->setVisible(false);
 
     setWindowIcon(QIcon(":icons/soundwave.svg"));
 
@@ -38,6 +40,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(m_ui->action_Save_State, SIGNAL(triggered()), this, SLOT(saveState()));
 
     addTool(new ProxyTool(this));
+    addTool(new RepeaterTool(this));
 }
 
 MainWindow::~MainWindow()

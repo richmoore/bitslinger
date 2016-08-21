@@ -57,7 +57,10 @@ SOURCES += main.cpp\
     utils/sslconfigurationwidget.cpp \
     abstracttool.cpp \
     proxytool/proxytool.cpp \
-    proxytool/proxytoolview.cpp
+    proxytool/proxytoolview.cpp \
+    repeatertool/repeatertool.cpp \
+    repeatertool/repeatertoolview.cpp \
+    repeatertool/repeatergutterwidget.cpp
 
 HEADERS  += mainwindow.h \
     connection.h \
@@ -83,7 +86,10 @@ HEADERS  += mainwindow.h \
     utils/sslconfigurationwidget.h \
     abstracttool.h \
     proxytool/proxytool.h \
-    proxytool/proxytoolview.h
+    proxytool/proxytoolview.h \
+    repeatertool/repeatertool.h \
+    repeatertool/repeatertoolview.h \
+    repeatertool/repeatergutterwidget.h
 
 FORMS    += mainwindow.ui \
     mockups/mainview_mockup.ui \
@@ -93,7 +99,8 @@ FORMS    += mainwindow.ui \
     settings/proxysettingspage.ui \
     settings/sslcasettingspage.ui \
     utils/sslconfigurationwidget.ui \
-    proxytool/proxytoolview.ui
+    proxytool/proxytoolview.ui \
+    repeatertool/repeatertoolview.ui
 
 DISTFILES += \
     NOTES.txt \

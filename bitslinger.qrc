@@ -16,5 +16,6 @@
         <file>icons/repost.svg</file>
         <file>icons/intercept_client.svg</file>
         <file>icons/intercept_server.svg</file>
+        <file>icons/activity_log.svg</file>
     </qresource>
 </RCC>

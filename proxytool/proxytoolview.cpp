@@ -11,6 +11,9 @@ ProxyToolView::ProxyToolView(QWidget *parent) :
 
     m_ui->hexView->setReadOnly(true);
     m_ui->textView->setReadOnly(true);
+
+    connect(m_ui->journalView, SIGNAL(entryActivated(JournalEvent *)),
+            this, SLOT(showEntry(JournalEvent*)));
 }
 
 ProxyToolView::~ProxyToolView()
@@ -31,13 +34,10 @@ QByteArray ProxyToolView::saveState()
 void ProxyToolView::setBitSlinger(BitSlinger *slinger)
 {
     m_ui->journalView->setJournal(slinger->journal());
-    connect(m_ui->journalView, SIGNAL(entryActivated(JournalEvent *)),
-            this, SLOT(showEntry(JournalEvent*)));
 }
 
 void ProxyToolView::showEntry(JournalEvent *entry)
 {
     m_ui->hexView->setData(entry->content);
     m_ui->textView->setPlainText(QString(entry->content));
-
 }

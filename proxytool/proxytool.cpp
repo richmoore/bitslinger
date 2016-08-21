@@ -5,7 +5,7 @@ ProxyTool::ProxyTool(QObject *parent)
     : AbstractTool(parent)
 {
     setName(tr("Proxy"));
-    setIcon(QIcon(":icons/stethoscope.svg"));
+    setIcon(QIcon(":icons/activity_log.svg"));
 
     m_view = new ProxyToolView;
     setWidget(m_view);
