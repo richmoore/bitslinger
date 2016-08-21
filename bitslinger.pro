@@ -54,7 +54,10 @@ SOURCES += main.cpp\
     utils/hostnamelineedit.cpp \
     utils/colorutils.cpp \
     utils/recentfilesmenu.cpp \
-    utils/sslconfigurationwidget.cpp
+    utils/sslconfigurationwidget.cpp \
+    abstracttool.cpp \
+    proxytool/proxytool.cpp \
+    proxytool/proxytoolview.cpp
 
 HEADERS  += mainwindow.h \
     connection.h \
@@ -77,7 +80,10 @@ HEADERS  += mainwindow.h \
     utils/hostnamelineedit.h \
     utils/colorutils.h \
     utils/recentfilesmenu.h \
-    utils/sslconfigurationwidget.h
+    utils/sslconfigurationwidget.h \
+    abstracttool.h \
+    proxytool/proxytool.h \
+    proxytool/proxytoolview.h
 
 FORMS    += mainwindow.ui \
     mockups/mainview_mockup.ui \
@@ -86,7 +92,8 @@ FORMS    += mainwindow.ui \
     settingsdialog.ui \
     settings/proxysettingspage.ui \
     settings/sslcasettingspage.ui \
-    utils/sslconfigurationwidget.ui
+    utils/sslconfigurationwidget.ui \
+    proxytool/proxytoolview.ui
 
 DISTFILES += \
     NOTES.txt \

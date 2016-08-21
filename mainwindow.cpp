@@ -8,6 +8,8 @@
 #include "settingsdialog.h"
 #include "utils/recentfilesmenu.h"
 
+#include "proxytool/proxytool.h"
+
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
@@ -19,8 +21,6 @@ MainWindow::MainWindow(QWidget *parent) :
     m_slinger(0)
 {
     m_ui->setupUi(this);
-    m_ui->hexView->setReadOnly(true);
-    m_ui->textView->setReadOnly(true);
 
     setWindowIcon(QIcon(":icons/soundwave.svg"));
 
@@ -36,6 +36,8 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(m_ui->action_Options, SIGNAL(triggered()), this, SLOT(showSettings()));
     connect(m_ui->action_Load_State, SIGNAL(triggered()), this, SLOT(openState()));
     connect(m_ui->action_Save_State, SIGNAL(triggered()), this, SLOT(saveState()));
+
+    addTool(new ProxyTool(this));
 }
 
 MainWindow::~MainWindow()
@@ -44,12 +46,18 @@ MainWindow::~MainWindow()
     delete m_ui;
 }
 
+void MainWindow::addTool(AbstractTool *tool)
+{
+    m_tools.append(tool);
+    m_ui->toolsTab->addTab(tool->widget(), tool->icon(), tool->name());
+}
+
 void MainWindow::setBitSlinger(BitSlinger *slinger)
 {
     m_slinger = slinger;
-    m_ui->journalView->setJournal(slinger->journal());
-    connect(m_ui->journalView, SIGNAL(entryActivated(JournalEvent *)),
-            this, SLOT(showEntry(JournalEvent*)));
+    foreach(AbstractTool *tool, m_tools) {
+        tool->setBitSlinder(m_slinger);
+    }
 }
 
 void MainWindow::loadGuiSettings()
@@ -58,7 +66,10 @@ void MainWindow::loadGuiSettings()
     settings.beginGroup(QLL("GUI"));
 
     m_recent->restoreState(settings.value(QLL("RecentFiles")).toByteArray());
-    m_ui->journalView->header()->restoreState(settings.value(QLL("JournalView")).toByteArray());
+
+    foreach(AbstractTool *tool, m_tools) {
+        tool->restoreState(settings.value(tool->name()).toByteArray());
+    }
 }
 
 void MainWindow::saveGuiSettings()
@@ -67,13 +78,10 @@ void MainWindow::saveGuiSettings()
     settings.beginGroup(QLL("GUI"));
 
     settings.setValue(QLL("RecentFiles"), m_recent->saveState());
-    settings.setValue(QLL("JournalView"), m_ui->journalView->header()->saveState());
-}
 
-void MainWindow::showEntry(JournalEvent *entry)
-{
-    m_ui->hexView->setData(entry->content);
-    m_ui->textView->setPlainText(QString(entry->content));
+    foreach(AbstractTool *tool, m_tools) {
+        settings.setValue(tool->name(), tool->saveState());
+    }
 }
 
 void MainWindow::showListenerDialog()

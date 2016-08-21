@@ -10,8 +10,8 @@ class MainWindow;
 class QModelIndex;
 
 class BitSlinger;
-struct JournalEvent;
 class RecentFilesMenu;
+class AbstractTool;
 
 class MainWindow : public QMainWindow
 {
@@ -20,6 +20,8 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
+
+    void addTool(AbstractTool *tool);
 
     void setBitSlinger(BitSlinger *slinger);
 
@@ -39,13 +41,11 @@ public slots:
     void saveState();
     bool saveState(const QString &filename);
 
-protected slots:
-    void showEntry(JournalEvent *entry);
-
 private:
     Ui::MainWindow *m_ui;
     BitSlinger *m_slinger;
     RecentFilesMenu *m_recent;
+    QList<AbstractTool *> m_tools;
 };
 
 #endif // MAINWINDOW_H

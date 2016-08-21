@@ -14,45 +14,12 @@
    <string>BitSlinger</string>
   </property>
   <widget class="QWidget" name="centralWidget">
-   <layout class="QHBoxLayout" name="horizontalLayout">
-    <item>
-     <widget class="QSplitter" name="splitter">
-      <property name="orientation">
-       <enum>Qt::Vertical</enum>
+   <layout class="QGridLayout" name="gridLayout">
+    <item row="0" column="0">
+     <widget class="QTabWidget" name="toolsTab">
+      <property name="currentIndex">
+       <number>-1</number>
       </property>
-      <widget class="JournalView" name="journalView">
-       <property name="alternatingRowColors">
-        <bool>true</bool>
-       </property>
-       <property name="rootIsDecorated">
-        <bool>false</bool>
-       </property>
-      </widget>
-      <widget class="QTabWidget" name="tabWidget">
-       <property name="currentIndex">
-        <number>1</number>
-       </property>
-       <widget class="QWidget" name="hexViewTab">
-        <attribute name="title">
-         <string>Hex View</string>
-        </attribute>
-        <layout class="QHBoxLayout" name="horizontalLayout_3">
-         <item>
-          <widget class="QHexEdit" name="hexView" native="true"/>
-         </item>
-        </layout>
-       </widget>
-       <widget class="QWidget" name="textViewTab">
-        <attribute name="title">
-         <string>Text View</string>
-        </attribute>
-        <layout class="QHBoxLayout" name="horizontalLayout_2">
-         <item>
-          <widget class="QPlainTextEdit" name="textView"/>
-         </item>
-        </layout>
-       </widget>
-      </widget>
      </widget>
     </item>
    </layout>
@@ -187,19 +154,6 @@
   </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
- <customwidgets>
-  <customwidget>
-   <class>QHexEdit</class>
-   <extends>QWidget</extends>
-   <header>qhexedit2/qhexedit.h</header>
-   <container>1</container>
-  </customwidget>
-  <customwidget>
-   <class>JournalView</class>
-   <extends>QTreeView</extends>
-   <header>journalview.h</header>
-  </customwidget>
- </customwidgets>
  <resources>
   <include location="bitslinger.qrc"/>
  </resources>
