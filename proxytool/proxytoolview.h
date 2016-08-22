@@ -8,7 +8,7 @@ class ProxyToolView;
 }
 
 class BitSlinger;
-class JournalEvent;
+struct JournalEvent;
 
 class ProxyToolView : public QWidget
 {
