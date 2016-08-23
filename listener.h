@@ -51,7 +51,7 @@ public:
     explicit Listener(const ListenerConfig &config, QObject *parent = 0);
 
     ListenerConfig config() const { return m_config; }
-    void setConfig(const ListenerConfig config);
+    void setConfig(const ListenerConfig &config);
 
     BitSlinger *bitSlinger() const { return m_slinger; }
     void setBitSlinger(BitSlinger *slinger);

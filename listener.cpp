@@ -16,7 +16,7 @@ Listener::Listener(const ListenerConfig &config, QObject *parent)
 {
 }
 
-void Listener::setConfig(const ListenerConfig config)
+void Listener::setConfig(const ListenerConfig &config)
 {
     if (m_config == config)
         return;
