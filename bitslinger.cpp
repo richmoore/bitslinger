@@ -178,6 +178,7 @@ void BitSlinger::saveListenerConfig()
         settings.setValue(QLL("TargetHost"), config.targetHost);
         settings.setValue(QLL("TargetPort"), config.targetPort);
         settings.setValue(QLL("SslMode"), config.sslMode);
+        settings.setValue(QLL("ProxyType"), config.type);
     }
     settings.endArray();
 }
@@ -200,6 +201,7 @@ void BitSlinger::loadListenerConfig()
         config.targetHost = settings.value(QLL("TargetHost")).toString();
         config.targetPort = settings.value(QLL("TargetPort")).toInt();
         config.sslMode = ListenerConfig::SslMode(settings.value(QLL("SslMode")).toInt());
+        config.type = ListenerConfig::ProxyType(settings.value(QLL("ProxyType")).toInt());
 
         addListener(config);
     }

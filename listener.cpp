@@ -61,9 +61,13 @@ void Listener::handleConnection()
 
         Connection *con = new Connection(sock, this);
         con->setSslMode(m_config.sslMode);
+        con->setProxyType(m_config.type);
         con->setBitSlinger(m_slinger);
         m_journal->addConnection(con);
 
-        con->connectToHost(m_config.targetHost, m_config.targetPort);
+        if (m_config.type == ListenerConfig::HttpProxy)
+            con->startHttpProxy();
+        else
+            con->connectToHost(m_config.targetHost, m_config.targetPort);
     }
 }

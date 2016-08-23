@@ -60,7 +60,8 @@ SOURCES += main.cpp\
     proxytool/proxytoolview.cpp \
     repeatertool/repeatertool.cpp \
     repeatertool/repeatertoolview.cpp \
-    repeatertool/repeatergutterwidget.cpp
+    repeatertool/repeatergutterwidget.cpp \
+    utils/httpproxyrequesthandler.cpp
 
 HEADERS  += mainwindow.h \
     connection.h \
@@ -89,7 +90,8 @@ HEADERS  += mainwindow.h \
     proxytool/proxytoolview.h \
     repeatertool/repeatertool.h \
     repeatertool/repeatertoolview.h \
-    repeatertool/repeatergutterwidget.h
+    repeatertool/repeatergutterwidget.h \
+    utils/httpproxyrequesthandler.h
 
 FORMS    += mainwindow.ui \
     mockups/mainview_mockup.ui \

@@ -4,7 +4,9 @@
 
 #include "bitslinger.h"
 #include "journal.h"
+
 #include "utils/certificategenerator.h"
+#include "utils/httpproxyrequesthandler.h"
 
 #include "utils/sslconfigurationwidget.h"
 
@@ -17,10 +19,24 @@ Connection::Connection(QSslSocket *sock, QObject *parent)
       m_slinger(0),
       m_server(0),
       m_client(sock),
+      m_proxyType(ListenerConfig::TcpProxy),
       m_sslMode(ListenerConfig::SslAutoMode),
       m_connectionId(-1),
       m_journal(0)
 {
+}
+
+void Connection::startHttpProxy()
+{
+    m_httpProxyHandler = new HttpProxyRequestHandler(this);
+    m_httpProxyHandler->setSocket(m_client);
+
+    connect(m_httpProxyHandler, SIGNAL(requestReady()), this, SLOT(proxyRequestReady()));
+}
+
+void Connection::proxyRequestReady()
+{
+    connectToHost(m_httpProxyHandler->host(), m_httpProxyHandler->port());
 }
 
 void Connection::connectToHost(const QString &hostname, int port)
@@ -50,6 +66,12 @@ void Connection::connected()
 {
     qDebug() << "Connected to server";
     m_journal->recordEvent(this, Journal::ServerConnectionEvent, QByteArray());
+
+    if (m_proxyType == ListenerConfig::HttpProxy) {
+        m_httpProxyHandler->connectionSucceeded();
+        m_httpProxyHandler->deleteLater();
+        m_httpProxyHandler = 0;
+    }
 
     connect(m_client, SIGNAL(readyRead()), this, SLOT(clientData()));
     connect(m_server, SIGNAL(readyRead()), this, SLOT(serverData()));

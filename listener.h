@@ -11,6 +11,11 @@ class Journal;
 
 struct ListenerConfig
 {
+    enum ProxyType {
+        TcpProxy,
+        HttpProxy
+    };
+
     enum SslMode {
         SslAutoMode,
         SslStripClientMode,
@@ -18,6 +23,7 @@ struct ListenerConfig
         DumbMode
     };
 
+    ProxyType type;
     QHostAddress listenAddress;
     int listenPort;
     QString targetHost;
@@ -25,7 +31,8 @@ struct ListenerConfig
     SslMode sslMode;
 
     bool operator==(const ListenerConfig &other) const {
-        return listenAddress == other.listenAddress
+        return type == other.type
+                && listenAddress == other.listenAddress
                 && listenPort == other.listenPort
                 && targetHost == other.targetHost
                 && targetPort == other.targetPort

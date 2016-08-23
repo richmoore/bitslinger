@@ -43,6 +43,12 @@ void ListenerDialog::refreshList()
         item->setText(1, QString::number(config.listenPort));
         item->setText(2, config.targetHost);
         item->setText(3, QString::number(config.targetPort));
+
+        if (config.type == ListenerConfig::TcpProxy)
+            item->setText(4, tr("TCP Proxy"));
+        else if (config.type == ListenerConfig::HttpProxy)
+            item->setText(4, tr("HTTP Proxy"));
+
         ui->listenerTree->addTopLevelItem(item);
     }
 }
@@ -61,6 +67,7 @@ void ListenerDialog::addListener()
     config.targetHost = dlg.targetHost();
     config.targetPort = dlg.targetPort();
     config.sslMode = dlg.sslMode();
+    config.type = dlg.proxyType();
 
     m_slinger->addListener(config);
     m_slinger->saveListenerConfig();
@@ -78,6 +85,7 @@ void ListenerDialog::editListener()
     dlg.setTargetHost(config.targetHost);
     dlg.setTargetPort(config.targetPort);
     dlg.setSslMode(config.sslMode);
+    dlg.setProxyType(config.type);
 
     int result = dlg.exec();
     if (result == QDialog::Rejected)
@@ -88,6 +96,7 @@ void ListenerDialog::editListener()
     config.targetHost = dlg.targetHost();
     config.targetPort = dlg.targetPort();
     config.sslMode = dlg.sslMode();
+    config.type = dlg.proxyType();
 
     m_slinger->editListener(index, config);
     m_slinger->saveListenerConfig();

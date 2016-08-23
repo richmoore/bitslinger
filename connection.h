@@ -9,6 +9,7 @@ class QSslSocket;
 
 class BitSlinger;
 class Journal;
+class HttpProxyRequestHandler;
 
 class Connection : public QObject
 {
@@ -16,6 +17,7 @@ class Connection : public QObject
 public:
     explicit Connection(QSslSocket *sock, QObject *parent = 0);
 
+    void setProxyType(ListenerConfig::ProxyType type) { m_proxyType = type; }
     void setSslMode(ListenerConfig::SslMode mode) { m_sslMode = mode; }
 
     BitSlinger *bitSlinger() const { return m_slinger; }
@@ -30,6 +32,8 @@ public:
 signals:
 
 public slots:
+    void startHttpProxy();
+
     void connectToHost(const QString &server, int port);
 
     void connected();
@@ -42,6 +46,7 @@ public slots:
     void serverEncrypted();
 
 protected slots:
+    void proxyRequestReady();
     void encryptClientConnection();
 
 private:
@@ -51,9 +56,11 @@ private:
     BitSlinger *m_slinger;
     QSslSocket *m_server;
     QSslSocket *m_client;
+    ListenerConfig::ProxyType m_proxyType;
     ListenerConfig::SslMode m_sslMode;
     int m_connectionId;
     Journal *m_journal;
+    HttpProxyRequestHandler *m_httpProxyHandler;
 };
 
 #endif // CONNECTION_H

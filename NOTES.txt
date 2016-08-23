@@ -8,6 +8,8 @@ utils/          Standalone utility classes with no bitslinger dependency
 proxytool/      Proxy Tool
 repeatertool/   Reapeater Tool
 
+** Destruction order is broken right now
+** HttpProxy listeners aren't wired up either
 
 
 Arrows

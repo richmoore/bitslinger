@@ -18,6 +18,9 @@ public:
     explicit ListenerEditDialog(QWidget *parent = 0);
     ~ListenerEditDialog();
 
+    ListenerConfig::ProxyType proxyType() const;
+    void setProxyType(ListenerConfig::ProxyType type);
+
     ListenerConfig::SslMode sslMode() const;
     void setSslMode(ListenerConfig::SslMode mode);
 

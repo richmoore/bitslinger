@@ -35,6 +35,17 @@ ListenerEditDialog::~ListenerEditDialog()
     delete ui;
 }
 
+void ListenerEditDialog::setProxyType(ListenerConfig::ProxyType type)
+{
+    ui->proxyTypeCombo->setCurrentIndex(int(type));
+}
+
+ListenerConfig::ProxyType ListenerEditDialog::proxyType() const
+{
+    int index = ui->proxyTypeCombo->currentIndex();
+    return ListenerConfig::ProxyType(index);
+}
+
 void ListenerEditDialog::setSslMode(ListenerConfig::SslMode mode)
 {
     ui->sslModeCombo->setCurrentIndex(int(mode));
