@@ -63,6 +63,9 @@
         <property name="rightMargin">
          <number>0</number>
         </property>
+        <property name="bottomMargin">
+         <number>0</number>
+        </property>
         <item>
          <widget class="QHexEdit" name="hexView" native="true"/>
         </item>
