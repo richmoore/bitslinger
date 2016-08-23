@@ -35,26 +35,26 @@ ListenerEditDialog::~ListenerEditDialog()
     delete ui;
 }
 
-void ListenerEditDialog::setProxyType(ListenerConfig::ProxyType type)
+void ListenerEditDialog::setProxyType(Listener::ProxyType type)
 {
     ui->proxyTypeCombo->setCurrentIndex(int(type));
 }
 
-ListenerConfig::ProxyType ListenerEditDialog::proxyType() const
+Listener::ProxyType ListenerEditDialog::proxyType() const
 {
     int index = ui->proxyTypeCombo->currentIndex();
-    return ListenerConfig::ProxyType(index);
+    return Listener::ProxyType(index);
 }
 
-void ListenerEditDialog::setSslMode(ListenerConfig::SslMode mode)
+void ListenerEditDialog::setSslMode(Listener::SslMode mode)
 {
     ui->sslModeCombo->setCurrentIndex(int(mode));
 }
 
-ListenerConfig::SslMode ListenerEditDialog::sslMode() const
+Listener::SslMode ListenerEditDialog::sslMode() const
 {
     int index = ui->sslModeCombo->currentIndex();
-    return ListenerConfig::SslMode(index);
+    return Listener::SslMode(index);
 }
 
 QHostAddress ListenerEditDialog::listenAddress() const

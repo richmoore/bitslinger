@@ -36,7 +36,7 @@ void ListenerDialog::refreshList()
     ui->listenerTree->clear();
 
     foreach(Listener *listener, m_slinger->listeners()) {
-        ListenerConfig config = listener->config();
+        Listener::Config config = listener->config();
 
         QTreeWidgetItem *item = new QTreeWidgetItem();
         item->setText(0, config.listenAddress.toString());
@@ -44,9 +44,9 @@ void ListenerDialog::refreshList()
         item->setText(2, config.targetHost);
         item->setText(3, QString::number(config.targetPort));
 
-        if (config.type == ListenerConfig::TcpProxy)
+        if (config.type == Listener::TcpProxy)
             item->setText(4, tr("TCP Proxy"));
-        else if (config.type == ListenerConfig::HttpProxy)
+        else if (config.type == Listener::HttpProxy)
             item->setText(4, tr("HTTP Proxy"));
 
         ui->listenerTree->addTopLevelItem(item);
@@ -61,7 +61,7 @@ void ListenerDialog::addListener()
     if (result == QDialog::Rejected)
         return;
 
-    ListenerConfig config;
+    Listener::Config config;
     config.listenAddress = dlg.listenAddress();
     config.listenPort = dlg.listenPort();
     config.targetHost = dlg.targetHost();
@@ -79,7 +79,7 @@ void ListenerDialog::editListener()
     ListenerEditDialog dlg(this);
 
     int index = ui->listenerTree->currentIndex().row();
-    ListenerConfig config = m_slinger->listenerAt(index)->config();
+    Listener::Config config = m_slinger->listenerAt(index)->config();
     dlg.setListenAddress(config.listenAddress);
     dlg.setListenPort(config.listenPort);
     dlg.setTargetHost(config.targetHost);

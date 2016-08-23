@@ -6,11 +6,11 @@
 
 #include "utils/certificategenerator.h"
 
+#include "listener.h"
+
 class QHostAddress;
 class QIODevice;
 
-class Listener;
-struct ListenerConfig;
 class Journal;
 class AbstractTool;
 
@@ -39,8 +39,8 @@ public:
     QNetworkProxy upstreamProxy() const { return m_upstream; }
     void setUpstreamProxy(const QNetworkProxy &upstream);
 
-    void addListener(const ListenerConfig &config);
-    void editListener(int index, const ListenerConfig &config);
+    void addListener(const Listener::Config &config);
+    void editListener(int index, const Listener::Config &config);
     void removeListener(int index);
 
     bool writeState(QIODevice *output);

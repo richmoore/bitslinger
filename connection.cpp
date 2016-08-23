@@ -19,8 +19,8 @@ Connection::Connection(QSslSocket *sock, QObject *parent)
       m_slinger(0),
       m_server(0),
       m_client(sock),
-      m_proxyType(ListenerConfig::TcpProxy),
-      m_sslMode(ListenerConfig::SslAutoMode),
+      m_proxyType(Listener::TcpProxy),
+      m_sslMode(Listener::SslAutoMode),
       m_connectionId(-1),
       m_journal(0)
 {
@@ -49,7 +49,7 @@ void Connection::connectToHost(const QString &hostname, int port)
     qDebug() << "Connecting via" << m_slinger->upstreamProxy();
     m_server->setProxy(m_slinger->upstreamProxy());
 
-    if (m_sslMode == ListenerConfig::SslStripClientMode)
+    if (m_sslMode == Listener::SslStripClientMode)
         m_server->connectToHostEncrypted(hostname, port);
     else
         m_server->connectToHost(hostname, port);
@@ -67,7 +67,7 @@ void Connection::connected()
     qDebug() << "Connected to server";
     m_journal->recordEvent(this, Journal::ServerConnectionEvent, QByteArray());
 
-    if (m_proxyType == ListenerConfig::HttpProxy) {
+    if (m_proxyType == Listener::HttpProxy) {
         m_httpProxyHandler->connectionSucceeded();
         m_httpProxyHandler->deleteLater();
         m_httpProxyHandler = 0;
@@ -119,7 +119,7 @@ void Connection::clientData()
 
             m_journal->recordEvent(this, Journal::ClientSwitchedToSslEvent, QByteArray());
 
-            if ((m_sslMode != ListenerConfig::DumbMode) && (m_sslMode != ListenerConfig::SslStripServerMode)) {
+            if ((m_sslMode != Listener::DumbMode) && (m_sslMode != Listener::SslStripServerMode)) {
                 if (!m_server->isEncrypted()) {
                     m_server->flush();
                     m_server->startClientEncryption();

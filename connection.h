@@ -17,8 +17,8 @@ class Connection : public QObject
 public:
     explicit Connection(QSslSocket *sock, QObject *parent = 0);
 
-    void setProxyType(ListenerConfig::ProxyType type) { m_proxyType = type; }
-    void setSslMode(ListenerConfig::SslMode mode) { m_sslMode = mode; }
+    void setProxyType(Listener::ProxyType type) { m_proxyType = type; }
+    void setSslMode(Listener::SslMode mode) { m_sslMode = mode; }
 
     BitSlinger *bitSlinger() const { return m_slinger; }
     void setBitSlinger(BitSlinger *slinger) { m_slinger = slinger; }
@@ -56,8 +56,8 @@ private:
     BitSlinger *m_slinger;
     QSslSocket *m_server;
     QSslSocket *m_client;
-    ListenerConfig::ProxyType m_proxyType;
-    ListenerConfig::SslMode m_sslMode;
+    Listener::ProxyType m_proxyType;
+    Listener::SslMode m_sslMode;
     int m_connectionId;
     Journal *m_journal;
     HttpProxyRequestHandler *m_httpProxyHandler;

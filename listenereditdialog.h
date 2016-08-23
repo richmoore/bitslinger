@@ -18,11 +18,11 @@ public:
     explicit ListenerEditDialog(QWidget *parent = 0);
     ~ListenerEditDialog();
 
-    ListenerConfig::ProxyType proxyType() const;
-    void setProxyType(ListenerConfig::ProxyType type);
+    Listener::ProxyType proxyType() const;
+    void setProxyType(Listener::ProxyType type);
 
-    ListenerConfig::SslMode sslMode() const;
-    void setSslMode(ListenerConfig::SslMode mode);
+    Listener::SslMode sslMode() const;
+    void setSslMode(Listener::SslMode mode);
 
     QHostAddress listenAddress() const;
     void setListenAddress(const QHostAddress &address);

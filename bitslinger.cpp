@@ -38,7 +38,7 @@ void BitSlinger::setUpstreamProxy(const QNetworkProxy &upstream)
     m_upstream = upstream;
 }
 
-void BitSlinger::addListener(const ListenerConfig &config)
+void BitSlinger::addListener(const Listener::Config &config)
 {
     Listener *proxy = new Listener(config, this);
     proxy->setBitSlinger(this);
@@ -47,7 +47,7 @@ void BitSlinger::addListener(const ListenerConfig &config)
     proxy->listen();
 }
 
-void BitSlinger::editListener(int index, const ListenerConfig &config)
+void BitSlinger::editListener(int index, const Listener::Config &config)
 {
     m_listeners[index]->setConfig(config);
 }
@@ -172,7 +172,7 @@ void BitSlinger::saveListenerConfig()
     for(int i=0; i < m_listeners.size(); i++) {
         settings.setArrayIndex(i);
 
-        ListenerConfig config = m_listeners[i]->config();
+        Listener::Config config = m_listeners[i]->config();
         settings.setValue(QLL("ListenAddress"), config.listenAddress.toString());
         settings.setValue(QLL("ListenPort"), config.listenPort);
         settings.setValue(QLL("TargetHost"), config.targetHost);
@@ -195,13 +195,13 @@ void BitSlinger::loadListenerConfig()
     int count = settings.beginReadArray(QLL("Listeners"));
     for(int i=0; i < count; i++) {
         settings.setArrayIndex(i);
-        ListenerConfig config;
+        Listener::Config config;
         config.listenAddress = QHostAddress(settings.value(QLL("ListenAddress")).toString());
         config.listenPort = settings.value(QLL("ListenPort")).toInt();
         config.targetHost = settings.value(QLL("TargetHost")).toString();
         config.targetPort = settings.value(QLL("TargetPort")).toInt();
-        config.sslMode = ListenerConfig::SslMode(settings.value(QLL("SslMode")).toInt());
-        config.type = ListenerConfig::ProxyType(settings.value(QLL("ProxyType")).toInt());
+        config.sslMode = Listener::SslMode(settings.value(QLL("SslMode")).toInt());
+        config.type = Listener::ProxyType(settings.value(QLL("ProxyType")).toInt());
 
         addListener(config);
     }

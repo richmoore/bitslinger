@@ -8,7 +8,7 @@
 
 #include "listener.h"
 
-Listener::Listener(const ListenerConfig &config, QObject *parent)
+Listener::Listener(const Listener::Config &config, QObject *parent)
     : QObject(parent),
       m_journal(0),
       m_config(config),
@@ -16,7 +16,7 @@ Listener::Listener(const ListenerConfig &config, QObject *parent)
 {
 }
 
-void Listener::setConfig(const ListenerConfig &config)
+void Listener::setConfig(const Listener::Config &config)
 {
     if (m_config == config)
         return;
@@ -65,7 +65,7 @@ void Listener::handleConnection()
         con->setBitSlinger(m_slinger);
         m_journal->addConnection(con);
 
-        if (m_config.type == ListenerConfig::HttpProxy)
+        if (m_config.type == Listener::HttpProxy)
             con->startHttpProxy();
         else
             con->connectToHost(m_config.targetHost, m_config.targetPort);
