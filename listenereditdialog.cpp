@@ -28,6 +28,8 @@ ListenerEditDialog::ListenerEditDialog(QWidget *parent) :
         ui->listenAddressCombo->addItem(addr.toString());
         addresses << addr;
     }
+
+    connect(ui->proxyTypeCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(proxyTypeChanged()));
 }
 
 ListenerEditDialog::~ListenerEditDialog()
@@ -96,4 +98,18 @@ int ListenerEditDialog::targetPort() const
 void ListenerEditDialog::setTargetPort(int port)
 {
     ui->targetPortSpin->setValue(port);
+}
+
+void ListenerEditDialog::proxyTypeChanged()
+{
+    int index = ui->proxyTypeCombo->currentIndex();
+    Listener::ProxyType type = Listener::ProxyType(index);
+    if (type == Listener::TcpProxy) {
+        ui->targetHostEdit->setEnabled(true);
+        ui->targetPortSpin->setEnabled(true);
+    }
+    else {
+        ui->targetHostEdit->setEnabled(false);
+        ui->targetPortSpin->setEnabled(false);
+    }
 }

@@ -36,6 +36,9 @@ public:
     int targetPort() const;
     void setTargetPort(int port);
 
+protected slots:
+    void proxyTypeChanged();
+
 private:
     Ui::ListenerEditDialog *ui;
     QList<QHostAddress> addresses;
