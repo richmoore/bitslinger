@@ -35,6 +35,8 @@ signals:
 
 protected slots:
     void dataReceived();
+    void sendBadRequest();
+    void sendBadMethod();
 
 private:
     State m_state;

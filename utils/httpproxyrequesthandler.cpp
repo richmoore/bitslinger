@@ -34,8 +34,9 @@ void HttpProxyRequestHandler::dataReceived()
             if (firstSpace < 1 || secondSpace < firstSpace+2) {
                 qDebug() << "Bad request" << line;
                 m_state = ErrorState;
+                sendBadRequest();
                 emit invalidRequest();
-                //////// BADNESS
+                continue;
             }
 
             QByteArray verb = line.mid(0, firstSpace);
@@ -46,11 +47,19 @@ void HttpProxyRequestHandler::dataReceived()
             qDebug() << "hostport" << hostPort;
             qDebug() << "httpVer" << m_httpVersion;
 
+            if (verb != QByteArrayLiteral("CONNECT")) {
+                m_state = ErrorState;
+                sendBadMethod();
+                emit invalidRequest();
+                continue;
+            }
+
             int colon = hostPort.indexOf(':');
             if (colon < 1 || colon == hostPort.length()) {
                 m_state = ErrorState;
+                sendBadRequest();
                 emit invalidRequest();
-                //////// BADNESS
+                continue;
             }
 
             m_host = QString::fromLatin1(hostPort.left(colon));
@@ -70,6 +79,20 @@ void HttpProxyRequestHandler::dataReceived()
             }
         }
     }
+}
+
+void HttpProxyRequestHandler::sendBadRequest()
+{
+    Q_ASSERT(m_state == ErrorState);
+
+    m_sock->write(QByteArrayLiteral("HTTP/1.1 400 BAD REQUEST\r\n\r\n"));
+}
+
+void HttpProxyRequestHandler::sendBadMethod()
+{
+    Q_ASSERT(m_state == ErrorState);
+
+    m_sock->write(QByteArrayLiteral("HTTP/1.1 405 BAD METHOD\r\n\r\n"));
 }
 
 void HttpProxyRequestHandler::connectionSucceeded()
