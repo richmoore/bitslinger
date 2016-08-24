@@ -37,7 +37,7 @@ public:
     void setTargetPort(int port);
 
 protected slots:
-    void proxyTypeChanged();
+    void proxyTypeChanged(int index);
 
 private:
     Ui::ListenerEditDialog *ui;
