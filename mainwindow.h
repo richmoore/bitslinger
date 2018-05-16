@@ -41,6 +41,9 @@ public slots:
     void saveState();
     bool saveState(const QString &filename);
 
+protected:
+    void closeEvent(QCloseEvent *event);
+
 private:
     Ui::MainWindow *m_ui;
     BitSlinger *m_slinger;

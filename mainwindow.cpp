@@ -2,6 +2,7 @@
 #include <QFileDialog>
 #include <QFile>
 #include <QSettings>
+#include <QCloseEvent>
 
 #include "bitslinger.h"
 #include "listenerdialog.h"
@@ -41,7 +42,6 @@ MainWindow::MainWindow(QWidget *parent) :
 
 MainWindow::~MainWindow()
 {
-    saveGuiSettings();
     delete m_ui;
 }
 
@@ -139,4 +139,11 @@ bool MainWindow::saveState(const QString &filename)
 
     emit fileSaved(filename);
     return m_slinger->writeState(&f);
+}
+
+void MainWindow::closeEvent(QCloseEvent *event)
+{
+    //### Check if we should really exit
+    event->accept();
+    saveGuiSettings();
 }
