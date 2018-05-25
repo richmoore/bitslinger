@@ -49,6 +49,9 @@ protected slots:
     void proxyRequestReady();
     void encryptClientConnection();
 
+protected:
+    void transferClientData(int bytes);
+
 private:
     int findSslClientHello(const QByteArray &data);
 

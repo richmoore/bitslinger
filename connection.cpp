@@ -101,6 +101,10 @@ int Connection::findSslClientHello(const QByteArray &data)
     // Search the message for a client hello, this might false negative if we have a very
     // fragemented write
     int start = data.indexOf("\x16\x03");
+    if (start < 0) {
+        return -1;
+    }
+
     if (data[start+5] == 0x01 && data[start+9] == 0x03) {
         qDebug() << QString("Client hello, record version 3.%1, handshake version 3.%2")
                         .arg(int(data[start+2])).arg(int(start+data[10]));
@@ -125,6 +129,10 @@ void Connection::clientData()
 
         int index = findSslClientHello(peeked);
         // If we found one
+        if (index > 0) {
+            transferClientData(index);
+        }
+
         if (index >= 0) {
             qDebug() << "SSL client hello detected";
 
@@ -144,14 +152,20 @@ void Connection::clientData()
             }
         }
 
-        QByteArray data = m_client->read(qMin(m_client->bytesAvailable(), MAX_CHUNK_SIZE));
-        qDebug() << ">>>" << data.size() << "bytes";
-
-
-        m_journal->recordEvent(this, Journal::ClientDataEvent, data);
-        m_server->write(data);
+        transferClientData(qMin(m_client->bytesAvailable(), MAX_CHUNK_SIZE));
     }
 }
+
+void Connection::transferClientData(int bytes)
+{
+    QByteArray data = m_client->read(bytes);
+    qDebug() << ">>>" << bytes << "bytes";
+
+    m_journal->recordEvent(this, Journal::ClientDataEvent, data);
+    m_server->write(data);
+
+}
+
 
 void Connection::serverData()
 {
@@ -193,3 +207,4 @@ void Connection::encryptClientConnection()
     m_client->setLocalCertificate(leaf);
     m_client->startServerEncryption();
 }
+
