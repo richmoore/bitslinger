@@ -97,7 +97,6 @@ void Connection::clientDisconnected()
 
 int Connection::findSslClientHello(const QByteArray &data)
 {
-#if 1
     // Search the message for a client hello, this might false negative if we have a very
     // fragemented write
     int start = data.indexOf("\x16\x03");
@@ -110,14 +109,7 @@ int Connection::findSslClientHello(const QByteArray &data)
                         .arg(int(data[start+2])).arg(int(start+data[10]));
         return start;
     }
-#else
-    //### This should really search the whole message for one
-    if (data[0] == 0x16 && data[1] == 0x03
-        && data[5] == 0x01 && data[9] == 0x03) {
-        qDebug() << QString("Client hello, record version 3.%1, handshake version 3.%2").arg(int(data[2])).arg(int(data[10]));
-        return 0;
-    }
-#endif
+
     return -1;
 }
 
