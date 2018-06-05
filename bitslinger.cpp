@@ -9,8 +9,6 @@
 #include "listener.h"
 
 #include "proxytool/proxytool.h"
-#include "repeatertool/repeatertool.h"
-
 #include "bitslinger.h"
 
 const quint32 STATE_FILE_MAGIC = 0xB175BABE;
@@ -25,11 +23,6 @@ BitSlinger::BitSlinger(QObject *parent) : QObject(parent)
     ProxyTool *proxy = new ProxyTool(this);
     proxy->setBitSlinder(this);
     m_tools.append(proxy);
-
-    RepeaterTool *repeater = new RepeaterTool(this);
-    repeater->setBitSlinder(this);
-    m_tools.append(repeater);
-
 }
 
 void BitSlinger::setUpstreamProxy(const QNetworkProxy &upstream)
