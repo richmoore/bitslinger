@@ -35,6 +35,9 @@
       <property name="documentMode">
        <bool>true</bool>
       </property>
+      <property name="tabBarAutoHide">
+       <bool>true</bool>
+      </property>
      </widget>
     </item>
    </layout>
@@ -45,7 +48,7 @@
      <x>0</x>
      <y>0</y>
      <width>634</width>
-     <height>30</height>
+     <height>34</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuBitslinger">

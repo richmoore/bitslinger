@@ -23,6 +23,7 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     m_ui->setupUi(this);
     m_ui->statusBar->setVisible(false);
+    m_ui->toolsTab->setTabBarAutoHide(true);
 
     setWindowIcon(QIcon(":icons/soundwave.svg"));
 
