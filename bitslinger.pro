@@ -33,7 +33,7 @@ contains(QT_CONFIG, openssl-linked) {
 
 
 SOURCES += main.cpp\
-        mainwindow.cpp \
+    mainwindow.cpp \
     connection.cpp \
     journal.cpp \
     qhexedit2/chunks.cpp \
@@ -56,8 +56,8 @@ SOURCES += main.cpp\
     utils/recentfilesmenu.cpp \
     utils/sslconfigurationwidget.cpp \
     abstracttool.cpp \
-    proxytool/proxytool.cpp \
-    proxytool/proxytoolview.cpp \
+    proxytool.cpp \
+    proxytoolview.cpp \
     utils/httpproxyrequesthandler.cpp
 
 HEADERS  += mainwindow.h \
@@ -83,8 +83,8 @@ HEADERS  += mainwindow.h \
     utils/recentfilesmenu.h \
     utils/sslconfigurationwidget.h \
     abstracttool.h \
-    proxytool/proxytool.h \
-    proxytool/proxytoolview.h \
+    proxytool.h \
+    proxytoolview.h \
     utils/httpproxyrequesthandler.h
 
 FORMS    += mainwindow.ui \
@@ -95,7 +95,7 @@ FORMS    += mainwindow.ui \
     settings/proxysettingspage.ui \
     settings/sslcasettingspage.ui \
     utils/sslconfigurationwidget.ui \
-    proxytool/proxytoolview.ui
+    proxytoolview.ui
 
 DISTFILES += \
     NOTES.txt \

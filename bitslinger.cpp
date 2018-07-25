@@ -8,7 +8,7 @@
 #include "journal.h"
 #include "listener.h"
 
-#include "proxytool/proxytool.h"
+#include "proxytool.h"
 #include "bitslinger.h"
 
 const quint32 STATE_FILE_MAGIC = 0xB175BABE;
